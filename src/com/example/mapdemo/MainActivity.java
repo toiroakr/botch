@@ -26,12 +26,12 @@ public class MainActivity extends FragmentActivity {
 		host.setup(this, getSupportFragmentManager(), R.id.content);
 		hideButtons();
 
-		TabSpec tabSpec2 = host.newTabSpec("tab2");
+		TabSpec tabSpec2 = host.newTabSpec("Map");
 		Button button2 = new Button(this);
 		button2.setBackgroundResource(R.drawable.ic_launcher);
 		tabSpec2.setIndicator(button2);
 		Bundle bundle2 = new Bundle();
-		bundle2.putString("name", "Tab2");
+		bundle2.putString("name", "Map");
 		host.addTab(tabSpec2, MyMapFragment.class, bundle2);
 
 		TabSpec tabSpec1 = host.newTabSpec("tab1");
