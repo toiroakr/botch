@@ -1,0 +1,28 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    class="com.google.android.gms.maps.SupportMapFragment"
+    map:cameraBearing="20.0"
+    map:cameraTargetLat="35.681382"
+    map:cameraTargetLng="139.766084"
+    map:cameraTilt="60.0"
+    map:cameraZoom="15.0"
+    map:mapType="terrain"
+    map:uiCompass="false"
+    map:uiRotateGestures="true"
+    map:uiScrollGestures="true"
+    map:uiTiltGestures="true"
+    map:uiZoomControls="true"
+    map:uiZoomGestures="true" >
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:onClick="onClearMap"
+        android:text="List" />
+
+</fragment>
