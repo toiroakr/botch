@@ -1,17 +1,11 @@
 package com.example.mapdemo;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 
@@ -42,6 +36,13 @@ public class MainActivity extends FragmentActivity {
 		bundle1.putString("name", "Tab1");
 		host.addTab(tabSpec1, RestaurantFragment.class, bundle1);
 
+		TabSpec tabSpec3 = host.newTabSpec("tab3");
+		Button button3 = new Button(this);
+		button3.setBackgroundResource(R.drawable.ic_launcher);
+		tabSpec3.setIndicator(button3);
+		Bundle bundle3 = new Bundle();
+		bundle3.putString("name", "Tab3");
+		host.addTab(tabSpec3, RequestAndParser.class, bundle3);
 	}
 
 	public void hideButtons() {
@@ -56,20 +57,5 @@ public class MainActivity extends FragmentActivity {
 		LinearLayout ll = (LinearLayout) rl.findViewById(R.id.marker_btns);
 		rl.removeView(ll);
 		rl.addView(ll);
-	}
-
-	public static class SampleFragment extends Fragment {
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-
-			TextView textView = new TextView(getActivity());
-			textView.setGravity(Gravity.CENTER);
-			textView.setText(getArguments().getString("name"));
-
-			return textView;
-		}
-
 	}
 }
