@@ -2,6 +2,7 @@ package com.example.mapdemo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -285,6 +287,8 @@ public class MyMapFragment extends SupportMapFragment implements
 			// String title = marker.getTitle();
 			TextView titleUi = ((TextView) view.findViewById(R.id.url));
 			titleUi.setText("" + marker.getPosition().longitude);
+			RatingBar rate = ((RatingBar) view.findViewById(R.id.rate));
+			rate.setRating(new Random().nextInt(5) + 1);
 			// if (title != null) {
 			// // Spannable string allows us to edit the formatting of the
 			// // text.
