@@ -28,9 +28,6 @@ public class RequestAndParser extends Fragment {
 		View v = inflater.inflate(R.layout.main, container, false);
 		requestQueue = Volley.newRequestQueue(getActivity()
 				.getApplicationContext());
-		Log.d("onCreate", "start_test");
-		test();
-		Log.d("onCreate", "finish_test");
 		Button btn = (Button) v.findViewById(R.id.test_button);
 		View.OnClickListener clicked = new View.OnClickListener() {
 
