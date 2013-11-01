@@ -16,7 +16,12 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements
+		ViewPager.OnPageChangeListener {
+	TabHost mTabHost;
+	ViewPager mViewPager;
+	TabsAdapter mTabsAdapter;
+	private boolean is_btn_view = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class MainActivity extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
+		mViewPager.setOnPageChangeListener(this);
 
 		// mTabsAdapter.addTab(mTabHost.newTabSpec("test").setIndicator("MAP"),
 		// MyMapFragment.class, null);
@@ -58,6 +64,10 @@ public class MainActivity extends FragmentActivity {
 		return view1;
 	}
 
+	public void hideButtons(boolean is_view) {
+		hideButtons();
+		is_btn_view = is_view;
+	}
 	public void hideButtons() {
 		RelativeLayout rl = (RelativeLayout) findViewById(R.id.container);
 		LinearLayout ll = (LinearLayout) rl.findViewById(R.id.marker_btns);
@@ -65,6 +75,7 @@ public class MainActivity extends FragmentActivity {
 		tw.setVisibility(View.VISIBLE);
 		rl.removeView(ll);
 		rl.addView(ll, 0);
+		is_btn_view = false;
 	}
 
 	public void viewButtons() {
@@ -74,11 +85,8 @@ public class MainActivity extends FragmentActivity {
 		tw.setVisibility(View.INVISIBLE);
 		rl.removeView(ll);
 		rl.addView(ll);
+		is_btn_view = true;
 	}
-
-	TabHost mTabHost;
-	ViewPager mViewPager;
-	TabsAdapter mTabsAdapter;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -98,13 +106,14 @@ public class MainActivity extends FragmentActivity {
 	 * changes.
 	 */
 	public static class TabsAdapter extends FragmentPagerAdapter implements
-			TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener {
+			TabHost.OnTabChangeListener {
 		private final Context mContext;
 		private final TabHost mTabHost;
 		private final ViewPager mViewPager;
 		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
 		static final class TabInfo {
+			@SuppressWarnings("unused")
 			private final String tag;
 			private final Class<?> clss;
 			private final Bundle args;
@@ -140,7 +149,6 @@ public class MainActivity extends FragmentActivity {
 			mViewPager = pager;
 			mTabHost.setOnTabChangedListener(this);
 			mViewPager.setAdapter(this);
-			mViewPager.setOnPageChangeListener(this);
 		}
 
 		public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
@@ -168,30 +176,38 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onTabChanged(String tabId) {
 			int position = mTabHost.getCurrentTab();
-			mViewPager.setCurrentItem(position);
+			mViewPager.setCurrentItem(position, false);
 		}
 
-		@Override
-		public void onPageScrolled(int position, float positionOffset,
-				int positionOffsetPixels) {
-		}
+	}
 
-		@Override
-		public void onPageSelected(int position) {
-			// Unfortunately when TabHost changes the current tab, it kindly
-			// also takes care of putting focus on it when not in touch mode.
-			// The jerk.
-			// This hack tries to prevent this from pulling focus out of our
-			// ViewPager.
-			TabWidget widget = mTabHost.getTabWidget();
-			int oldFocusability = widget.getDescendantFocusability();
-			widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-			mTabHost.setCurrentTab(position);
-			widget.setDescendantFocusability(oldFocusability);
-		}
+	@Override
+	public void onPageScrolled(int position, float positionOffset,
+			int positionOffsetPixels) {
+	}
 
-		@Override
-		public void onPageScrollStateChanged(int state) {
-		}
+	@Override
+	public void onPageSelected(int position) {
+		// Unfortunately when TabHost changes the current tab, it kindly
+		// also takes care of putting focus on it when not in touch mode.
+		// The jerk.
+		// This hack tries to prevent this from pulling focus out of our
+		// ViewPager.
+		int preTab = mTabHost.getCurrentTab();
+		if (preTab == 0)
+			hideButtons(true);
+		if (position == 0 && is_btn_view == true)
+			viewButtons();
+
+		TabWidget widget = mTabHost.getTabWidget();
+		int oldFocusability = widget.getDescendantFocusability();
+		widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+		mTabHost.setCurrentTab(position);
+		widget.setDescendantFocusability(oldFocusability);
+
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int state) {
 	}
 }
