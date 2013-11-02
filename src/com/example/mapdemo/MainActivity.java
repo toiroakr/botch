@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity implements
 	public View getIndicator(String str) {
 		View view1 = View.inflate(getApplicationContext(), R.layout.tabview,
 				null);
-		TextView text = (TextView) view1.findViewById(R.id.TextView01);
+		TextView text = (TextView) view1.findViewById(R.id.tab_text);
 		text.setText(str);
 		return view1;
 	}
@@ -65,13 +65,13 @@ public class MainActivity extends FragmentActivity implements
 
 	public void hideButtons() {
 		findViewById(R.id.marker_btns).setVisibility(View.INVISIBLE);
-		findViewById(android.R.id.tabs).setVisibility(View.VISIBLE);
+		// findViewById(android.R.id.tabs).setVisibility(View.VISIBLE);
 		is_btn_view = false;
 	}
 
 	public void viewButtons() {
 		findViewById(R.id.marker_btns).setVisibility(View.VISIBLE);
-		findViewById(android.R.id.tabs).setVisibility(View.INVISIBLE);
+		// findViewById(android.R.id.tabs).setVisibility(View.INVISIBLE);
 		is_btn_view = true;
 	}
 

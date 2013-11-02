@@ -46,14 +46,14 @@ public class MyMapFragment extends SupportMapFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// FrameLayout f = (FrameLayout) addDrawer(inflater, container);
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
 		setUpMapIfNeeded();
 
 		if (drawer == null) {
-			addDrawer();
-			drawer.setBehindContentView(R.layout.custom_info_contents2);
+			drawer = new SimpleSideDrawer(getActivity());
+			// 一時的なコード
+			drawer.setBehindContentView(R.layout.side_list_contents);
 			ImageView img = (ImageView) drawer.findViewById(R.id.backImg);
 			img.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			img.setImageResource(R.drawable.ic_launcher);
@@ -61,7 +61,8 @@ public class MyMapFragment extends SupportMapFragment implements
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Marker tarM = mMarkerRainbow.get(0);
+					int rand = new Random().nextInt(mMarkerRainbow.size() - 1);
+					Marker tarM = mMarkerRainbow.get(rand);
 					tarM.showInfoWindow();
 					drawer.toggleDrawer();
 					CameraPosition.Builder builder = new CameraPosition.Builder()
@@ -79,15 +80,12 @@ public class MyMapFragment extends SupportMapFragment implements
 		return mapView;
 	}
 
-	private void addDrawer() {
-		drawer = new SimpleSideDrawer(getActivity());
-	}
-
 	@SuppressWarnings("deprecation")
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
 		View layout;
 		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
-			layout = inflater.inflate(R.layout.fragment2, container, false);
+			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
+					false);
 			layout.findViewById(R.id.btn).setOnClickListener(
 					new OnClickListener() {
 						@Override
@@ -232,7 +230,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			// getLayoutInflater().inflate(R.layout.custom_info_window,
 			// null);
 			mContents = getActivity().getLayoutInflater().inflate(
-					R.layout.custom_info_contents, null);
+					R.layout.info_contents, null);
 			// mOptions = (RadioGroup)
 			// findViewById(R.id.custom_info_window_options);
 		}
