@@ -26,9 +26,6 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.map);
-
-		//
 		setContentView(R.layout.fragment_tabs_pager);
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
@@ -37,9 +34,6 @@ public class MainActivity extends FragmentActivity implements
 
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 		mViewPager.setOnPageChangeListener(this);
-
-		// mTabsAdapter.addTab(mTabHost.newTabSpec("test").setIndicator("MAP"),
-		// MyMapFragment.class, null);
 
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(getIndicator("MAP")),
@@ -68,23 +62,16 @@ public class MainActivity extends FragmentActivity implements
 		hideButtons();
 		is_btn_view = is_view;
 	}
+
 	public void hideButtons() {
-		RelativeLayout rl = (RelativeLayout) findViewById(R.id.container);
-		LinearLayout ll = (LinearLayout) rl.findViewById(R.id.marker_btns);
-		TabWidget tw = (TabWidget) findViewById(android.R.id.tabs);
-		tw.setVisibility(View.VISIBLE);
-		rl.removeView(ll);
-		rl.addView(ll, 0);
+		findViewById(R.id.marker_btns).setVisibility(View.INVISIBLE);
+		findViewById(android.R.id.tabs).setVisibility(View.VISIBLE);
 		is_btn_view = false;
 	}
 
 	public void viewButtons() {
-		RelativeLayout rl = (RelativeLayout) findViewById(R.id.container);
-		LinearLayout ll = (LinearLayout) rl.findViewById(R.id.marker_btns);
-		TabWidget tw = (TabWidget) findViewById(android.R.id.tabs);
-		tw.setVisibility(View.INVISIBLE);
-		rl.removeView(ll);
-		rl.addView(ll);
+		findViewById(R.id.marker_btns).setVisibility(View.VISIBLE);
+		findViewById(android.R.id.tabs).setVisibility(View.INVISIBLE);
 		is_btn_view = true;
 	}
 
@@ -194,7 +181,7 @@ public class MainActivity extends FragmentActivity implements
 		// This hack tries to prevent this from pulling focus out of our
 		// ViewPager.
 		int preTab = mTabHost.getCurrentTab();
-		if (preTab == 0)
+		if (preTab == 0 && is_btn_view == true)
 			hideButtons(true);
 		if (position == 0 && is_btn_view == true)
 			viewButtons();
