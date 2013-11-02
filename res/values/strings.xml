@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ActionBar</string>
+    <string name="app_name">ぼっちめし図鑑</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="eat_log">食べログ</string>
+    <string name="ate">食べた！</string>
+    <string name="detail">詳細</string>
 
 </resources>
