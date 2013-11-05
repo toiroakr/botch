@@ -58,7 +58,7 @@ public class GsonRequest<T> extends Request<T> {
     }
 
 	private Map<String, String> createAuthHeaders() {
-		// HTTP�̃w�b�_�ɔF�؏���ǉ�����
+		// HTTPリクエストヘッダにbasic認証情報を付加する
 		String userpassword = USERNAME + ":" + PASSWORD;
 		final String encoded = new String(Base64.encode(
 				userpassword.getBytes(), Base64.DEFAULT));
