@@ -19,8 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/rst_detail_name"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="23dp" >
+        android:stretchColumns="1"
+        android:shrinkColumns="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp" >
 
         <TableRow
             android:id="@+id/rst_detail_tabelog"
@@ -29,7 +32,7 @@
             android:background="#000" >
 
             <TextView
-                android:id="@+id/rst_detail_title_tabelog_"
+                android:id="@+id/rst_detail_title_tabelog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
@@ -38,10 +41,14 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_tabelog"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff"
+                android:scrollHorizontally="true"
+                android:singleLine="true" 
+                />
+
         </TableRow>
 
         <TableRow
@@ -52,7 +59,7 @@
 
             <TextView
                 android:id="@+id/rst_detail_title_category"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="#fff"
@@ -63,7 +70,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff" 
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                />
         </TableRow>
 
         <TableRow
@@ -82,10 +92,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_dinner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff" 
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                />
         </TableRow>
 
         <TableRow
@@ -104,10 +117,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_lunch"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff" 
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                />
         </TableRow>
 
         <TableRow
@@ -126,10 +142,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_situation"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff"
+                android:scrollHorizontally="true"
+                android:singleLine="true" 
+                />
         </TableRow>
 
         <TableRow
@@ -148,10 +167,12 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_address"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff" 
+                android:scrollHorizontally="true"
+                android:singleLine="true"/>
         </TableRow>
 
         <TableRow
@@ -170,10 +191,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_station"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff" 
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                />
         </TableRow>
 
         <TableRow
@@ -192,10 +216,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_tel"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff" 
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                />
         </TableRow>
 
         <TableRow
@@ -214,10 +241,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_businesshour"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff"
+                android:scrollHorizontally="true"
+                android:singleLine="true" 
+                />
         </TableRow>
 
         <TableRow
@@ -236,10 +266,13 @@
 
             <TextView
                 android:id="@+id/rst_detail_data_holiday"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" />
+                android:background="#fff"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                 />
         </TableRow>
     </TableLayout>
 
