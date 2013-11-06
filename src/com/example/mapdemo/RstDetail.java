@@ -9,16 +9,16 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.example.mapdemo.R.id;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Identity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 public class RstDetail extends Activity {
@@ -27,33 +27,14 @@ public class RstDetail extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rst_detail);
+        
+        // Intentでrst_idを受け取る        
 		requestQueue = Volley.newRequestQueue(this);
 		// methodとurlとparamsを設定する
 		int method = Method.POST;
 		String url = "/read_rst";
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("rst_id", "26001581");  // example
-		
-		// reqにmethodとurlとparamsを渡す。返り値の型は変えられるが、めんどくさいのでこれで
-		// 引数の順番に注意
-		/*
-		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
-				JsonObject.class, params, new Listener<JsonObject>() {
-					@Override
-					// 通信成功時のコールバック関数
-					public void onResponse(JsonObject rst) {
-						// success
-						// JsonElement result = rst; // user.get("result").toString();
-						Log.e("success:", rst.toString());
-					}
-				}, new ErrorListener() {
-					@Override
-					// 通信失敗時のコールバック関数
-					public void onErrorResponse(VolleyError error) {
-						// error
-						Log.v("error:", error.toString());
-					}
-				});*/
+		params.put("rst_id", "26001581");  // sample用
 
 		// マッピング用のRestaurantDetailを作成
 		GsonRequest<RestaurantDetail> req = new GsonRequest<RestaurantDetail>(method, url,
@@ -63,6 +44,7 @@ public class RstDetail extends Activity {
 					public void onResponse(RestaurantDetail rst) {
 						// success
 						Log.e("success:", rst.toString());
+						// TextViewへの埋め込みはこの関数で行う
 						setRestaurantDetailToTextView(rst);
 						Log.e("success:", "DONE!");
 						
@@ -80,18 +62,39 @@ public class RstDetail extends Activity {
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
 		requestQueue.add(req);
     }
-	private void setRestaurantDetailToTextView(RestaurantDetail rst) {
+    
+    
+	@SuppressLint("SetJavaScriptEnabled")
+	private void setRestaurantDetailToTextView(final RestaurantDetail rst) {
 		TextView name = (TextView) findViewById(id.rst_detail_name);
 		name.setText(rst.getRestaurantName());
 		
+		// 食べログのurlをWebView内で開くためのもの
 		TextView url = (TextView) findViewById(id.rst_detail_data_tabelog);
+
 		// urlをclickableにする
 		MovementMethod mMethod = LinkMovementMethod.getInstance();
 		url.setMovementMethod(mMethod);
+
 		// tabelogmobileurlをhtmlを使ってリンクテキストに埋め込む
 		CharSequence tabelogLink = Html.fromHtml("<a href=\"" + rst.getTabelogMobileUrl() + "\">食べログ</a>");
 		url.setText(tabelogLink);
 		
+		// タップされたときの挙動を変更。デフォルトだとブラウザ起動
+		// Intentを使ってWebViewFromTextViewに遷移し、そちらで開く
+		url.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(RstDetail.this, WebViewFromTextView.class);
+				i.setAction(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(rst.getTabelogMobileUrl()));
+				startActivity(i);				
+			}
+		});
+		// これだとブラウザが開いちゃう
+		// webView.loadUrl(rst.getTabelogMobileUrl());		
+		
+		// 以下、埋め込み作業が続く
 		TextView category = (TextView) findViewById(id.rst_detail_data_category);
 		category.setText(rst.getCategory());
 		
