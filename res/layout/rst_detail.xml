@@ -47,7 +47,7 @@
                 android:background="#fff"
                 android:scrollHorizontally="true"
                 android:singleLine="true" 
-                />
+                android:autoLink="web" />
 
         </TableRow>
 

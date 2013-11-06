@@ -42,6 +42,8 @@ android:versionName="2.2.1">
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		<activity android:name="com.example.mapdemo.WebViewFromTextView"></activity>
+		<activity android:name="com.example.mapdemo.MainActivity"></activity>
 	</application>
 
 </manifest>
