@@ -6,6 +6,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -357,13 +358,22 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void setBtns(final Marker marker) {
-		Button mBtn = (Button) getActivity().findViewById(R.id.eat);
-		mBtn.setOnClickListener(new OnClickListener() {
+		Button eBtn = (Button) getActivity().findViewById(R.id.eat);
+		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getActivity(),
 						marker.getPosition().longitude + "", Toast.LENGTH_SHORT)
 						.show();
+			}
+		});
+		Button dBtn = (Button) getActivity().findViewById(R.id.detail2);
+		dBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), RstDetail.class);
+				// 次画面のアクティビティ起動
+				startActivity(intent);
 			}
 		});
 	}
