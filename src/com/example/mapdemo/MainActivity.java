@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity implements
 				MyMapFragment.class, null);
 		mTabsAdapter
 				.addTab(mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("Reata")), RestaurantFragment.class, null);
+						getIndicator("Resta")), RestaurantFragment.class, null);
 		mTabsAdapter
 				.addTab(mTabHost.newTabSpec("test").setIndicator(
 						getIndicator("RandP")), RequestAndParser.class, null);
@@ -56,21 +56,12 @@ public class MainActivity extends FragmentActivity implements
 		return view1;
 	}
 
-	public void hideButtons(boolean is_view) {
-		hideButtons();
-		is_btn_view = is_view;
-	}
-
 	public void hideButtons() {
 		findViewById(R.id.marker_btns).setVisibility(View.INVISIBLE);
-		// findViewById(android.R.id.tabs).setVisibility(View.VISIBLE);
-		is_btn_view = false;
 	}
 
 	public void viewButtons() {
 		findViewById(R.id.marker_btns).setVisibility(View.VISIBLE);
-		// findViewById(android.R.id.tabs).setVisibility(View.INVISIBLE);
-		is_btn_view = true;
 	}
 
 	@Override
@@ -179,10 +170,14 @@ public class MainActivity extends FragmentActivity implements
 		// This hack tries to prevent this from pulling focus out of our
 		// ViewPager.
 		int preTab = mTabHost.getCurrentTab();
-		if (preTab == 0 && is_btn_view == true)
-			hideButtons(true);
-		if (position == 0 && is_btn_view == true)
+		int visible = findViewById(R.id.marker_btns).getVisibility();
+		if (preTab == 0 && visible == View.VISIBLE) {
+			is_btn_view = true;
+			hideButtons();
+		} else if (position == 0 && is_btn_view == true)
 			viewButtons();
+		else
+			is_btn_view = false;
 
 		TabWidget widget = mTabHost.getTabWidget();
 		int oldFocusability = widget.getDescendantFocusability();
