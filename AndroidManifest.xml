@@ -41,7 +41,6 @@ android:versionName="2.2.1">
 			</intent-filter>
 		</activity>
 		<activity android:name=".RstDetail" ></activity>
-		<activity android:name=".WebViewFromTextView"
-		></activity>
+		<activity android:name=".WebViewFromTextView"></activity>
 	</application>
 </manifest>

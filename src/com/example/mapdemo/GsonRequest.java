@@ -46,7 +46,16 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return headers != null ? headers : super.getHeaders();
+        // return headers != null ? headers : super.getHeaders();
+        Map<String, String> headers = super.getHeaders();
+        // Add BASIC AUTH HEADER
+        Map<String, String> newHeaders = new HashMap<String, String>();
+        newHeaders.putAll(headers);
+		String userpassword = USERNAME + ":" + PASSWORD;
+		final String encoded = new String(Base64.encode(
+				userpassword.getBytes(), Base64.DEFAULT));
+		newHeaders.put("Authorization", "Basic " + encoded);        
+        return newHeaders;
     }
     @Override
     protected Map<String, String> getParams() throws AuthFailureError {
