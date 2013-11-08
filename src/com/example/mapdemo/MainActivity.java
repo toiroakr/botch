@@ -239,7 +239,7 @@ public class MainActivity extends FragmentActivity implements
 				if (intRate == 0) {// Ratingが0：評価していない時
 					Toast toast = Toast.makeText(context, "ちゃんと評価してや～！",
 							Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.TOP, 0, 150);
+					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.show();
 					return;
 				}
