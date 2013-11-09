@@ -72,17 +72,16 @@ public class MainActivity extends FragmentActivity {
 		outState.putString("tab", mTabHost.getCurrentTabTag());
 	}
 
-	public void showEvalDialog(final Context context, Restaurant rst,
-			Marker marker) {
+	public void showEvalDialog(Restaurant rst, Marker marker) {
 		// カスタムビューを設定
 		LayoutInflater inflater = (LayoutInflater) this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
 		final View layout = inflater.inflate(R.layout.eval_dialog,
 				(ViewGroup) findViewById(R.id.layout_root));
 
+		final Context context = this;
 		Toast.makeText(context, marker.getId() + " : " + marker.getTitle(),
 				Toast.LENGTH_SHORT).show();
-
 		// アラートダイアログを生成
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(rst.getRestaurantName() + "の評価");

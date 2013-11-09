@@ -38,7 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.navdrawer.SimpleSideDrawer;
 
 public class MyMapFragment extends SupportMapFragment implements
-		OnMarkerClickListener/* , OnInfoWindowClickListener */{
+		OnMarkerClickListener {
 	private GoogleMap mMap;
 	private final List<Marker> mMarkerRainbow = new ArrayList<Marker>();
 	private SimpleSideDrawer drawer;
@@ -99,8 +99,8 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void setUpMapIfNeeded() {
-		// Do a null check to confirm that we have not already instantiated the
-		// map.
+		// Do a null check to confirm
+		// that we have not already instantiated the map.
 		if (mMap == null) {
 			mMap = getMap();
 			// Check if we were successful in obtaining the map.
@@ -160,13 +160,10 @@ public class MyMapFragment extends SupportMapFragment implements
 		// Set listeners for marker events. See the bottom of this class for
 		// their behavior.
 		mMap.setOnMarkerClickListener(this);
-		// mMap.setOnInfoWindowClickListener(this);
 		mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			@Override
 			public void onInfoWindowClick(Marker arg0) {
-				Intent intent = new Intent(getActivity(), RstDetail.class);
-				// 次画面のアクティビティ起動
-				startActivity(intent);
+				showDetail();
 			}
 		});
 	}
@@ -233,100 +230,29 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	/** Demonstrates customizing the info window and/or its contents. */
 	class CustomInfoWindowAdapter implements InfoWindowAdapter {
-		// private final RadioGroup mOptions;
-
-		// These a both viewgroups containing an ImageView with id "badge" and
-		// two TextViews with id
-		// "title" and "snippet".
-		// private final View mWindow;
 		private final View mContents;
 
 		CustomInfoWindowAdapter() {
-			// mWindow =
-			// getLayoutInflater().inflate(R.layout.custom_info_window,
-			// null);
 			mContents = getActivity().getLayoutInflater().inflate(
 					R.layout.info_contents, null);
-			// mOptions = (RadioGroup)
-			// findViewById(R.id.custom_info_window_options);
 		}
 
 		@Override
 		public View getInfoWindow(Marker marker) {
-			// if (mOptions.getCheckedRadioButtonId() !=
-			// R.id.custom_info_window) {
-
-			// // This means that getInfoContents will be called.
 			return null;
-			// }
-
-			// render(marker, mWindow);
-			// return mWindow;
 		}
 
 		@Override
 		public View getInfoContents(Marker marker) {
-			// if (mOptions.getCheckedRadioButtonId() !=
-			// R.id.custom_info_contents) {
-			// // This means that the default info contents will be used.
-			// return null;
-			// }
 			render(marker, mContents);
 			return mContents;
 		}
 
 		private void render(Marker marker, View view) {
-			// 画像のアドレス
-			// int badge = 0;
-			// Use the equals() method on a Marker to check for equals. Do not
-			// use ==.
-			// if (marker.equals(mBrisbane)) {
-			// badge = R.drawable.badge_qld;
-			// } else if (marker.equals(mAdelaide)) {
-			// badge = R.drawable.badge_sa;
-			// } else if (marker.equals(mSydney)) {
-			// badge = R.drawable.badge_nsw;
-			// } else if (marker.equals(mMelbourne)) {
-			// badge = R.drawable.badge_victoria;
-			// } else if (marker.equals(mPerth)) {
-			// badge = R.drawable.badge_wa;
-			// } else {
-			// // Passing 0 to setImageResource will clear the image view.
-			// badge = 0;
-			// }
-
-			// ((ImageView)
-			// view.findViewById(R.id.badge)).setImageResource(badge);
-
-			// String title = marker.getTitle();
 			TextView titleUi = ((TextView) view.findViewById(R.id.url));
 			titleUi.setText("" + marker.getPosition().longitude);
 			RatingBar rate = ((RatingBar) view.findViewById(R.id.rate));
 			rate.setRating(new Random().nextInt(5) + 1);
-			// if (title != null) {
-			// // Spannable string allows us to edit the formatting of the
-			// // text.
-			// SpannableString titleText = new SpannableString(title);
-			// titleText.setSpan(new ForegroundColorSpan(Color.RED), 0,
-			// titleText.length(), 0);
-			// titleUi.setText(titleText);
-			// } else {
-			// titleUi.setText("");
-			// }
-
-			// String snippet = marker.getSnippet();
-			// TextView snippetUi = ((TextView)
-			// view.findViewById(R.id.snippet));
-			// if (snippet != null && snippet.length() > 12) {
-			// SpannableString snippetText = new SpannableString(snippet);
-			// snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0,
-			// 10, 0);
-			// snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12,
-			// snippet.length(), 0);
-			// snippetUi.setText(snippetText);
-			// } else {
-			// snippetUi.setText("");
-			// }
 		}
 	}
 
@@ -342,25 +268,22 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showEvalDialog(getActivity(),
-						new Restaurant("天下一品", 0, "フレンチ"), marker);
+				((MainActivity) getActivity()).showEvalDialog(new Restaurant(
+						"天下一品", 0, "フレンチ"), marker);
 			}
 		});
 		Button dBtn = (Button) getActivity().findViewById(R.id.detail_btn);
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), RstDetail.class);
-				// 次画面のアクティビティ起動
-				startActivity(intent);
+				showDetail();
 			}
 		});
 	}
 
-	// @Override
-	// public void onInfoWindowClick(Marker marker) {
-	// Intent intent = new Intent(getActivity(), RstDetail.class);
-	// // 次画面のアクティビティ起動
-	// startActivity(intent);
-	// }
+	private void showDetail() {
+		// 詳細ページへ
+		Intent intent = new Intent(getActivity(), RstDetail.class);
+		startActivity(intent);
+	}
 }
