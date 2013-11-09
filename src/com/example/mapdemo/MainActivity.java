@@ -37,7 +37,7 @@ public class MainActivity extends FragmentActivity {
 
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(getIndicator("MAP")),
-				MyMapFragment.class, null);
+				MyMapFragment.class, null, true);
 		mTabsAdapter
 				.addTab(mTabHost.newTabSpec("test").setIndicator(
 						getIndicator("Resta")), RestaurantFragment.class, null);

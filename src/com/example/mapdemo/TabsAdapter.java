@@ -17,6 +17,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	private final TabHost mTabHost;
 	private final MyViewPager mViewPager;
 	private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+	private final ArrayList<TabInfo> protectedTabs = new ArrayList<TabInfo>();
 	private boolean is_btn_view;
 
 	static final class TabInfo {
@@ -58,7 +59,15 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mViewPager.setOnPageChangeListener(this);
 	}
 
-	public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
+	public TabInfo addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args,
+			boolean protect) {
+		TabInfo info = addTab(tabSpec, clss, args);
+		if (protect)
+			protectedTabs.add(info);
+		return info;
+	}
+
+	public TabInfo addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
 		tabSpec.setContent(new DummyTabFactory(mContext));
 		String tag = tabSpec.getTag();
 
@@ -66,6 +75,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mTabs.add(info);
 		mTabHost.addTab(tabSpec);
 		notifyDataSetChanged();
+		return info;
 	}
 
 	@Override
@@ -130,4 +140,10 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	public void onPageScrollStateChanged(int state) {
 	}
 
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		if (protectedTabs.contains(mTabs.get(position)))
+			return;
+		super.destroyItem(container, position, object);
+	}
 }
