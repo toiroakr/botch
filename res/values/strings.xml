@@ -8,6 +8,7 @@
     <string name="eval_comment">コメント</string>
     <string name="ate">食べた！</string>
     <string name="detail">詳細</string>
+    <string name="list_btn">List</string>
     <string name="rst_detail_top">の詳細</string>
     <string name="rst_detail_name">レストラン名</string>
     <string name="rst_detail_tabelog">食べログ</string>

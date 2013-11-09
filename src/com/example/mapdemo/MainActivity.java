@@ -28,13 +28,13 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_tabs_pager);
+
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
-
 		mViewPager = (MyViewPager) findViewById(R.id.pager);
-
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
+		// タブの追加
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(getIndicator("MAP")),
 				MyMapFragment.class, null, true);

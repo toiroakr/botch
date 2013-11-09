@@ -9,7 +9,7 @@
         android:id="@+id/tab_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/mycolor"
+        android:background="@drawable/tab_color"
         android:gravity="center"
         android:padding="15dp" />
 

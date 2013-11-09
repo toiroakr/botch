@@ -87,7 +87,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
 			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
 					false);
-			layout.findViewById(R.id.btn).setOnClickListener(
+			layout.findViewById(R.id.drawer_btn).setOnClickListener(
 					new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -264,7 +264,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void setBtns(final Marker marker) {
-		Button eBtn = (Button) getActivity().findViewById(R.id.eat_btn);
+		TextView eBtn = (TextView) getActivity().findViewById(R.id.eat_btn);
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -272,7 +272,7 @@ public class MyMapFragment extends SupportMapFragment implements
 						"天下一品", 0, "フレンチ"), marker);
 			}
 		});
-		Button dBtn = (Button) getActivity().findViewById(R.id.detail_btn);
+		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
