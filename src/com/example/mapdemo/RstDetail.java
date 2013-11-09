@@ -9,6 +9,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.example.mapdemo.R.id;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -20,9 +21,17 @@ import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RstDetail extends Activity {
 	private RequestQueue requestQueue;
+	private String rst_id;
+	private HashMap<String, String> params = new HashMap<String, String>();
+	private int method;
+	private String url;	
+	// getterとsetterは一番下
+	private static final Object TAG_REQUEST_QUEUE = new Object();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +39,17 @@ public class RstDetail extends Activity {
         
         // Intentでrst_idを受け取る        
 		requestQueue = Volley.newRequestQueue(this);
-		// methodとurlとparamsを設定する
-		int method = Method.POST;
-		String url = "/read_rst";
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("rst_id", "26001581");  // sample用
-
+		// methodとurlとparamsを設定する		
+		// this.params.put("rst_id", this.getRst_id());  // sample用
+		this.setRst_id("26001581");
+		this.setUrl("/read_rst");
+		this.setMethod(Method.POST);
+		this.setParams();
+		this.startRequest();
+		//this.requestQueue.start();
+    }
+    
+    private void startRequest() {
 		// マッピング用のRestaurantDetailを作成
 		GsonRequest<RestaurantDetail> req = new GsonRequest<RestaurantDetail>(method, url,
 				RestaurantDetail.class, params, new Listener<RestaurantDetail>() {
@@ -43,27 +57,43 @@ public class RstDetail extends Activity {
 					// 通信成功時のコールバック関数
 					public void onResponse(RestaurantDetail rst) {
 						// success
-						Log.e("success:", rst.toString());
+						Log.v("success:", rst.toString());
 						// TextViewへの埋め込みはこの関数で行う
 						setRestaurantDetailToTextView(rst);
-						Log.e("success:", "DONE!");
-						
+						Log.v("success:", "DONE!");
+					    Toast.makeText(getApplicationContext(), rst.toString(), Toast.LENGTH_LONG).show();						
 					}
 				}, new ErrorListener() {
 					@Override
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.v("error:", error.toString());
+						Log.v("error:", error.toString() + "：再読み込みしてください");
+					    Toast.makeText(getApplicationContext(), "onErrorResponse", Toast.LENGTH_LONG).show();
 					}
 				});
 		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
 		// Queueなので、入れた順番に通信される
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
-		requestQueue.add(req);
+		req.setTag(TAG_REQUEST_QUEUE);
+		requestQueue.add(req);    	
     }
-    
-    
+
+    @Override
+    public void onStart(){
+     super.onStart();
+     // Log.v("length:", requestQueue.toString());
+     //HTTPリクエストを行う
+     // 2回通信されてしまう
+     // this.startRequest();
+    }
+     
+    @Override
+    public void onStop(){
+     super.onStop();
+     requestQueue.cancelAll(TAG_REQUEST_QUEUE);
+    }
+
 	@SuppressLint("SetJavaScriptEnabled")
 	private void setRestaurantDetailToTextView(final RestaurantDetail rst) {
 		TextView name = (TextView) findViewById(id.rst_detail_name);
@@ -121,6 +151,31 @@ public class RstDetail extends Activity {
 		
 		TextView holiday = (TextView) findViewById(id.rst_detail_data_holiday);
 		holiday.setText(rst.getHoliday());		
+	}
+	// setParamsに注意
+	public String getRst_id() {
+		return rst_id;
+	}
+	public void setRst_id(String rst_id) {
+		this.rst_id = rst_id;
+	}
+	public HashMap<String, String> getParams() {
+		return params;
+	}
+	public void setParams() {
+		this.params.put("rst_id", this.rst_id);
+	}
+	public int getMethod() {
+		return method;
+	}
+	public void setMethod(int method) {
+		this.method = method;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
     
 }
