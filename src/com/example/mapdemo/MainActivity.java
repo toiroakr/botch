@@ -2,22 +2,30 @@ package com.example.mapdemo;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ViewPager.OnPageChangeListener {
+		MyViewPager.OnPageChangeListener {
 	TabHost mTabHost;
-	ViewPager mViewPager;
+	MyViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	private boolean is_btn_view = false;
 
@@ -28,7 +36,7 @@ public class MainActivity extends FragmentActivity implements
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager = (MyViewPager) findViewById(R.id.pager);
 
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 		mViewPager.setOnPageChangeListener(this);
@@ -85,7 +93,7 @@ public class MainActivity extends FragmentActivity implements
 			TabHost.OnTabChangeListener {
 		private final Context mContext;
 		private final TabHost mTabHost;
-		private final ViewPager mViewPager;
+		private final MyViewPager mViewPager;
 		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
 		static final class TabInfo {
@@ -118,7 +126,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 
 		public TabsAdapter(FragmentActivity activity, TabHost tabHost,
-				ViewPager pager) {
+				MyViewPager pager) {
 			super(activity.getSupportFragmentManager());
 			mContext = activity;
 			mTabHost = tabHost;
@@ -185,9 +193,60 @@ public class MainActivity extends FragmentActivity implements
 		mTabHost.setCurrentTab(position);
 		widget.setDescendantFocusability(oldFocusability);
 
+		if (position == 0)
+			mViewPager.setSwipeHold(true);
+		else
+			mViewPager.setSwipeHold(false);
 	}
 
 	@Override
 	public void onPageScrollStateChanged(int state) {
+	}
+
+	public void showEvalDialog(final Context context, Restaurant rst) {
+		// カスタムビューを設定
+		LayoutInflater inflater = (LayoutInflater) this
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		final View layout = inflater.inflate(R.layout.eval_dialog,
+				(ViewGroup) findViewById(R.id.layout_root));
+
+		// アラートダイアログを生成
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(rst.getRestaurantName() + "の評価");
+		builder.setView(layout);
+
+		builder.setPositiveButton("Send", null);
+		builder.setNegativeButton("Cancel", new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Toast.makeText(context, "Cancelled!!!!!!!!!",
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		// 表示
+		final AlertDialog diaLog = builder.show();
+		Button buttonOK = diaLog.getButton(DialogInterface.BUTTON_POSITIVE);
+		buttonOK.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Send ボタンクリック処理
+				EditText comment = (EditText) layout
+						.findViewById(R.id.eval_comment);
+				RatingBar rate = (RatingBar) layout
+						.findViewById(R.id.eval_rate);
+				String strComment = comment.getText().toString();
+				int intRate = (int) rate.getRating();
+				if (intRate == 0) {// Ratingが0：評価していない時
+					Toast toast = Toast.makeText(context, "ちゃんと評価してや～！",
+							Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
+					return;
+				}
+				Toast.makeText(context, strComment + ":" + intRate,
+						Toast.LENGTH_SHORT).show();
+				diaLog.dismiss();
+			}
+		});
 	}
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RatingBar
+            android:id="@+id/eval_rate"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/eval_rate"
+            android:layout_marginLeft="3dp"
+            android:text="@string/eval_comment"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/eval_comment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|left"
+        android:inputType="text|textMultiLine"
+        android:maxLines="5"
+        android:minLines="5"
+        android:textSize="15sp" />
+
+</LinearLayout>

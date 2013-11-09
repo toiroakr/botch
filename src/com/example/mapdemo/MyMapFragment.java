@@ -22,11 +22,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -113,7 +113,21 @@ public class MyMapFragment extends SupportMapFragment implements
 	private void setUpMap() {
 		if (mMap != null) {
 			// LocationMangerに最終位置を問い合わせて初期位置を確定する
-			double lat = 34.65;
+
+			// 各種コントロール、リスナー等をセット
+			mMap.getUiSettings().setCompassEnabled(true);
+			mMap.getUiSettings().setZoomControlsEnabled(true);
+			mMap.getUiSettings().setMyLocationButtonEnabled(true);
+			mMap.setMyLocationEnabled(true);
+			mMap.setOnMapClickListener(new OnMapClickListener() {
+				@Override
+				public void onMapClick(LatLng arg0) {
+					((MainActivity) getActivity()).hideButtons();
+				}
+			});
+
+			// カメラの初期位置をセット
+			double lat = 35.;
 			double lon = 135;
 			LocationManager mgr = (LocationManager) getActivity()
 					.getSystemService(Context.LOCATION_SERVICE); // 位置マネージャ取得
@@ -126,22 +140,10 @@ public class MyMapFragment extends SupportMapFragment implements
 				lat = loc.getLatitude();
 				lon = loc.getLongitude();
 			}
-			// カメラの初期位置や各種コントロール、リスナー等をセット
 			CameraPosition.Builder builder = new CameraPosition.Builder()
 					.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
 			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
 					.build()));
-			mMap.getUiSettings().setCompassEnabled(true);
-			mMap.getUiSettings().setZoomControlsEnabled(true);
-			mMap.getUiSettings().setMyLocationButtonEnabled(true);
-			mMap.setMyLocationEnabled(true);
-			mMap.setOnMapClickListener(new OnMapClickListener() {
-				@Override
-				public void onMapClick(LatLng arg0) {
-					((MainActivity) getActivity()).hideButtons();
-				}
-			});
-
 		}
 
 		// Hide the zoom controls as the button panel will cover it.
@@ -159,22 +161,40 @@ public class MyMapFragment extends SupportMapFragment implements
 		// their behavior.
 		mMap.setOnMarkerClickListener(this);
 		// mMap.setOnInfoWindowClickListener(this);
+		mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+			@Override
+			public void onInfoWindowClick(Marker arg0) {
+				Intent intent = new Intent(getActivity(), RstDetail.class);
+				// 次画面のアクティビティ起動
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void addMarkersToMap() {
-		int numMarkersInRainbow = 6;
+		double lat = 35.;
+		double lon = 135;
+		LocationManager mgr = (LocationManager) getActivity().getSystemService(
+				Context.LOCATION_SERVICE); // 位置マネージャ取得
+		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (loc == null)
+			loc = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+		if (loc != null) {
+			lat = loc.getLatitude();
+			lon = loc.getLongitude();
+		}
+
+		int numMarkersInRainbow = 8;
+		double r = 0.001;
+		double angle = 2 * Math.PI;
 		for (int i = 0; i < numMarkersInRainbow; i++) {
-			mMarkerRainbow
-					.add(mMap.addMarker(new MarkerOptions()
-							.position(
-									new LatLng(35 - 0.2 * Math.sin(2 * i
-											* Math.PI / numMarkersInRainbow),
-											135.7 + 0.2 * Math.cos(2 * i
-													* Math.PI
-													/ numMarkersInRainbow)))
-							.title("Marker " + i)
-							.icon(BitmapDescriptorFactory.defaultMarker(i * 360
-									/ numMarkersInRainbow))));
+			double posLat = lat - r * Math.sin(angle * i / numMarkersInRainbow);
+			double posLon = lon + r * Math.cos(i * angle / numMarkersInRainbow);
+			mMarkerRainbow.add(mMap.addMarker(new MarkerOptions()
+					.position(new LatLng(posLat, posLon))
+					.title("Marker " + i)
+					.icon(BitmapDescriptorFactory.defaultMarker(i * 360
+							/ numMarkersInRainbow))));
 		}
 	}
 
@@ -191,13 +211,8 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
+		super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -319,55 +334,19 @@ public class MyMapFragment extends SupportMapFragment implements
 	public boolean onMarkerClick(final Marker marker) {
 		((MainActivity) getActivity()).viewButtons();
 		setBtns(marker);
-		// if (marker.equals(mPerth)) {
-		// // This causes the marker at Perth to bounce into position when it
-		// // is clicked.
-		// final Handler handler = new Handler();
-		// final long start = SystemClock.uptimeMillis();
-		// final long duration = 1500;
-		//
-		// final Interpolator interpolator = new BounceInterpolator();
-		//
-		// handler.post(new Runnable() {
-		// @Override
-		// public void run() {
-		// long elapsed = SystemClock.uptimeMillis() - start;
-		// float t = Math.max(
-		// 1 - interpolator.getInterpolation((float) elapsed
-		// / duration), 0);
-		// marker.setAnchor(0.5f, 1.0f + 2 * t);
-		//
-		// if (t > 0.0) {
-		// // Post again 16ms later.
-		// handler.postDelayed(this, 16);
-		// }
-		// }
-		// });
-		// } else if (marker.equals(mAdelaide)) {
-		// // This causes the marker at Adelaide to change color.
-		// marker.setIcon(BitmapDescriptorFactory.defaultMarker(new Random()
-		// .nextFloat() * 360));
-		// }
-		// We return false to indicate that we have not consumed the event and
-		// that we wish
-		// for the default behavior to occur (which is for the camera to move
-		// such that the
-		// marker is centered and for the marker's info window to open, if it
-		// has one).
 		return false;
 	}
 
 	private void setBtns(final Marker marker) {
-		Button eBtn = (Button) getActivity().findViewById(R.id.eat);
+		Button eBtn = (Button) getActivity().findViewById(R.id.eat_btn);
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getActivity(),
-						marker.getPosition().longitude + "", Toast.LENGTH_SHORT)
-						.show();
+				((MainActivity) getActivity()).showEvalDialog(getActivity(),
+						new Restaurant("天下一品", 0, "フレンチ"));
 			}
 		});
-		Button dBtn = (Button) getActivity().findViewById(R.id.detail2);
+		Button dBtn = (Button) getActivity().findViewById(R.id.detail_btn);
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -377,9 +356,12 @@ public class MyMapFragment extends SupportMapFragment implements
 			}
 		});
 	}
+
 	// @Override
 	// public void onInfoWindowClick(Marker marker) {
-	// Toast.makeText(getActivity(), "Click Info Window", Toast.LENGTH_SHORT)
-	// .show();
+	// Intent intent = new Intent(getActivity(), RstDetail.class);
+	// // 次画面のアクティビティ起動
+	// startActivity(intent);
 	// }
+
 }
