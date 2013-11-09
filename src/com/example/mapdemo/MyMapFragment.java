@@ -343,7 +343,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			@Override
 			public void onClick(View v) {
 				((MainActivity) getActivity()).showEvalDialog(getActivity(),
-						new Restaurant("天下一品", 0, "フレンチ"));
+						new Restaurant("天下一品", 0, "フレンチ"), marker);
 			}
 		});
 		Button dBtn = (Button) getActivity().findViewById(R.id.detail_btn);
@@ -363,5 +363,4 @@ public class MyMapFragment extends SupportMapFragment implements
 	// // 次画面のアクティビティ起動
 	// startActivity(intent);
 	// }
-
 }
