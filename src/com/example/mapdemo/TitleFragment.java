@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class TitleFragment extends Fragment {
 
@@ -32,10 +33,19 @@ public class TitleFragment extends Fragment {
 		findViews(a);
 		setAdapters();
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               String message = adapter.getItem(position).getTitleName();
-               Log.v("create:", message);
-            }
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Title title = adapter.getItem(position);
+				View parentView = (View)parent.getParent();
+				ImageView imgView = (ImageView)parentView.findViewById(R.id.titleImg);
+				TextView titleText = (TextView)parentView.findViewById(R.id.titleText);
+				TextView conditionText = (TextView)parentView.findViewById(R.id.conditionText);
+				TextView rankText = (TextView)parentView.findViewById(R.id.rankText);
+				imgView.setImageResource(title.getImgId());
+				titleText.setText(title.getTitleName());
+				conditionText.setText(title.getCondition());
+				rankText.setText(title.getRank());
+
+			}
 
 		});
 		Log.v("create:", "create");
@@ -52,7 +62,9 @@ public class TitleFragment extends Fragment {
 		  android.R.layout.simple_list_item_1,
 		  dataList);*/
 		adapter = new TitleAdapter();
-		addItem();
+		for (int i=0;i<60;i++){
+			addItem();
+		}
 		gridView.setAdapter(adapter);
 	}
 
