@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -43,45 +42,21 @@ public class MyMapFragment extends SupportMapFragment implements
 	private final List<Marker> mMarkerRainbow = new ArrayList<Marker>();
 	private SimpleSideDrawer drawer;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		if (drawer == null
+				|| (drawer = ((MainActivity) getActivity()).getDrawer()) == null)
+			drawer = ((MainActivity) getActivity()).initDrawer();
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
 		setUpMapIfNeeded();
 
-		if (drawer == null) {
-			drawer = new SimpleSideDrawer(getActivity());
-			// 一時的なコード
-			drawer.setBehindContentView(R.layout.side_list_contents);
-			ImageView img = (ImageView) drawer.findViewById(R.id.backImg);
-			img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			img.setImageResource(R.drawable.ic_launcher);
-			Button b = (Button) drawer.findViewById(R.id.detail);
-			b.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					int rand = new Random().nextInt(mMarkerRainbow.size() - 1);
-					Marker tarM = mMarkerRainbow.get(rand);
-					tarM.showInfoWindow();
-					drawer.toggleDrawer();
-					CameraPosition.Builder builder = new CameraPosition.Builder()
-							.bearing(0).tilt(0).zoom(16)
-							.target(tarM.getPosition());
-					mMap.moveCamera(CameraUpdateFactory
-							.newCameraPosition(builder.build()));
-					((MainActivity) getActivity()).viewButtons();
-					setBtns(tarM);
-				}
-			});
-		}
 		mapView.addView(addToggleButton(inflater, container));
 
 		return mapView;
 	}
 
-	@SuppressWarnings("deprecation")
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
 		View layout;
 		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
@@ -91,6 +66,7 @@ public class MyMapFragment extends SupportMapFragment implements
 					new OnClickListener() {
 						@Override
 						public void onClick(View v) {
+							Log.d("aaa", "test");
 							drawer.toggleDrawer();
 						}
 					});
@@ -268,7 +244,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showEvalDialog(new Restaurant(1,"天下一品", 0, "フレンチ"), marker);
+				((MainActivity) getActivity()).showEvalDialog(new Restaurant(1,
+						"天下一品", 0, "フレンチ"), marker);
 			}
 		});
 		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);

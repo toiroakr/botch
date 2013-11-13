@@ -18,11 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Marker;
+import com.navdrawer.SimpleSideDrawer;
 
 public class MainActivity extends FragmentActivity {
 	TabHost mTabHost;
 	MyViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
+	private SimpleSideDrawer drawer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,5 +122,16 @@ public class MainActivity extends FragmentActivity {
 				diaLog.dismiss();
 			}
 		});
+	}
+
+	public SimpleSideDrawer getDrawer() {
+		return drawer;
+	}
+
+	public SimpleSideDrawer initDrawer() {
+		drawer = new SimpleSideDrawer(this);
+		drawer.setBehindContentView(R.layout.side_list);
+		return drawer;
+
 	}
 }
