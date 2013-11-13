@@ -33,11 +33,9 @@ public class GsonRequest<T> extends Request<T> {
     private final static String PASSWORD = "sadp2013";
 
 
-    public GsonRequest(int method, String url, Class<T> clazz,
-            Map<String, String> params, Listener<T> listener,
-            ErrorListener errorListener) {
+    public GsonRequest(int method, String url, Class<T> clazz, Map<String, String> params, 
+    		Listener<T> listener, ErrorListener errorListener) {
         super(method, ROOT_URL + url, errorListener);
-
         this.clazz = clazz;
         this.headers = createAuthHeaders();
         this.listener = listener;
@@ -47,6 +45,17 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         return headers != null ? headers : super.getHeaders();
+        /*
+        Map<String, String> headers = super.getHeaders();
+        // Add BASIC AUTH HEADER
+        Map<String, String> newHeaders = new HashMap<String, String>();
+        newHeaders.putAll(headers);
+		String userpassword = USERNAME + ":" + PASSWORD;
+		final String encoded = new String(Base64.encode(
+				userpassword.getBytes(), Base64.DEFAULT));
+		newHeaders.put("Authorization", "Basic " + encoded);        
+        return newHeaders;
+        */
     }
     @Override
     protected Map<String, String> getParams() throws AuthFailureError {
@@ -58,7 +67,7 @@ public class GsonRequest<T> extends Request<T> {
     }
 
 	private Map<String, String> createAuthHeaders() {
-		// HTTP�̃w�b�_�ɔF�؏���ǉ�����
+		// HTTPリクエストヘッダにbasic認証情報を付加する
 		String userpassword = USERNAME + ":" + PASSWORD;
 		final String encoded = new String(Base64.encode(
 				userpassword.getBytes(), Base64.DEFAULT));
