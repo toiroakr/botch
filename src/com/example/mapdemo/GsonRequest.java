@@ -32,7 +32,6 @@ public class GsonRequest<T> extends Request<T> {
     private final static String USERNAME = "botteam";
     private final static String PASSWORD = "sadp2013";
 
-
     public GsonRequest(int method, String url, Class<T> clazz, Map<String, String> params, 
     		Listener<T> listener, ErrorListener errorListener) {
         super(method, ROOT_URL + url, errorListener);
