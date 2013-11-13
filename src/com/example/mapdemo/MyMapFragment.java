@@ -268,8 +268,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showEvalDialog(new Restaurant(
-						"天下一品", 0, "フレンチ"), marker);
+				//((MainActivity) getActivity()).showEvalDialog(new Restaurant(
+						//"天下一品", 0, "フレンチ"), marker);
 			}
 		});
 		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);
