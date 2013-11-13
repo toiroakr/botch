@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <android.support.v4.view.ViewPager
+            <com.example.mapdemo.MyViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -40,30 +40,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#cfc"
+            android:background="#888"
             android:orientation="horizontal"
             android:visibility="invisible" >
 
-            <Button
-                android:id="@+id/close_button"
+            <TextView
+                android:id="@+id/eat_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/eat_log" />
+                android:background="#ddd"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="@string/ate"
+                android:layout_marginRight="0.5dp"
+                android:color="#222" />
 
-            <Button
-                android:id="@+id/eat"
+            <TextView
+                android:id="@+id/detail_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/ate" />
-
-            <Button
-                android:id="@+id/detail2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/detail" />
+                android:background="#ddd"
+                android:layout_marginLeft="0.5dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="@string/detail"
+                android:color="#222" />
         </LinearLayout>
     </RelativeLayout>
 

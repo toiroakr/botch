@@ -5,7 +5,21 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="eat_log">食べログ</string>
+    <string name="eval_comment">コメント</string>
     <string name="ate">食べた！</string>
     <string name="detail">詳細</string>
+    <string name="list_btn">List</string>
+    <string name="rst_detail_top">の詳細</string>
+    <string name="rst_detail_name">レストラン名</string>
+    <string name="rst_detail_tabelog">食べログ</string>
+    <string name="rst_detail_category">カテゴリ</string>
+    <string name="rst_detail_dinner">晩の予算</string>
+    <string name="rst_detail_lunch">昼の予算</string>
+    <string name="rst_detail_situation">シチュエーション</string>
+    <string name="rst_detail_address">住所</string>
+    <string name="rst_detail_station">最寄り駅</string>
+    <string name="rst_detail_tel">電話番号</string>
+    <string name="rst_detail_businesshour">営業時間</string>
+    <string name="rst_detail_holiday">休日</string>
 
 </resources>
