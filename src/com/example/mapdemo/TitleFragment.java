@@ -111,7 +111,8 @@ public class TitleFragment extends Fragment {
 			}
 			Title title = (Title) getItem(position);
 			if (title != null) {
-				imgView = (ImageView) v.findViewById(R.id.img);
+				imgView = (ImageView)
+						v.findViewById(R.id.img);
 				imgView.setImageResource(title.getImgId());
 				if(!title.isGet()){
 					imgView.setAlpha(127);
