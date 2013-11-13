@@ -38,7 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.navdrawer.SimpleSideDrawer;
 
 public class MyMapFragment extends SupportMapFragment implements
-		OnMarkerClickListener {
+OnMarkerClickListener {
 	private GoogleMap mMap;
 	private final List<Marker> mMarkerRainbow = new ArrayList<Marker>();
 	private SimpleSideDrawer drawer;
@@ -67,8 +67,8 @@ public class MyMapFragment extends SupportMapFragment implements
 					tarM.showInfoWindow();
 					drawer.toggleDrawer();
 					CameraPosition.Builder builder = new CameraPosition.Builder()
-							.bearing(0).tilt(0).zoom(16)
-							.target(tarM.getPosition());
+					.bearing(0).tilt(0).zoom(16)
+					.target(tarM.getPosition());
 					mMap.moveCamera(CameraUpdateFactory
 							.newCameraPosition(builder.build()));
 					((MainActivity) getActivity()).viewButtons();
@@ -135,13 +135,13 @@ public class MyMapFragment extends SupportMapFragment implements
 					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if (loc == null)
 				loc = mgr
-						.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+				.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 			if (loc != null) {
 				lat = loc.getLatitude();
 				lon = loc.getLongitude();
 			}
 			CameraPosition.Builder builder = new CameraPosition.Builder()
-					.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
+			.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
 			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
 					.build()));
 		}
@@ -188,10 +188,10 @@ public class MyMapFragment extends SupportMapFragment implements
 			double posLat = lat - r * Math.sin(angle * i / numMarkersInRainbow);
 			double posLon = lon + r * Math.cos(i * angle / numMarkersInRainbow);
 			mMarkerRainbow.add(mMap.addMarker(new MarkerOptions()
-					.position(new LatLng(posLat, posLon))
-					.title("Marker " + i)
-					.icon(BitmapDescriptorFactory.defaultMarker(i * 360
-							/ numMarkersInRainbow))));
+			.position(new LatLng(posLat, posLon))
+			.title("Marker " + i)
+			.icon(BitmapDescriptorFactory.defaultMarker(i * 360
+					/ numMarkersInRainbow))));
 		}
 	}
 
@@ -268,8 +268,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//((MainActivity) getActivity()).showEvalDialog(new Restaurant(
-						//"天下一品", 0, "フレンチ"), marker);
+				//((MainActivity) getActivity()).showEvalDialog(new Restaurant(1,"天下一品", 0, "フレンチ"), marker);
+
 			}
 		});
 		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);
