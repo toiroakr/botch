@@ -21,19 +21,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.JsonObject;
+import com.navdrawer.SimpleSideDrawer;
 
 public class MainActivity extends FragmentActivity {
 	TabHost mTabHost;
 	MyViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
-	
+	private SimpleSideDrawer drawer;
+
 	///////////////////
 	///////通信用///////
 	///////////////////
@@ -43,7 +45,7 @@ public class MainActivity extends FragmentActivity {
 	String url;
 	static final Object TAG_REQUEST_QUEUE = new Object();
 	/////////////////////
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class MainActivity extends FragmentActivity {
 		////通信用/////
 		requestQueue = Volley.newRequestQueue(this);
 		/////////////
-		
+
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 		mViewPager = (MyViewPager) findViewById(R.id.pager);
@@ -105,9 +107,9 @@ public class MainActivity extends FragmentActivity {
 					// 通信成功時のコールバック関数
 					public void onResponse(JsonObject result) {
 						// success
-						Log.v("success:", result.toString());						
+						Log.v("success:", result.toString());
 						Log.v("success:", "DONE!");
-					    Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();						
+					    Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -122,11 +124,15 @@ public class MainActivity extends FragmentActivity {
 		// Queueなので、入れた順番に通信される
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
 		req.setTag(TAG_REQUEST_QUEUE);
-		requestQueue.add(req);    	
+		requestQueue.add(req);
     }
 
-	
-	public void showEvalDialog(Restaurant rst, Marker marker) {
+
+	public void showEvalDialog(Marker marker) {
+		// ここに店の情報が入ってるはず
+		// 情報が足りないならRestaurantクラスを拡張する必要あり（rst_idとか）
+		Restaurant rst = MyMapFragment.getRestaurant(marker);
+
 		// カスタムビューを設定
 		LayoutInflater inflater = (LayoutInflater) this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -169,7 +175,7 @@ public class MainActivity extends FragmentActivity {
 					toast.show();
 					return;
 				}
-				
+
 				//////////////////////
 				///////通信用//////////
 				method = Method.POST;
@@ -178,15 +184,26 @@ public class MainActivity extends FragmentActivity {
 				params.put("rst_id", "26001581");
 				params.put("user_id",  "19");
 				params.put("difficulty", Integer.toString(intRate));
-				params.put("comment", strComment);				
+				params.put("comment", strComment);
 				startRequest(method, url, params);
 				//////////////////////
 
-				
-				// Toast.makeText(context, strComment + ":" + intRate,
-				//		Toast.LENGTH_SHORT).show();
+
 				diaLog.dismiss();
 			}
 		});
+	}
+
+	public SimpleSideDrawer getDrawer() {
+		if(drawer == null)
+			return initDrawer();
+		return drawer;
+	}
+
+	public SimpleSideDrawer initDrawer() {
+		drawer = new SimpleSideDrawer(this);
+//		drawer.setLeftBehindContentView(R.layout.side_list_contents);
+		drawer.setLeftBehindContentView(R.layout.side_list);
+		return drawer;
 	}
 }

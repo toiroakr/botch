@@ -1,7 +1,9 @@
 package com.example.mapdemo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import android.app.Activity;
@@ -17,9 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -40,10 +43,9 @@ import com.navdrawer.SimpleSideDrawer;
 public class MyMapFragment extends SupportMapFragment implements
 		OnMarkerClickListener {
 	private GoogleMap mMap;
-	private final List<Marker> mMarkerRainbow = new ArrayList<Marker>();
+	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -51,37 +53,60 @@ public class MyMapFragment extends SupportMapFragment implements
 				container, savedInstanceState);
 		setUpMapIfNeeded();
 
-		if (drawer == null) {
-			drawer = new SimpleSideDrawer(getActivity());
-			// 一時的なコード
-			drawer.setBehindContentView(R.layout.side_list_contents);
-			ImageView img = (ImageView) drawer.findViewById(R.id.backImg);
-			img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			img.setImageResource(R.drawable.ic_launcher);
-			Button b = (Button) drawer.findViewById(R.id.detail);
-			b.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					int rand = new Random().nextInt(mMarkerRainbow.size() - 1);
-					Marker tarM = mMarkerRainbow.get(rand);
-					tarM.showInfoWindow();
-					drawer.toggleDrawer();
-					CameraPosition.Builder builder = new CameraPosition.Builder()
-							.bearing(0).tilt(0).zoom(16)
-							.target(tarM.getPosition());
-					mMap.moveCamera(CameraUpdateFactory
-							.newCameraPosition(builder.build()));
-					((MainActivity) getActivity()).viewButtons();
-					setBtns(tarM);
-				}
-			});
-		}
+		if (drawer == null)
+			drawer = ((MainActivity) getActivity()).getDrawer();
 		mapView.addView(addToggleButton(inflater, container));
+
+		setRestaurantList();
 
 		return mapView;
 	}
 
-	@SuppressWarnings("deprecation")
+	private void setRestaurantList() {
+		// ListViewに表示するデータを作成する
+		ArrayList<String> list = new ArrayList<String>();
+		for (int i = 0; i < 20; i++) {
+			list.add("hoge" + i);
+		}
+		List<Restaurant> rsts = getRsts();
+
+		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
+		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
+		RstListItemAdapter adapter = new RstListItemAdapter(getActivity(), rsts);
+
+		listView.setAdapter(adapter);
+		// タップした時の動作を定義する
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Restaurant tarR = (Restaurant) parent
+						.getItemAtPosition(position);
+				Marker tarM = null;
+				for (Marker m : mMarkers.keySet())
+					if (tarR.equals(mMarkers.get(m))) {
+						tarM = m;
+						break;
+					}
+				tarM.showInfoWindow();
+				drawer.toggleLeftDrawer();
+				CameraPosition.Builder builder = new CameraPosition.Builder()
+						.bearing(0).tilt(0).zoom(16).target(tarM.getPosition());
+				mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
+						.build()));
+				((MainActivity) getActivity()).viewButtons();
+				setBtns(tarM);
+			}
+		});
+	}
+
+	private List<Restaurant> getRsts() {
+		List<Restaurant> rsts = new ArrayList<Restaurant>();
+		for (Restaurant rst : mMarkers.values())
+			rsts.add(rst);
+		return rsts;
+	}
+
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
 		View layout;
 		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
@@ -91,7 +116,7 @@ public class MyMapFragment extends SupportMapFragment implements
 					new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							drawer.toggleDrawer();
+							drawer.toggleLeftDrawer();
 						}
 					});
 		}
@@ -185,13 +210,15 @@ public class MyMapFragment extends SupportMapFragment implements
 		double r = 0.001;
 		double angle = 2 * Math.PI;
 		for (int i = 0; i < numMarkersInRainbow; i++) {
+			Restaurant sampleRst = new Restaurant(1, "天下一品" + i, 0, "フレンチ");
 			double posLat = lat - r * Math.sin(angle * i / numMarkersInRainbow);
 			double posLon = lon + r * Math.cos(i * angle / numMarkersInRainbow);
-			mMarkerRainbow.add(mMap.addMarker(new MarkerOptions()
-					.position(new LatLng(posLat, posLon))
-					.title("Marker " + i)
-					.icon(BitmapDescriptorFactory.defaultMarker(i * 360
-							/ numMarkersInRainbow))));
+			mMarkers.put(
+					mMap.addMarker(new MarkerOptions()
+							.position(new LatLng(posLat, posLon))
+							.title("Marker " + i)
+							.icon(BitmapDescriptorFactory.defaultMarker(i * 360
+									/ numMarkersInRainbow))), sampleRst);
 		}
 	}
 
@@ -268,7 +295,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showEvalDialog(new Restaurant(1,"天下一品", 0, "フレンチ"), marker);
+				((MainActivity) getActivity()).showEvalDialog(marker);
 			}
 		});
 		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);
@@ -284,5 +311,9 @@ public class MyMapFragment extends SupportMapFragment implements
 		// 詳細ページへ
 		Intent intent = new Intent(getActivity(), RstDetail.class);
 		startActivity(intent);
+	}
+
+	public static Restaurant getRestaurant(Marker m) {
+		return mMarkers.get(m);
 	}
 }
