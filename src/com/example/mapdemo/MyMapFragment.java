@@ -88,7 +88,9 @@ public class MyMapFragment extends SupportMapFragment implements
 						tarM = m;
 						break;
 					}
-				if (((MainActivity) getActivity()).getCurrentTab() != 0)
+				// onMarkerClickがtrueだと
+				// Map画面じゃない
+				if(onMarkerClick(tarM))
 					return;
 				tarM.showInfoWindow();
 				drawer.toggleLeftDrawer();
@@ -96,8 +98,6 @@ public class MyMapFragment extends SupportMapFragment implements
 						.bearing(0).tilt(0).zoom(16).target(tarM.getPosition());
 				mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
 						.build()));
-				((MainActivity) getActivity()).viewButtons();
-				setBtns(tarM);
 			}
 		});
 	}
@@ -288,7 +288,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	@Override
 	public boolean onMarkerClick(final Marker marker) {
 		if (((MainActivity) getActivity()).getCurrentTab() != 0)
-			return false;
+			return true;
 		((MainActivity) getActivity()).viewButtons();
 		setBtns(marker);
 		return false;
