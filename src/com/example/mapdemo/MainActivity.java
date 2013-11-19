@@ -36,24 +36,25 @@ public class MainActivity extends FragmentActivity {
 	TabsAdapter mTabsAdapter;
 	private SimpleSideDrawer drawer;
 
-	///////////////////
-	///////通信用///////
-	///////////////////
+	// /////////////////
+	// /////通信用///////
+	// /////////////////
 	RequestQueue requestQueue;
 	HashMap<String, String> params = new HashMap<String, String>();
 	int method;
 	String url;
 	static final Object TAG_REQUEST_QUEUE = new Object();
-	/////////////////////
+
+	// ///////////////////
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_tabs_pager);
 
-		////通信用/////
+		// //通信用/////
 		requestQueue = Volley.newRequestQueue(this);
-		/////////////
+		// ///////////
 
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
@@ -97,9 +98,11 @@ public class MainActivity extends FragmentActivity {
 		super.onSaveInstanceState(outState);
 		outState.putString("tab", mTabHost.getCurrentTabTag());
 	}
-	//////////////////////////////////
-	/////////////通信用////////////////
-    private void startRequest(int method, String url, HashMap<String, String> params) {
+
+	// ////////////////////////////////
+	// ///////////通信用////////////////
+	private void startRequest(int method, String url,
+			HashMap<String, String> params) {
 		// マッピング用のRestaurantDetailを作成
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
 				JsonObject.class, params, new Listener<JsonObject>() {
@@ -109,7 +112,8 @@ public class MainActivity extends FragmentActivity {
 						// success
 						Log.v("success:", result.toString());
 						Log.v("success:", "DONE!");
-					    Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(),
+								result.toString(), Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -117,7 +121,8 @@ public class MainActivity extends FragmentActivity {
 					public void onErrorResponse(VolleyError error) {
 						// error
 						Log.e("error:", error.toString() + "：再読み込みしてください");
-					    Toast.makeText(getApplicationContext(), "onErrorResponse", Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(),
+								"onErrorResponse", Toast.LENGTH_LONG).show();
 					}
 				});
 		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
@@ -125,8 +130,7 @@ public class MainActivity extends FragmentActivity {
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
 		req.setTag(TAG_REQUEST_QUEUE);
 		requestQueue.add(req);
-    }
-
+	}
 
 	public void showEvalDialog(Marker marker) {
 		// ここに店の情報が入ってるはず
@@ -176,18 +180,17 @@ public class MainActivity extends FragmentActivity {
 					return;
 				}
 
-				//////////////////////
-				///////通信用//////////
+				// ////////////////////
+				// /////通信用//////////
 				method = Method.POST;
 				url = "/post";
 				params.clear();
 				params.put("rst_id", "26001581");
-				params.put("user_id",  "19");
+				params.put("user_id", "19");
 				params.put("difficulty", Integer.toString(intRate));
 				params.put("comment", strComment);
 				startRequest(method, url, params);
-				//////////////////////
-
+				// ////////////////////
 
 				diaLog.dismiss();
 			}
@@ -195,15 +198,20 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public SimpleSideDrawer getDrawer() {
-		if(drawer == null)
+		if (drawer == null)
 			return initDrawer();
 		return drawer;
 	}
 
 	public SimpleSideDrawer initDrawer() {
 		drawer = new SimpleSideDrawer(this);
-//		drawer.setLeftBehindContentView(R.layout.side_list_contents);
+		// drawer.setLeftBehindContentView(R.layout.side_list_contents);
 		drawer.setLeftBehindContentView(R.layout.side_list);
 		return drawer;
+	}
+
+	public int getCurrentTab() {
+		Log.d("Marker", "current : " + mTabHost.getCurrentTab());
+		return mTabHost.getCurrentTab();
 	}
 }

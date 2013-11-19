@@ -88,6 +88,8 @@ public class MyMapFragment extends SupportMapFragment implements
 						tarM = m;
 						break;
 					}
+				if (((MainActivity) getActivity()).getCurrentTab() != 0)
+					return;
 				tarM.showInfoWindow();
 				drawer.toggleLeftDrawer();
 				CameraPosition.Builder builder = new CameraPosition.Builder()
@@ -180,7 +182,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		// Setting an info window adapter allows us to change the both the
 		// contents and look of the
 		// info window.
-		mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+		 mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
 		// Set listeners for marker events. See the bottom of this class for
 		// their behavior.
@@ -285,6 +287,8 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	@Override
 	public boolean onMarkerClick(final Marker marker) {
+		if (((MainActivity) getActivity()).getCurrentTab() != 0)
+			return false;
 		((MainActivity) getActivity()).viewButtons();
 		setBtns(marker);
 		return false;
