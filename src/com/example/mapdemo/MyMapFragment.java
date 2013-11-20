@@ -25,10 +25,12 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -154,7 +156,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			});
 
 			// カメラの初期位置をセット
-			Location loc = getLocation();
+			Location loc = getMyLocation();
 			double lat = 35.;
 			double lon = 135;
 			if (loc != null) {
@@ -187,10 +189,25 @@ public class MyMapFragment extends SupportMapFragment implements
 				showDetail();
 			}
 		});
+
+		mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
+
+			@Override
+			public void onCameraChange(CameraPosition position) {
+				LatLng point = position.target;
+				String text = "latitude=" + point.latitude + ", longitude="
+						+ point.longitude;
+				Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+				CameraPosition camPos = mMap.getCameraPosition();
+				text += "\nlatitude=" + camPos.target.latitude + ", longitude="
+						+ camPos.target.longitude + "\nzoom=" + camPos.zoom;
+				Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	private void addMarkersToMap() {
-		Location loc = getLocation();
+		Location loc = getMyLocation();
 		double lat = loc.getLatitude();
 		double lon = loc.getLongitude();
 
@@ -210,7 +227,11 @@ public class MyMapFragment extends SupportMapFragment implements
 		}
 	}
 
-	private Location getLocation() {
+	private CameraPosition getLocation() {
+		return mMap.getCameraPosition();
+	}
+
+	private Location getMyLocation() {
 		LocationManager mgr = (LocationManager) getActivity().getSystemService(
 				Context.LOCATION_SERVICE); // 位置マネージャ取得
 		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
