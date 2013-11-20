@@ -84,7 +84,7 @@ public class RestaurantFragment extends Fragment {
 
 				Log.v("success:", result);
 				dataList.add(
-						new Restaurant(1,"天下一品ラーメン", 4.5, "ラーメン"));
+						new Restaurant(1,"天下一品ラーメン", 4.5, 5, "ラーメン"));
 				adapter.notifyDataSetChanged();
 
 			}
@@ -142,7 +142,7 @@ public class RestaurantFragment extends Fragment {
 				textView1.setText(restaurant.getRestaurantName());
 				textView2.setText("---" + restaurant.getCategory());
 				ratingBar.setNumStars(3);
-				ratingBar.setRating((float) restaurant.getDifficalty());
+				ratingBar.setRating((float) restaurant.getDifficulty());
 			}
 			return v;
 		}
