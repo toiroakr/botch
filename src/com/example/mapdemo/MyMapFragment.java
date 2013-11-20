@@ -116,7 +116,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		params.put("zoom", Integer.toString(zoom));
 		params.put("lat", Double.toString(lat));
 		params.put("lng", Double.toString(lng));
-		params.put("limit", "100");
+		params.put("limit", "30");
 		url = "/near_rst";
 		method = Method.POST;
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
@@ -129,6 +129,8 @@ public class MyMapFragment extends SupportMapFragment implements
 						int rst_id;
 						String restaurantName;
 						double raw_difficulty;
+						double lat;
+						double lng;
 						int difficulty;
 						String category;
 						JsonObject json_restaurant;
@@ -145,14 +147,21 @@ public class MyMapFragment extends SupportMapFragment implements
 									.get("raw_difficulty").toString());
 							difficulty = Integer.parseInt(json_restaurant.get(
 									"difficulty").toString());
+							lat = Double.parseDouble(json_restaurant
+									.get("lat").toString());
+							lng = Double.parseDouble(json_restaurant
+									.get("lng").toString());
 							restaurant = new Restaurant(rst_id, restaurantName,
-									raw_difficulty, difficulty, category);
+									raw_difficulty, difficulty, category, lat, lng);
 							restaurants.put(rst_id, restaurant);
 						}
 						Log.v("success:", restaurants.toString());
 						Log.v("success:", "DONE!");
-						Toast.makeText(getActivity(), rst.toString(),
-								Toast.LENGTH_LONG).show();
+						// fetching = false;
+						addMarkers();
+						setRestaurantList();
+						// Toast.makeText(getActivity(), rst.toString(),
+						// 		Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -189,16 +198,16 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void renewRsts() {
 		fetchNearRsts();
-		while (fetching) {
-			addMarkers();
-			setRestaurantList();
-			try {
-				Log.d("sleep", "sleep");
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+//		while (fetching) {
+//			addMarkers();
+//			setRestaurantList();
+//			try {
+//				Log.e("sleep", "sleep:" + restaurants.size() + "=>" + fetching);
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	private void setRestaurantList() {
@@ -359,6 +368,7 @@ public class MyMapFragment extends SupportMapFragment implements
 				.title(rst.getRestaurantName())
 				.icon(BitmapDescriptorFactory.defaultMarker()));
 		mMarkers.put(m, rst);
+		Log.v("latlng", rst.getLat() + ", " + rst.getLon());
 		return m;
 	}
 

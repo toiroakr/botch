@@ -42,7 +42,7 @@ public class Restaurant {
 	}
 
 	public String toString() {
-		return category + " - " + restaurantName;
+		return category + " - " + restaurantName + "(" + lon + ", " + lat + ")";
 	}
 
 	public double getLon() {
