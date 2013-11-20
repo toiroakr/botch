@@ -1,7 +1,6 @@
 package com.example.mapdemo;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -41,17 +40,20 @@ public class RstListItemAdapter extends ArrayAdapter<Restaurant> {
 
 		// 各Viewに表示する情報を設定
 		holder.title.setText(item.getRestaurantName());
-		holder.budget.setText("予算：" + item.getDifficalty());
+		holder.budget.setText("予算：" + item.getDifficulty());
 		holder.rate.setRating(position / 6);
 		return view;
 	}
 
 	public void addAll(Map<Integer, Restaurant> rsts) {
-		for (Restaurant rst : rsts.values()) {
-			if (!rstList.contains(rst)) {
-				super.add(rst);
-				rstList.add(rst);
-			}
+		for (Restaurant rst : rsts.values())
+			add(rst);
+	}
+
+	public void add(Restaurant rst) {
+		if (!rstList.contains(rst)) {
+			super.add(rst);
+			rstList.add(rst);
 		}
 	}
 }
