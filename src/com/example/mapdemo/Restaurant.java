@@ -8,18 +8,28 @@ public class Restaurant {
 	private String category;
 	private double lon;
 	private double lat;
-	
-	public Restaurant(int rst_id, String restaurantName, double raw_difficulty, int difficulty,  
-			String category) {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj.getClass() != this.getClass())
+			return false;
+		Restaurant rst = (Restaurant) obj;
+		if (rst_id == rst.getRst_id())
+			return true;
+		return false;
+	}
+
+	public Restaurant(int rst_id, String restaurantName, double raw_difficulty,
+			int difficulty, String category) {
 		this.rst_id = rst_id;
 		this.restaurantName = restaurantName;
 		this.difficulty = difficulty;
 		this.setRaw_difficulty(raw_difficulty);
 		this.category = category;
 	}
-	
-	public Restaurant(int rst_id, String restaurantName, double raw_difficulty, int difficulty,  
-			String category, double lon, double lat) {
+
+	public Restaurant(int rst_id, String restaurantName, double raw_difficulty,
+			int difficulty, String category, double lon, double lat) {
 		this.rst_id = rst_id;
 		this.restaurantName = restaurantName;
 		this.difficulty = difficulty;
