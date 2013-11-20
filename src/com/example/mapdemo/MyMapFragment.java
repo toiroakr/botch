@@ -90,7 +90,7 @@ public class MyMapFragment extends SupportMapFragment implements
 					}
 				// onMarkerClickがtrueだと
 				// Map画面じゃない
-				if(onMarkerClick(tarM))
+				if (onMarkerClick(tarM))
 					return;
 				tarM.showInfoWindow();
 				drawer.toggleLeftDrawer();
@@ -154,15 +154,9 @@ public class MyMapFragment extends SupportMapFragment implements
 			});
 
 			// カメラの初期位置をセット
+			Location loc = getLocation();
 			double lat = 35.;
 			double lon = 135;
-			LocationManager mgr = (LocationManager) getActivity()
-					.getSystemService(Context.LOCATION_SERVICE); // 位置マネージャ取得
-			Location loc = mgr
-					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if (loc == null)
-				loc = mgr
-						.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 			if (loc != null) {
 				lat = loc.getLatitude();
 				lon = loc.getLongitude();
@@ -182,7 +176,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		// Setting an info window adapter allows us to change the both the
 		// contents and look of the
 		// info window.
-		 mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+		mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
 		// Set listeners for marker events. See the bottom of this class for
 		// their behavior.
@@ -196,17 +190,9 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void addMarkersToMap() {
-		double lat = 35.;
-		double lon = 135;
-		LocationManager mgr = (LocationManager) getActivity().getSystemService(
-				Context.LOCATION_SERVICE); // 位置マネージャ取得
-		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (loc == null)
-			loc = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-		if (loc != null) {
-			lat = loc.getLatitude();
-			lon = loc.getLongitude();
-		}
+		Location loc = getLocation();
+		double lat = loc.getLatitude();
+		double lon = loc.getLongitude();
 
 		int numMarkersInRainbow = 8;
 		double r = 0.001;
@@ -222,6 +208,15 @@ public class MyMapFragment extends SupportMapFragment implements
 							.icon(BitmapDescriptorFactory.defaultMarker(i * 360
 									/ numMarkersInRainbow))), sampleRst);
 		}
+	}
+
+	private Location getLocation() {
+		LocationManager mgr = (LocationManager) getActivity().getSystemService(
+				Context.LOCATION_SERVICE); // 位置マネージャ取得
+		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (loc == null)
+			loc = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+		return loc;
 	}
 
 	public static MyMapFragment newInstance() {
