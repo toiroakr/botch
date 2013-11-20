@@ -188,8 +188,17 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void renewRsts() {
-		addMarkers();
-		setRestaurantList();
+		fetchNearRsts();
+		while (fetching) {
+			addMarkers();
+			setRestaurantList();
+			try {
+				Log.d("sleep", "sleep");
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void setRestaurantList() {
@@ -199,54 +208,42 @@ public class MyMapFragment extends SupportMapFragment implements
 			list.add("hoge" + i);
 		}
 
-		fetchNearRsts();
-
-		while (fetching) {
-			ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
-			// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
-			RstListItemAdapter adapter = (RstListItemAdapter) listView
-					.getAdapter();
-			if (adapter == null) {
-				Toast.makeText(getActivity(), "adapter = null",
-						Toast.LENGTH_LONG).show();
-				adapter = new RstListItemAdapter(getActivity());
-			}
-			adapter.addAll(restaurants);
-
-			listView.setAdapter(adapter);
-			// タップした時の動作を定義する
-			listView.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					Restaurant tarR = (Restaurant) parent
-							.getItemAtPosition(position);
-					Marker tarM = null;
-					for (Marker m : mMarkers.keySet())
-						if (tarR.equals(mMarkers.get(m))) {
-							tarM = m;
-							break;
-						}
-					// onMarkerClickがtrueだと
-					// Map画面じゃない
-					if (onMarkerClick(tarM))
-						return;
-					tarM.showInfoWindow();
-					drawer.toggleLeftDrawer();
-					CameraPosition.Builder builder = new CameraPosition.Builder()
-							.bearing(0).tilt(0).zoom(16)
-							.target(tarM.getPosition());
-					mMap.moveCamera(CameraUpdateFactory
-							.newCameraPosition(builder.build()));
-				}
-			});
-			try {
-				Log.d("sleep", "sleep");
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
+		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
+		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
+		if (adapter == null) {
+			Toast.makeText(getActivity(), "adapter = null", Toast.LENGTH_LONG)
+					.show();
+			adapter = new RstListItemAdapter(getActivity());
 		}
+		adapter.addAll(restaurants);
+
+		listView.setAdapter(adapter);
+		// タップした時の動作を定義する
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Restaurant tarR = (Restaurant) parent
+						.getItemAtPosition(position);
+				Marker tarM = null;
+				for (Marker m : mMarkers.keySet())
+					if (tarR.equals(mMarkers.get(m))) {
+						tarM = m;
+						break;
+					}
+				// onMarkerClickがtrueだと
+				// Map画面じゃない
+				if (onMarkerClick(tarM))
+					return;
+				tarM.showInfoWindow();
+				drawer.toggleLeftDrawer();
+				CameraPosition.Builder builder = new CameraPosition.Builder()
+						.bearing(0).tilt(0).zoom(16).target(tarM.getPosition());
+				mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
+						.build()));
+			}
+		});
 	}
 
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
@@ -351,29 +348,16 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void addMarkers() {
-		Location loc = getMyLocation();
-		double lat = loc.getLatitude();
-		double lon = loc.getLongitude();
-
-		Random rand = new Random();
-		int numMarkersInRainbow = rand.nextInt(10) + 1;
-		double r = 0.001;
-		double angle = 2 * Math.PI;
-		for (int i = 0; i < numMarkersInRainbow; i++) {
-			Restaurant sampleRst = new Restaurant(mMarkers.size(), "天下一品"
-					+ mMarkers.size(), rand.nextInt(6), rand.nextInt(6),
-					"フレンチ",
-					lon + r * Math.cos(i * angle / numMarkersInRainbow), lat
-							- r * Math.sin(angle * i / numMarkersInRainbow));
-			addMarker(sampleRst, i, numMarkersInRainbow);
+		for (Restaurant rst : restaurants.values()) {
+			addMarker(rst);
 		}
 	}
 
-	private Marker addMarker(Restaurant rst, int i, int n) {
+	private Marker addMarker(Restaurant rst) {
 		Marker m = mMap.addMarker(new MarkerOptions()
 				.position(new LatLng(rst.getLat(), rst.getLon()))
 				.title(rst.getRestaurantName())
-				.icon(BitmapDescriptorFactory.defaultMarker(i * 360 / n)));
+				.icon(BitmapDescriptorFactory.defaultMarker()));
 		mMarkers.put(m, rst);
 		return m;
 	}
