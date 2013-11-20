@@ -39,7 +39,7 @@ public class RstListItemAdapter extends ArrayAdapter<Restaurant> {
 
 		// 各Viewに表示する情報を設定
 		holder.title.setText(item.getRestaurantName());
-		holder.budget.setText("予算：" + item.getDifficalty());
+		holder.budget.setText("予算：" + item.getDifficulty());
 		 holder.rate.setRating(position / 6);
 		return view;
 	}
