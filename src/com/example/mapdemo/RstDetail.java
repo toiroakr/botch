@@ -1,6 +1,9 @@
 package com.example.mapdemo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -9,6 +12,8 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.example.mapdemo.R.id;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -20,6 +25,10 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +40,6 @@ public class RstDetail extends Activity {
 	private String url;	
 	// getterとsetterは一番下
 	private static final Object TAG_REQUEST_QUEUE = new Object();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +53,14 @@ public class RstDetail extends Activity {
 		this.setUrl("/read_rst");
 		this.setMethod(Method.POST);
 		this.setParams();
-		this.startRequest();
+		this.readRst();
+		this.readComments();
 		//this.requestQueue.start();
     }
     
-    private void startRequest() {
+    private void readRst() {
 		// マッピング用のRestaurantDetailを作成
-		GsonRequest<RestaurantDetail> req = new GsonRequest<RestaurantDetail>(method, url,
+		GsonRequest<RestaurantDetail> req = new GsonRequest<RestaurantDetail>(method, "/read_rst",
 				RestaurantDetail.class, params, new Listener<RestaurantDetail>() {
 					@Override
 					// 通信成功時のコールバック関数
@@ -78,7 +87,66 @@ public class RstDetail extends Activity {
 		req.setTag(TAG_REQUEST_QUEUE);
 		requestQueue.add(req);    	
     }
+    private void readComments() {
+		// マッピング用のRestaurantDetailを作成
+		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, "/read_comments",
+				JsonObject.class, params, new Listener<JsonObject>() {
+					@Override
+					// 通信成功時のコールバック関数
+					public void onResponse(JsonObject comments) {
+						// success						
+						JsonArray results = (JsonArray) comments.get("result");
+						String comment;
+						float difficulty;
+						String user_name;
+						JsonObject json_comments;
+						List<String> names = new ArrayList<String>();
+						// ScrollView comments = (ScrollView) findViewById(id.comments);  
+						
+						LinearLayout each_comment = (LinearLayout) findViewById(id.comment_component);
 
+						for (int i = 0, length = results.size(); i < length; i++) {
+							json_comments = results.get(i).getAsJsonObject();							
+							comment = json_comments.get("comment").toString().replaceAll("\"", "");;							
+							user_name = json_comments.get("user_name").toString().replaceAll("\"", "");
+							difficulty = (float) Double.parseDouble(json_comments.get("difficulty").toString());
+							if (names.indexOf(user_name) >= 0) {
+								continue;
+							}
+							Log.v("success !!!:", json_comments.toString());														
+							// names.add(user_name);			            
+							View view = getLayoutInflater().inflate(R.layout.user_comment, null);		
+							each_comment.addView(view);	
+							
+							TextView name = (TextView) view.findViewById(R.id.user_name);
+							RatingBar dif = (RatingBar) view.findViewById(R.id.user_difficulty);
+							TextView com = (TextView) view.findViewById(R.id.user_comment);
+							
+							name.setText(user_name);
+							dif.setRating(difficulty);
+							com.setText(comment);
+
+							// restaurants.put(rst_id, restaurant);
+						}
+						// Log.v("success:", comments.toString());						
+						Log.v("success:", "DONE!");
+					    // Toast.makeText(getApplicationContext(), comments.toString(), Toast.LENGTH_LONG).show();						
+					}
+				}, new ErrorListener() {
+					@Override
+					// 通信失敗時のコールバック関数
+					public void onErrorResponse(VolleyError error) {
+						// error
+						Log.v("error:", error.toString() + "：再読み込みしてください");
+					    Toast.makeText(getApplicationContext(), "onErrorResponse", Toast.LENGTH_LONG).show();
+					}
+				});
+		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
+		// Queueなので、入れた順番に通信される
+		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
+		req.setTag(TAG_REQUEST_QUEUE);
+		requestQueue.add(req);    	
+    }
     @Override
     public void onStart(){
      super.onStart();
@@ -100,14 +168,15 @@ public class RstDetail extends Activity {
 		name.setText(rst.getRestaurantName());
 		
 		// 食べログのurlをWebView内で開くためのもの
-		TextView url = (TextView) findViewById(id.rst_detail_data_tabelog);
+		// TextView url = (TextView) findViewById(id.rst_detail_data_tabelog);
+		Button url = (Button) findViewById(id.rst_detail_data_tabelog);
 
 		// urlをclickableにする
 		MovementMethod mMethod = LinkMovementMethod.getInstance();
 		url.setMovementMethod(mMethod);
 
 		// tabelogmobileurlをhtmlを使ってリンクテキストに埋め込む
-		CharSequence tabelogLink = Html.fromHtml("<a href=\"" + rst.getTabelogMobileUrl() + "\">食べログ</a>");
+		CharSequence tabelogLink = Html.fromHtml("<a href=\"" + rst.getTabelogMobileUrl() + "\">食べログを見る</a>");
 		url.setText(tabelogLink);
 		
 		// タップされたときの挙動を変更。デフォルトだとブラウザ起動

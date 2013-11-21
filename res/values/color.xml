@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="olive">#808000</color>
+    <color name="chocolate">#d2691e</color>
+    <color name="gray">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="brick">#B22222</color>
+    <color name="darkred">#8B4513</color>
+    <color name="smokered">#DDB9B9</color>
+</resources>
