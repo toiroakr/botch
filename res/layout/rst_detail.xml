@@ -19,261 +19,289 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/rst_detail_name"
-        android:stretchColumns="1"
-        android:shrinkColumns="1"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp" >
-
-        <TableRow
-            android:id="@+id/rst_detail_tabelog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#000" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_tabelog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_tabelog" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_tabelog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="#fff"
-                android:scrollHorizontally="true"
-                android:singleLine="true" 
-                android:autoLink="web" />
-
-        </TableRow>
+        android:background="@color/darkred"
+        android:padding="1dp"
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
 
         <TableRow
             android:id="@+id/rst_detail_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_category" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_category"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" 
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                />
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_dinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_dinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_dinner" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_dinner"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_dinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" 
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                />
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_lunch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_lunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_lunch" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_lunch"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_lunch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" 
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                />
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_situation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_situation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_situation" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_situation"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_situation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
-                android:singleLine="true" 
-                />
+                android:singleLine="true"
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_address" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_address"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" 
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_station"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_station" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_station"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_station"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" 
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                />
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_tel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_tel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_tel" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_tel"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_tel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff" 
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                />
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_businesshour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_businesshour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_businesshour" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_businesshour"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_businesshour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
-                android:singleLine="true" 
-                />
+                android:singleLine="true"
+                android:textSize="15sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/rst_detail_holiday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#000" >
+            android:background="@color/darkred" >
 
             <TextView
                 android:id="@+id/rst_detail_title_holiday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
-                android:text="@string/rst_detail_holiday" />
+                android:background="@color/white"
+                android:text="@string/rst_detail_holiday"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/rst_detail_data_holiday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="#fff"
+                android:background="@color/white"
+                android:paddingLeft="2dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                 />
+                android:textSize="15sp" />
         </TableRow>
     </TableLayout>
+
+    <Button
+        android:id="@+id/rst_detail_data_tabelog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rst_detail"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="1dp"
+        android:autoLink="web"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textSize="15sp" />
+
+    <ScrollView
+        android:id="@+id/comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rst_detail"
+        android:layout_alignRight="@+id/rst_detail"
+        android:layout_below="@+id/rst_detail_data_tabelog"
+        android:background="@color/darkred"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/comment_component"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
