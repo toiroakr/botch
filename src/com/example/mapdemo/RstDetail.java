@@ -103,7 +103,7 @@ public class RstDetail extends Activity {
 						List<String> names = new ArrayList<String>();
 						// ScrollView comments = (ScrollView) findViewById(id.comments);  
 						
-						LinearLayout each_comment = (LinearLayout) findViewById(id.comment_component);
+						LinearLayout comment_component = (LinearLayout) findViewById(id.comment_component);
 
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_comments = results.get(i).getAsJsonObject();							
@@ -116,7 +116,7 @@ public class RstDetail extends Activity {
 							Log.v("success !!!:", json_comments.toString());														
 							// names.add(user_name);			            
 							View view = getLayoutInflater().inflate(R.layout.user_comment, null);		
-							each_comment.addView(view);	
+							comment_component.addView(view);	
 							
 							TextView name = (TextView) view.findViewById(R.id.user_name);
 							RatingBar dif = (RatingBar) view.findViewById(R.id.user_difficulty);
@@ -220,6 +220,9 @@ public class RstDetail extends Activity {
 		
 		TextView holiday = (TextView) findViewById(id.rst_detail_data_holiday);
 		holiday.setText(rst.getHoliday());		
+		
+		RatingBar difficulty = (RatingBar) findViewById(id.detail_difficulty);
+		difficulty.setRating((float) rst.getDifficulty());
 	}
 	// setParamsに注意
 	public String getRst_id() {
