@@ -99,12 +99,12 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private Restaurant fetchNearRsts() {
 		fetching = true;
-		Location loc = this.getLocation();
+		LatLng loc = this.getLocation();
 		// CameraPosition loc = this.getLocation();
 		// lat = loc.target.lat;
 		// zoom = loc.zoom;
-		double lat = loc.getLatitude();
-		double lng = loc.getLongitude();
+		double lat = loc.latitude;
+		double lng = loc.longitude;
 		int zoom = 1;
 		this.startRequest(lat, lng, zoom);
 		fetching = false;
@@ -135,6 +135,7 @@ public class MyMapFragment extends SupportMapFragment implements
 						String category;
 						JsonObject json_restaurant;
 						Restaurant restaurant;
+						restaurants.clear();
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_restaurant = results.get(i).getAsJsonObject();
 							rst_id = Integer.parseInt(json_restaurant.get(
@@ -147,12 +148,13 @@ public class MyMapFragment extends SupportMapFragment implements
 									.get("raw_difficulty").toString());
 							difficulty = Integer.parseInt(json_restaurant.get(
 									"difficulty").toString());
-							lat = Double.parseDouble(json_restaurant
-									.get("lat").toString());
-							lng = Double.parseDouble(json_restaurant
-									.get("lng").toString());
+							lat = Double.parseDouble(json_restaurant.get("lat")
+									.toString());
+							lng = Double.parseDouble(json_restaurant.get("lng")
+									.toString());
 							restaurant = new Restaurant(rst_id, restaurantName,
-									raw_difficulty, difficulty, category, lat, lng);
+									raw_difficulty, difficulty, category, lat,
+									lng);
 							restaurants.put(rst_id, restaurant);
 						}
 						Log.v("success:", restaurants.toString());
@@ -161,7 +163,7 @@ public class MyMapFragment extends SupportMapFragment implements
 						addMarkers();
 						setRestaurantList();
 						// Toast.makeText(getActivity(), rst.toString(),
-						// 		Toast.LENGTH_LONG).show();
+						// Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -198,16 +200,16 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void renewRsts() {
 		fetchNearRsts();
-//		while (fetching) {
-//			addMarkers();
-//			setRestaurantList();
-//			try {
-//				Log.e("sleep", "sleep:" + restaurants.size() + "=>" + fetching);
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		// while (fetching) {
+		// addMarkers();
+		// setRestaurantList();
+		// try {
+		// Log.e("sleep", "sleep:" + restaurants.size() + "=>" + fetching);
+		// Thread.sleep(500);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// }
 	}
 
 	private void setRestaurantList() {
@@ -372,13 +374,9 @@ public class MyMapFragment extends SupportMapFragment implements
 		return m;
 	}
 
-	private Location getLocation() {
-		LocationManager mgr = (LocationManager) getActivity().getSystemService(
-				Context.LOCATION_SERVICE); // 位置マネージャ取得
-		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (loc == null)
-			loc = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-		return loc;
+	private LatLng getLocation() {
+		CameraPosition camPos = mMap.getCameraPosition();
+		return camPos.target;
 	}
 
 	public static MyMapFragment newInstance() {
