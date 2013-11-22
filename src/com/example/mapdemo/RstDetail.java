@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -214,6 +215,7 @@ public class RstDetail extends Activity {
 		
 		TextView tel = (TextView) findViewById(id.rst_detail_data_tel);
 		tel.setText(rst.getTel());
+		Linkify.addLinks(tel, Linkify.PHONE_NUMBERS);
 		
 		TextView bh = (TextView) findViewById(id.rst_detail_data_businesshour);
 		bh.setText(rst.getBusinesshours());
