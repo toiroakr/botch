@@ -1,6 +1,7 @@
 package com.example.mapdemo;
 
 public class Title{
+	int id;
 	String titleName;
 	String condition;
 	String rank;
@@ -8,7 +9,8 @@ public class Title{
 	boolean isGet;
 
 
-	public Title(String titleName, String rank,String condition){
+	public Title(int id,String titleName, String rank,String condition){
+		this.id = id;
 		this.titleName = titleName;
 		this.rank = rank;
 		this.condition = condition;

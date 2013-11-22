@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBAdapter {
 
@@ -26,7 +27,11 @@ public class DBAdapter {
 
 	public DBAdapter(Context context){
 		this.context = context;
+		Log.v("tag", "context");
 		dbHelper = new DatabaseHelper(this.context);
+		Log.v("tag", "dbhelper");
+		saveTitle("a", "b", "c");
+		Log.v("tag", "savetitle");
 	}
 
 	//
@@ -41,6 +46,7 @@ public class DBAdapter {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			Log.v("a", "create!!!");
 			db.execSQL(
 					"CREATE TABLE " + TABLE_NAME + " ("
 							+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -85,19 +91,33 @@ public class DBAdapter {
 		return db.delete(TABLE_NAME, null, null) > 0;
 	}
 
-	public boolean deleteNote(int id){
+	public boolean deleteTitle(int id){
 		return db.delete(TABLE_NAME, COL_ID + "=" + id, null) > 0;
 	}
 
-	public Cursor getAllNotes(){
+	public Cursor getAllTitles(){
 		return db.query(TABLE_NAME, null, null, null, null, null, null);
 	}
 
-	public void saveNote(String note){
+	public void saveTitle(String title,String rank,String condition){
 		Date dateNow = new Date ();
 		ContentValues values = new ContentValues();
-		values.put(COL_TITLE, note);
-		values.put(COL_LASTUPDATE, dateNow.toLocaleString());
+		values.put(COL_TITLE, title);
+		values.put(COL_RANK, rank);
+		values.put(COL_CONDITION, condition);
+		values.put(COL_LASTUPDATE, dateNow.toString());
+		Log.v("tag", "tostringisok");
+		db.insert(TABLE_NAME, null, values);
+
+		Log.v("tag", "in");
+	}
+	public void saveTitle(Title title){
+		Date dateNow = new Date ();
+		ContentValues values = new ContentValues();
+		values.put(COL_TITLE, title.getTitleName());
+		values.put(COL_RANK, title.getRank());
+		values.put(COL_CONDITION, title.getCondition());
+		values.put(COL_LASTUPDATE, dateNow.toString());
 		db.insertOrThrow(TABLE_NAME, null, values);
 	}
 }

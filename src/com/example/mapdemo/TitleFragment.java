@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 public class TitleFragment extends Fragment {
 
 	GridView gridView;
+	static DBAdapter dbAdapter;
 	static List<Title> dataList = new ArrayList<Title>();
 	static TitleAdapter adapter;
 	String TAG = "tag";
@@ -32,6 +34,11 @@ public class TitleFragment extends Fragment {
 		View a = inflater.inflate(R.layout.title_view, container, false);
 		findViews(a);
 		setAdapters();
+		dbAdapter = new DBAdapter(getActivity());
+		Log.v("tag", "dbadapter");
+		loadTitles();
+		Log.v("tag", "loadtitle");
+
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Title title = adapter.getItem(position);
@@ -48,7 +55,6 @@ public class TitleFragment extends Fragment {
 			}
 
 		});
-		Log.v("create:", "create");
 		return a;
 	}
 
@@ -70,10 +76,36 @@ public class TitleFragment extends Fragment {
 
 	protected void addItem() {
 		dataList.add(
-				new Title("孤高のぼっち","プラチナ","ほげほげする"));
+				new Title(1,"孤高のぼっち","プラチナ","ほげほげする"));
 
 		dataList.add(
-				new Title("至高のぼっち","プラチナ","ふがふがする"));
+				new Title(2,"至高のぼっち","プラチナ","ふがふがする"));
+		adapter.notifyDataSetChanged();
+	}
+
+	protected void loadTitles(){
+		dataList.clear();
+
+		// Read
+		dbAdapter.open();
+		Cursor c = dbAdapter.getAllTitles();
+
+		getActivity().startManagingCursor(c);
+
+		if(c.moveToFirst()){
+			do {
+				Title title = new Title(
+						c.getInt(c.getColumnIndex(DBAdapter.COL_ID)),
+						c.getString(c.getColumnIndex(DBAdapter.COL_TITLE)),
+						c.getString(c.getColumnIndex(DBAdapter.COL_RANK)),
+						c.getString(c.getColumnIndex(DBAdapter.COL_CONDITION))
+						);
+				dataList.add(title);
+			} while(c.moveToNext());
+		}
+
+		getActivity().stopManagingCursor(c);
+		dbAdapter.close();
 		adapter.notifyDataSetChanged();
 	}
 
@@ -88,6 +120,7 @@ public class TitleFragment extends Fragment {
 		public Title getItem(int position) {
 			return dataList.get(position);
 		}
+
 
 		@Override
 		public long getItemId(int position) {
