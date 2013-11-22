@@ -336,7 +336,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			@Override
 			public void onInfoWindowClick(Marker arg0) {
-				showDetail();
+				Restaurant rst = MyMapFragment.getRestaurant(arg0);
+				showDetail(Integer.toString(rst.getRst_id()));
 			}
 		});
 
@@ -473,14 +474,16 @@ public class MyMapFragment extends SupportMapFragment implements
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDetail();
+				Restaurant rst = MyMapFragment.getRestaurant(marker);
+				showDetail(Integer.toString(rst.getRst_id()));
 			}
 		});
 	}
 
-	private void showDetail() {
+	private void showDetail(String rst_id) {
 		// 詳細ページへ
 		Intent intent = new Intent(getActivity(), RstDetail.class);
+		intent.putExtra("rst_id", rst_id);
 		startActivity(intent);
 	}
 
