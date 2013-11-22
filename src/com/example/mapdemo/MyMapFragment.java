@@ -174,8 +174,9 @@ public class MyMapFragment extends SupportMapFragment implements
 					public void onErrorResponse(VolleyError error) {
 						// error
 						Log.v("error:", error.toString() + "：再読み込みしてください");
-						Toast.makeText(getActivity(), "onErrorResponse",
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), "Error: この辺りにお店がありません",
+								Toast.LENGTH_SHORT).show();
+						requestQueue.cancelAll(TAG_REQUEST_QUEUE);
 					}
 				});
 		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
@@ -227,8 +228,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
 		if (adapter == null) {
-			Toast.makeText(getActivity(), "adapter = null", Toast.LENGTH_LONG)
-					.show();
+//			Toast.makeText(getActivity(), "adapter = null", Toast.LENGTH_LONG)
+//					.show();
 			adapter = new RstListItemAdapter(getActivity());
 		}
 		adapter.addAll(restaurants);
@@ -528,7 +529,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		        .show();
 		} else {
 			String user_name = preference.ReadKeyValue("user_name");
-			Toast.makeText(getActivity(), "Hello, " + user_name, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Hello, " + user_name, Toast.LENGTH_SHORT).show();
 		}
 		user_id = _user_id;
 	}
@@ -559,7 +560,7 @@ public class MyMapFragment extends SupportMapFragment implements
 						// error
 						Log.v("error:", error.toString() + "：通信に失敗しました");
 						Toast.makeText(getActivity(), "通信に失敗しました",
-								Toast.LENGTH_LONG).show();
+								Toast.LENGTH_SHORT).show();
 					}
 				});
 		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
