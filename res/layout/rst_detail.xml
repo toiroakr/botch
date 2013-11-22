@@ -14,304 +14,331 @@
         android:text="@string/rst_detail_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TableLayout
-        android:id="@+id/rst_detail"
+    <RatingBar
+        android:id="@+id/detail_difficulty"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/rst_detail_name"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/darkred"
-        android:padding="1dp"
-        android:shrinkColumns="1"
-        android:stretchColumns="1" >
-
-        <TableRow
-            android:id="@+id/rst_detail_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_category"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_dinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_dinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_dinner"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_dinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_lunch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_lunch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_lunch"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_lunch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_situation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_situation"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_situation"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_situation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_address"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_station"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_station"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_station"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_station"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_tel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_tel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_tel"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_tel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_businesshour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_businesshour"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_businesshour"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_businesshour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rst_detail_holiday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/darkred" >
-
-            <TextView
-                android:id="@+id/rst_detail_title_holiday"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:text="@string/rst_detail_holiday"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/rst_detail_data_holiday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/white"
-                android:paddingLeft="2dp"
-                android:scrollHorizontally="true"
-                android:singleLine="false"
-                android:textSize="15sp" />
-        </TableRow>
-    </TableLayout>
-
-    <Button
-        android:id="@+id/rst_detail_data_tabelog"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rst_detail"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="1dp"
-        android:autoLink="web"
-        android:scrollHorizontally="true"
-        android:singleLine="false"
-        android:textSize="15sp" />
+        android:layout_centerHorizontal="true" 
+        android:paddingBottom="5dp"/>
 
     <ScrollView
         android:id="@+id/comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/rst_detail"
-        android:layout_alignRight="@+id/rst_detail"
-        android:layout_below="@+id/rst_detail_data_tabelog"
-        android:background="@color/darkred"
+        android:layout_below="@+id/detail_difficulty"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/comment_component"
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:background="@color/smokered" >
 
+            <TableLayout
+                android:id="@+id/rst_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/darkred"
+                android:padding="1dp"
+                android:shrinkColumns="1"
+                android:stretchColumns="1" >
 
+                <TableRow
+                    android:id="@+id/rst_detail_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/rst_detail_title_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_category"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_dinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_dinner"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_dinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_lunch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_lunch"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_lunch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_situation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_situation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_situation"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_situation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_address"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_station"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_station"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_station"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_station"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_tel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_tel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_tel"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_tel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_businesshour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_businesshour"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_businesshour"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_businesshour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/rst_detail_holiday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkred" >
+
+                    <TextView
+                        android:id="@+id/rst_detail_title_holiday"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/rst_detail_holiday"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rst_detail_data_holiday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white"
+                        android:paddingLeft="2dp"
+                        android:scrollHorizontally="true"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </TableRow>
+            </TableLayout>
+
+            <Button
+                android:id="@+id/rst_detail_data_tabelog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rst_detail"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="1dp"
+                android:autoLink="web"
+                android:scrollHorizontally="true"
+                android:singleLine="false"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/comment_component"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/rst_detail_data_tabelog" >
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
 </RelativeLayout>
