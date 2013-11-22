@@ -166,6 +166,8 @@ public class MainActivity extends FragmentActivity {
 		// 表示
 		final AlertDialog diaLog = builder.show();
 		Button buttonOK = diaLog.getButton(DialogInterface.BUTTON_POSITIVE);
+		final UserSettings preference = new UserSettings(this, "botch_user_setting");
+		final String user_id = preference.ReadKeyValue("user_id");
 		buttonOK.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -186,11 +188,12 @@ public class MainActivity extends FragmentActivity {
 
 				// ////////////////////
 				// /////通信用//////////
+				
 				method = Method.POST;
 				url = "/post";
 				params.clear();
 				params.put("rst_id", String.valueOf(rst.getRst_id()));
-				params.put("user_id", "19");
+				params.put("user_id", user_id);
 				params.put("difficulty", Integer.toString(intRate));
 				params.put("comment", strComment);
 				startRequest(method, url, params);

@@ -1,7 +1,6 @@
 package com.example.mapdemo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,10 +45,11 @@ public class RstDetail extends Activity {
         setContentView(R.layout.rst_detail);
         
         // Intentでrst_idを受け取る        
+        this.rst_id = getIntent().getExtras().getString("rst_id");
 		requestQueue = Volley.newRequestQueue(this);
 		// methodとurlとparamsを設定する		
 		// this.params.put("rst_id", this.getRst_id());  // sample用
-		this.setRst_id("26001581");
+		this.setRst_id(rst_id);
 		this.setUrl("/read_rst");
 		this.setMethod(Method.POST);
 		this.setParams();
@@ -71,7 +70,7 @@ public class RstDetail extends Activity {
 						// TextViewへの埋め込みはこの関数で行う
 						setRestaurantDetailToTextView(rst);
 						Log.v("success:", "DONE!");
-					    Toast.makeText(getApplicationContext(), rst.toString(), Toast.LENGTH_LONG).show();						
+					    // Toast.makeText(getApplicationContext(), rst.toString(), Toast.LENGTH_LONG).show();						
 					}
 				}, new ErrorListener() {
 					@Override
