@@ -444,8 +444,8 @@ public class MyMapFragment extends SupportMapFragment implements
 
 		private void render(Marker marker, View view) {
 			Restaurant rst = getRestaurant(marker);
-			TextView titleUi = ((TextView) view.findViewById(R.id.title));
-			titleUi.setText(rst.getRestaurantName());
+			TextView title = ((TextView) view.findViewById(R.id.title));
+			title.setText(rst.getRestaurantName());
 			RatingBar rate = ((RatingBar) view.findViewById(R.id.rate));
 			rate.setRating((float) rst.getDifficulty());
 		}
