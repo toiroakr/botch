@@ -18,7 +18,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="@string/rst_detail_name"
         android:textSize="22sp"
         android:textStyle="bold" />
 
@@ -35,12 +35,6 @@
         android:id="@+id/budget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="予算:5000円" />
-
-    <TextView
-        android:id="@+id/url"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="URL:http://ejje.weblio.jp/content/" />
+        android:text="@string/budget" />
 
 </LinearLayout>

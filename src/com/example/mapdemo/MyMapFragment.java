@@ -443,10 +443,11 @@ public class MyMapFragment extends SupportMapFragment implements
 		}
 
 		private void render(Marker marker, View view) {
-			TextView titleUi = ((TextView) view.findViewById(R.id.url));
-			titleUi.setText("" + marker.getPosition().longitude);
+			Restaurant rst = getRestaurant(marker);
+			TextView titleUi = ((TextView) view.findViewById(R.id.title));
+			titleUi.setText(rst.getRestaurantName());
 			RatingBar rate = ((RatingBar) view.findViewById(R.id.rate));
-			rate.setRating(new Random().nextInt(5) + 1);
+			rate.setRating((float) rst.getDifficulty());
 		}
 	}
 

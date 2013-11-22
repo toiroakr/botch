@@ -75,6 +75,10 @@ public class MainActivity extends FragmentActivity {
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
+
+//		RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+//		container.removeView(findViewById(R.id.splash));
+
 	}
 
 	public View getIndicator(String str) {
@@ -135,7 +139,7 @@ public class MainActivity extends FragmentActivity {
 	public void showEvalDialog(Marker marker) {
 		// ここに店の情報が入ってるはず
 		// 情報が足りないならRestaurantクラスを拡張する必要あり（rst_idとか）
-		Restaurant rst = MyMapFragment.getRestaurant(marker);
+		final Restaurant rst = MyMapFragment.getRestaurant(marker);
 
 		// カスタムビューを設定
 		LayoutInflater inflater = (LayoutInflater) this
@@ -185,7 +189,7 @@ public class MainActivity extends FragmentActivity {
 				method = Method.POST;
 				url = "/post";
 				params.clear();
-				params.put("rst_id", "26001581");
+				params.put("rst_id", String.valueOf(rst.getRst_id()));
 				params.put("user_id", "19");
 				params.put("difficulty", Integer.toString(intRate));
 				params.put("comment", strComment);
