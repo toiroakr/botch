@@ -58,7 +58,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
-
+	
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
 	private HashMap<String, String> params = new HashMap<String, String>();
@@ -69,7 +69,7 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
-		return requestQueue;
+		return requestQueue;		
 	}
 
 	public void setRequestQueue(RequestQueue requestQueue) {
@@ -567,5 +567,14 @@ public class MyMapFragment extends SupportMapFragment implements
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
 		req.setTag(TAG_REQUEST_QUEUE);
 		requestQueue.add(req);
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onDestroy();
+		mMap.clear();
+		mMarkers.clear();
+		restaurants.clear();
 	}
 }
