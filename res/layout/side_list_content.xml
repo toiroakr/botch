@@ -5,24 +5,12 @@
     android:layout_height="wrap_content"
     android:background="#eee" >
 
-    <TextView
-        android:id="@+id/side_budget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/side_title"
-        android:paddingBottom="3dp"
-        android:text="@string/budget"
-        android:textColor="#111" />
-
     <RatingBar
         android:id="@+id/side_rate"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/side_title"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/side_title"
+        android:layout_below="@+id/side_title"
         android:isIndicator="true"
         android:numStars="5"
         android:rating="2" />

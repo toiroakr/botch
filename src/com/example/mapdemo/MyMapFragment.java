@@ -3,7 +3,6 @@ package com.example.mapdemo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
@@ -62,7 +61,6 @@ public class MyMapFragment extends SupportMapFragment implements
 	private int method;
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
-	private boolean fetching = false;
 
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
@@ -98,7 +96,6 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private Restaurant fetchNearRsts() {
-		fetching = true;
 		Location loc = this.getLocation();
 		// CameraPosition loc = this.getLocation();
 		// lat = loc.target.lat;
@@ -107,7 +104,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		double lng = loc.getLongitude();
 		int zoom = 1;
 		this.startRequest(lat, lng, zoom);
-		fetching = false;
 		return null;
 	}
 
@@ -140,7 +136,7 @@ public class MyMapFragment extends SupportMapFragment implements
 							rst_id = Integer.parseInt(json_restaurant.get(
 									"rst_id").toString());
 							restaurantName = json_restaurant.get(
-									"RestaurantName").toString();
+									"RestaurantName").toString().replace("\"", "");
 							category = json_restaurant.get("Category")
 									.toString();
 							raw_difficulty = Double.parseDouble(json_restaurant
@@ -157,11 +153,8 @@ public class MyMapFragment extends SupportMapFragment implements
 						}
 						Log.v("success:", restaurants.toString());
 						Log.v("success:", "DONE!");
-						// fetching = false;
 						addMarkers();
 						setRestaurantList();
-						// Toast.makeText(getActivity(), rst.toString(),
-						// 		Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -198,16 +191,6 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void renewRsts() {
 		fetchNearRsts();
-//		while (fetching) {
-//			addMarkers();
-//			setRestaurantList();
-//			try {
-//				Log.e("sleep", "sleep:" + restaurants.size() + "=>" + fetching);
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
 
 	private void setRestaurantList() {
@@ -220,11 +203,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
 		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
-		if (adapter == null) {
-			Toast.makeText(getActivity(), "adapter = null", Toast.LENGTH_LONG)
-					.show();
+		if (adapter == null)
 			adapter = new RstListItemAdapter(getActivity());
-		}
 		adapter.addAll(restaurants);
 
 		listView.setAdapter(adapter);
@@ -264,7 +244,7 @@ public class MyMapFragment extends SupportMapFragment implements
 					new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							drawer.toggleLeftDrawer();
+							drawer.openLeftSide();
 						}
 					});
 		}
