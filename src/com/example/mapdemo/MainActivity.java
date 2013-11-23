@@ -66,16 +66,16 @@ public class MainActivity extends FragmentActivity {
 		// タブの追加
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("MAP", R.drawable.eat)),
+						getIndicator("MAP", R.drawable.map)),
 				MyMapFragment.class, null, true);
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("Resta", R.drawable.like_w)),
+						getIndicator("Resta", R.drawable.time)),
 				TitleFragment.class, null);
-		mTabsAdapter.addTab(
-				mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("RandP", R.drawable.eat)),
-				RequestAndParser.class, null);
+		// mTabsAdapter.addTab(
+		// mTabHost.newTabSpec("test").setIndicator(
+		// getIndicator("RandP", R.drawable.eat)),
+		// RequestAndParser.class, null);
 
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
@@ -196,7 +196,7 @@ public class MainActivity extends FragmentActivity {
 
 				// ////////////////////
 				// /////通信用//////////
-				
+
 				method = Method.POST;
 				url = "/post";
 				params.clear();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -156,8 +156,8 @@ public class MyMapFragment extends SupportMapFragment implements
 						}
 						Log.v("success:", restaurants.toString());
 						Log.v("success:", "DONE!");
-						addMarkers();
-						setRestaurantList();
+						addMarkers(true);
+						setRestaurantList(true);
 					}
 				}, new ErrorListener() {
 					@Override
@@ -196,9 +196,14 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void renewRsts() {
 		fetchNearRsts();
+		// デバッグ用マーカー
+		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.763, 35);
+		restaurants.put(1, tst);
+		addMarkers(false);
+		setRestaurantList(false);
 	}
 
-	private void setRestaurantList() {
+	private void setRestaurantList(boolean clear) {
 		// ListViewに表示するデータを作成する
 		ArrayList<String> list = new ArrayList<String>();
 		for (int i = 0; i < 20; i++) {
@@ -210,7 +215,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
 		if (adapter == null)
 			adapter = new RstListItemAdapter(getActivity());
-		else
+		else if (clear)
 			adapter.clear();
 		adapter.addAll(restaurants);
 
@@ -303,9 +308,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		// Hide the zoom controls as the button panel will cover it.
 		mMap.getUiSettings().setZoomControlsEnabled(false);
 
-		// Add lots of markers to the map.
-		addMarkers();
-
 		// Setting an info window adapter allows us to change the both the
 		// contents and look of the
 		// info window.
@@ -325,10 +327,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				// LatLng point = position.target;
-				// String text = "latitude=" + point.latitude + ", longitude="
-				// + point.longitude;
-				// CameraPosition camPos = mMap.getCameraPosition();
 				renewRsts();
 			}
 		});
@@ -344,9 +342,11 @@ public class MyMapFragment extends SupportMapFragment implements
 		return loc;
 	}
 
-	private void addMarkers() {
-		mMap.clear();
-		mMarkers.clear();
+	private void addMarkers(boolean clear) {
+		if (clear) {
+			 mMap.clear();
+			 mMarkers.clear();
+		}
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
 		}
@@ -370,11 +370,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		MyMapFragment fragment = new MyMapFragment();
 		fragment.setRetainInstance(true);
 		return fragment;
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
 	}
 
 	@Override
@@ -446,14 +441,16 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void setBtns(final Marker marker) {
-		TextView eBtn = (TextView) getActivity().findViewById(R.id.eat_btn);
+		LinearLayout eBtn = (LinearLayout) getActivity().findViewById(
+				R.id.eat_btn);
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				((MainActivity) getActivity()).showEvalDialog(marker);
 			}
 		});
-		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);
+		LinearLayout dBtn = (LinearLayout) getActivity().findViewById(
+				R.id.detail_btn);
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
