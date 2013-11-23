@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -63,30 +65,36 @@ public class MainActivity extends FragmentActivity {
 
 		// タブの追加
 		mTabsAdapter.addTab(
-				mTabHost.newTabSpec("test").setIndicator(getIndicator("MAP")),
+				mTabHost.newTabSpec("test").setIndicator(
+						getIndicator("MAP", R.drawable.eat)),
 				MyMapFragment.class, null, true);
-		mTabsAdapter
-				.addTab(mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("Resta")), TitleFragment.class, null);
-		mTabsAdapter
-				.addTab(mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("RandP")), RequestAndParser.class, null);
+		mTabsAdapter.addTab(
+				mTabHost.newTabSpec("test").setIndicator(
+						getIndicator("Resta", R.drawable.like_w)),
+				TitleFragment.class, null);
+		mTabsAdapter.addTab(
+				mTabHost.newTabSpec("test").setIndicator(
+						getIndicator("RandP", R.drawable.eat)),
+				RequestAndParser.class, null);
 
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
 
-//		RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-//		container.removeView(findViewById(R.id.splash));
+		// RelativeLayout container = (RelativeLayout)
+		// findViewById(R.id.container);
+		// container.removeView(findViewById(R.id.splash));
 
 	}
 
-	public View getIndicator(String str) {
-		View view1 = View.inflate(getApplicationContext(), R.layout.tabview,
-				null);
-		TextView text = (TextView) view1.findViewById(R.id.tab_text);
+	public View getIndicator(String str, int image_id) {
+		LinearLayout tabView = (LinearLayout) View.inflate(
+				getApplicationContext(), R.layout.tabview, null);
+		TextView text = (TextView) tabView.findViewById(R.id.tab_text);
 		text.setText(str);
-		return view1;
+		ImageView icon = (ImageView) tabView.findViewById(R.id.tab_icon);
+		icon.setImageResource(image_id);
+		return tabView;
 	}
 
 	public void hideButtons() {

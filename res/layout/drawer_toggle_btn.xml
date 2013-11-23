@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btn_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button
+    <ImageView
         android:id="@+id/drawer_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="bottom|left"
-        android:background="#ddeeeeee"
-        android:gravity="center"
-        android:onClick="onToggleDrawer"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_margin="4dp"
-        android:text="@string/list_btn"
+        android:alpha="0.3"
+        android:gravity="center"
+        android:clickable="true"
+        android:src="@drawable/list"
+        tools:ignore="ContentDescription"
         android:color="#222" />
 
 </FrameLayout>

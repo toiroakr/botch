@@ -3,7 +3,6 @@ package com.example.mapdemo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -58,18 +57,17 @@ public class MyMapFragment extends SupportMapFragment implements
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
-	
+
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
 	private HashMap<String, String> params = new HashMap<String, String>();
 	private int method;
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
-	private boolean fetching = false;
 
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
-		return requestQueue;		
+		return requestQueue;
 	}
 
 	public void setRequestQueue(RequestQueue requestQueue) {
@@ -101,16 +99,11 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private Restaurant fetchNearRsts() {
-		fetching = true;
 		LatLng loc = this.getLocation();
-		// CameraPosition loc = this.getLocation();
-		// lat = loc.target.lat;
-		// zoom = loc.zoom;
 		double lat = loc.latitude;
 		double lng = loc.longitude;
 		int zoom = 1;
 		this.startRequest(lat, lng, zoom);
-		fetching = false;
 		return null;
 	}
 
@@ -143,8 +136,9 @@ public class MyMapFragment extends SupportMapFragment implements
 							json_restaurant = results.get(i).getAsJsonObject();
 							rst_id = Integer.parseInt(json_restaurant.get(
 									"rst_id").toString());
-							restaurantName = json_restaurant.get(
-									"RestaurantName").toString();
+							restaurantName = json_restaurant
+									.get("RestaurantName").toString()
+									.replace("\"", "");
 							category = json_restaurant.get("Category")
 									.toString();
 							raw_difficulty = Double.parseDouble(json_restaurant
@@ -162,11 +156,8 @@ public class MyMapFragment extends SupportMapFragment implements
 						}
 						Log.v("success:", restaurants.toString());
 						Log.v("success:", "DONE!");
-						// fetching = false;
 						addMarkers();
 						setRestaurantList();
-						// Toast.makeText(getActivity(), rst.toString(),
-						// Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -205,16 +196,6 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void renewRsts() {
 		fetchNearRsts();
-		// while (fetching) {
-		// addMarkers();
-		// setRestaurantList();
-		// try {
-		// Log.e("sleep", "sleep:" + restaurants.size() + "=>" + fetching);
-		// Thread.sleep(500);
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
-		// }
 	}
 
 	private void setRestaurantList() {
@@ -227,11 +208,10 @@ public class MyMapFragment extends SupportMapFragment implements
 		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
 		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
-		if (adapter == null) {
-//			Toast.makeText(getActivity(), "adapter = null", Toast.LENGTH_LONG)
-//					.show();
+		if (adapter == null)
 			adapter = new RstListItemAdapter(getActivity());
-		}
+		else
+			adapter.clear();
 		adapter.addAll(restaurants);
 
 		listView.setAdapter(adapter);
@@ -271,7 +251,7 @@ public class MyMapFragment extends SupportMapFragment implements
 					new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							drawer.toggleLeftDrawer();
+							drawer.openLeftSide();
 						}
 					});
 		}
@@ -365,6 +345,8 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void addMarkers() {
+		mMap.clear();
+		mMarkers.clear();
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
 		}
@@ -375,7 +357,7 @@ public class MyMapFragment extends SupportMapFragment implements
 				.position(new LatLng(rst.getLat(), rst.getLon()))
 				.title(rst.getRestaurantName())
 				.icon(BitmapDescriptorFactory.defaultMarker()));
-		mMarkers.put(m, rst);		
+		mMarkers.put(m, rst);
 		return m;
 	}
 
@@ -494,42 +476,54 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	// sharedPreferenceを使ってユーザー情報を管理
 	String user_id;
+
 	public void checkUserSetting() {
 		Log.v("checkUserSetting", "start");
 		// preference.WriteKeyValue("key","value");
-		final UserSettings preference = new UserSettings(this.getActivity(), "botch_user_setting");
+		final UserSettings preference = new UserSettings(this.getActivity(),
+				"botch_user_setting");
 		String _user_id = preference.ReadKeyValue("user_id");
-		
+
 		Log.v("checkUserSetting", "user_id:" + _user_id);
 		if (_user_id == "") {
-			//テキスト入力を受け付けるビューを作成します。
-		    final EditText editView = new EditText(this.getActivity());
-		    new AlertDialog.Builder(this.getActivity())
-		        .setIcon(android.R.drawable.ic_dialog_info)
-		        .setTitle("名前を入力してください")
-		        //setViewにてビューを設定します。
-		        .setView(editView)
-		        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int whichButton) {
-		                //入力した文字をトースト出力する
-		                String user_name = editView.getText().toString();
-		                if (user_name.length() < 1) user_name = "名無しの権兵衛";		                
-		                sendUserName(user_name);
-		                preference.WriteKeyValue("user_name", user_name);		           
-		                Toast.makeText(getActivity(), "Hello, " + user_name, Toast.LENGTH_LONG).show();
-		            }
-		        })
-		        .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int whichButton) {
-		            	String user_name = "名無しの権兵衛";
-		            	sendUserName(user_name);
-		            	preference.WriteKeyValue("user_name", user_name);		                
-		            }
-		        })
-		        .show();
+			// テキスト入力を受け付けるビューを作成します。
+			final EditText editView = new EditText(this.getActivity());
+			new AlertDialog.Builder(this.getActivity())
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setTitle("名前を入力してください")
+					// setViewにてビューを設定します。
+					.setView(editView)
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									// 入力した文字をトースト出力する
+									String user_name = editView.getText()
+											.toString();
+									if (user_name.length() < 1)
+										user_name = "名無しの権兵衛";
+									sendUserName(user_name);
+									preference.WriteKeyValue("user_name",
+											user_name);
+									Toast.makeText(getActivity(),
+											"Hello, " + user_name,
+											Toast.LENGTH_LONG).show();
+								}
+							})
+					.setNegativeButton("キャンセル",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									String user_name = "名無しの権兵衛";
+									sendUserName(user_name);
+									preference.WriteKeyValue("user_name",
+											user_name);
+								}
+							}).show();
 		} else {
 			String user_name = preference.ReadKeyValue("user_name");
-			Toast.makeText(getActivity(), "Hello, " + user_name, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Hello, " + user_name,
+					Toast.LENGTH_SHORT).show();
 		}
 		user_id = _user_id;
 	}
@@ -538,20 +532,21 @@ public class MyMapFragment extends SupportMapFragment implements
 		// checkUserSettingで呼び出す。user_nameでcreate_userしてuser_idを与える
 		String home = "";
 		params.put("name", user_name);
-		params.put("home", home);		
+		params.put("home", home);
 		url = "/create_user";
 		method = Method.POST;
-		final UserSettings preference = new UserSettings(this.getActivity(), "botch_user_setting");
+		final UserSettings preference = new UserSettings(this.getActivity(),
+				"botch_user_setting");
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
 				JsonObject.class, params, new Listener<JsonObject>() {
 					@Override
 					// 通信成功時のコールバック関数
 					public void onResponse(JsonObject response) {
-						// success					
+						// success
 						String _user_id = response.get("user_id").toString();
 						Log.v("success sendUserName:", _user_id);
-		                preference.WriteKeyValue("user_id", _user_id);
-		                user_id = _user_id;
+						preference.WriteKeyValue("user_id", _user_id);
+						user_id = _user_id;
 					}
 				}, new ErrorListener() {
 					@Override
@@ -572,7 +567,6 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	@Override
 	public void onDestroy() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onDestroy();
 		mMap.clear();
 		mMarkers.clear();
