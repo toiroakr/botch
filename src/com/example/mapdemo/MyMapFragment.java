@@ -57,14 +57,14 @@ public class MyMapFragment extends SupportMapFragment implements
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
-
+	String LIMIT = "15";
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
 	private HashMap<String, String> params = new HashMap<String, String>();
 	private int method;
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
-
+	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -112,7 +112,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		params.put("zoom", Integer.toString(zoom));
 		params.put("lat", Double.toString(lat));
 		params.put("lng", Double.toString(lng));
-		params.put("limit", "15");
+		params.put("limit", LIMIT);
 		url = "/near_rst";
 		method = Method.POST;
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
@@ -130,12 +130,25 @@ public class MyMapFragment extends SupportMapFragment implements
 						int difficulty;
 						String category;
 						JsonObject json_restaurant;
-						Restaurant restaurant;
-						restaurants.clear();
+						Restaurant restaurant;						
+
+						if (puted_rstids.size() >= 150) {
+							for (int i=0; i < Integer.parseInt(LIMIT); i++) {                
+								int remove_rstid = puted_rstids.get(0);
+								restaurants.remove(remove_rstid);      
+								puted_rstids.remove(0);
+							}
+							Log.v("size", Integer.toString(puted_rstids.size()));
+						}
+
+						// restaurants.clear();
+						
+						
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_restaurant = results.get(i).getAsJsonObject();
 							rst_id = Integer.parseInt(json_restaurant.get(
 									"rst_id").toString());
+							puted_rstids.add(rst_id);
 							restaurantName = json_restaurant
 									.get("RestaurantName").toString()
 									.replace("\"", "");
@@ -154,7 +167,7 @@ public class MyMapFragment extends SupportMapFragment implements
 									lng);
 							restaurants.put(rst_id, restaurant);
 						}
-						Log.v("success:", restaurants.toString());
+						// Log.v("success:", restaurants.toString());
 						Log.v("success:", "DONE!");
 						addMarkers(true);
 						setRestaurantList(true);
