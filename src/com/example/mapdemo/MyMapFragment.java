@@ -130,20 +130,20 @@ public class MyMapFragment extends SupportMapFragment implements
 						int difficulty;
 						String category;
 						JsonObject json_restaurant;
-						Restaurant restaurant;						
+						Restaurant restaurant;
 
 						if (puted_rstids.size() >= 150) {
-							for (int i=0; i < Integer.parseInt(LIMIT); i++) {                
+							for (int i=0; i < Integer.parseInt(LIMIT); i++) {
 								int remove_rstid = puted_rstids.get(0);
-								restaurants.remove(remove_rstid);      
+								restaurants.remove(remove_rstid);
 								puted_rstids.remove(0);
 							}
 							Log.v("size", Integer.toString(puted_rstids.size()));
 						}
 
 						// restaurants.clear();
-						
-						
+
+
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_restaurant = results.get(i).getAsJsonObject();
 							rst_id = Integer.parseInt(json_restaurant.get(
@@ -357,11 +357,17 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void addMarkers(boolean clear) {
 		if (clear) {
-			mMap.clear();
-			mMarkers.clear();
+			clear();
 		}
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
+		}
+	}
+
+	private void clear() {
+		for(Marker m : mMarkers.keySet()){
+			if(!m.isInfoWindowShown())
+				m.remove();
 		}
 	}
 
