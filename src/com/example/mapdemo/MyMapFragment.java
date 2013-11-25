@@ -65,7 +65,6 @@ public class MyMapFragment extends SupportMapFragment implements
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
-	Marker openMarker = null;
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -131,20 +130,20 @@ public class MyMapFragment extends SupportMapFragment implements
 						int difficulty;
 						String category;
 						JsonObject json_restaurant;
-						Restaurant restaurant;
+						Restaurant restaurant;						
 
 						if (puted_rstids.size() >= 150) {
-							for (int i=0; i < Integer.parseInt(LIMIT); i++) {
+							for (int i=0; i < Integer.parseInt(LIMIT); i++) {                
 								int remove_rstid = puted_rstids.get(0);
-								restaurants.remove(remove_rstid);
+								restaurants.remove(remove_rstid);      
 								puted_rstids.remove(0);
 							}
 							Log.v("size", Integer.toString(puted_rstids.size()));
 						}
 
 						// restaurants.clear();
-
-
+						
+						
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_restaurant = results.get(i).getAsJsonObject();
 							rst_id = Integer.parseInt(json_restaurant.get(
@@ -357,19 +356,12 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void addMarkers(boolean clear) {
-		if (clear)
-			clear();
+		if (clear) {
+			mMap.clear();
+			mMarkers.clear();
+		}
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
-		}
-	}
-
-	private void clear() {
-		for(Marker m : mMarkers.keySet() ){
-			if(!m.equals(openMarker)){
-				mMarkers.remove(m);
-				m.remove();
-			}
 		}
 	}
 
@@ -458,7 +450,6 @@ public class MyMapFragment extends SupportMapFragment implements
 			return true;
 		((MainActivity) getActivity()).viewButtons();
 		setBtns(marker);
-		openMarker = marker;
 		return false;
 	}
 
@@ -472,7 +463,7 @@ public class MyMapFragment extends SupportMapFragment implements
 				if (DistanceCalculator.distace(getMyLocation(), rst) < 100)
 					((MainActivity) getActivity()).showEvalDialog(rst);
 				else
-					Toast.makeText(getActivity(), "お店から100m以内の範囲で評価してください。",
+					Toast.makeText(getActivity(), "お店から100m以内で評価してください。",
 							Toast.LENGTH_LONG).show();
 
 			}
