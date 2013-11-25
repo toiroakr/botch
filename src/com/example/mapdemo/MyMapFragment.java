@@ -2,7 +2,9 @@ package com.example.mapdemo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -65,6 +67,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
+
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -133,7 +136,7 @@ public class MyMapFragment extends SupportMapFragment implements
 						Restaurant restaurant;
 
 						if (puted_rstids.size() >= 150) {
-							for (int i=0; i < Integer.parseInt(LIMIT); i++) {
+							for (int i = 0; i < Integer.parseInt(LIMIT); i++) {
 								int remove_rstid = puted_rstids.get(0);
 								restaurants.remove(remove_rstid);
 								puted_rstids.remove(0);
@@ -142,7 +145,6 @@ public class MyMapFragment extends SupportMapFragment implements
 						}
 
 						// restaurants.clear();
-
 
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_restaurant = results.get(i).getAsJsonObject();
@@ -365,9 +367,13 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void clear() {
-		for(Marker m : mMarkers.keySet()){
-			if(!m.isInfoWindowShown())
-				m.remove();
+		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
+				.iterator(); it.hasNext();) {
+			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
+					.next();
+			Marker r = entry.getKey();
+			if(!r.isInfoWindowShown())
+				r.remove();
 		}
 	}
 
