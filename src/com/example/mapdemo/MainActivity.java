@@ -28,7 +28,6 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.model.Marker;
 import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 
@@ -144,11 +143,7 @@ public class MainActivity extends FragmentActivity {
 		requestQueue.add(req);
 	}
 
-	public void showEvalDialog(Marker marker) {
-		// ここに店の情報が入ってるはず
-		// 情報が足りないならRestaurantクラスを拡張する必要あり（rst_idとか）
-		final Restaurant rst = MyMapFragment.getRestaurant(marker);
-
+	public void showEvalDialog(final Restaurant rst) {
 		// カスタムビューを設定
 		LayoutInflater inflater = (LayoutInflater) this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -156,8 +151,6 @@ public class MainActivity extends FragmentActivity {
 				(ViewGroup) findViewById(R.id.layout_root));
 
 		final Context context = this;
-		Toast.makeText(context, marker.getId() + " : " + marker.getTitle(),
-				Toast.LENGTH_SHORT).show();
 		// アラートダイアログを生成
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(rst.getRestaurantName() + "の評価");

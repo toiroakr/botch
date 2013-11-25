@@ -319,7 +319,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			@Override
 			public void onInfoWindowClick(Marker arg0) {
-				Restaurant rst = MyMapFragment.getRestaurant(arg0);
+				Restaurant rst = getRestaurant(arg0);
 				showDetail(Integer.toString(rst.getRst_id()));
 			}
 		});
@@ -344,8 +344,8 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void addMarkers(boolean clear) {
 		if (clear) {
-			 mMap.clear();
-			 mMarkers.clear();
+			mMap.clear();
+			mMarkers.clear();
 		}
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
@@ -443,10 +443,16 @@ public class MyMapFragment extends SupportMapFragment implements
 	private void setBtns(final Marker marker) {
 		LinearLayout eBtn = (LinearLayout) getActivity().findViewById(
 				R.id.eat_btn);
+		final Restaurant rst = getRestaurant(marker);
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showEvalDialog(marker);
+				if (DistanceCalculator.distace(getMyLocation(), rst) < 100)
+					((MainActivity) getActivity()).showEvalDialog(rst);
+				else
+					Toast.makeText(getActivity(), "お店から100m以内で評価してください。",
+							Toast.LENGTH_LONG).show();
+
 			}
 		});
 		LinearLayout dBtn = (LinearLayout) getActivity().findViewById(
@@ -454,7 +460,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Restaurant rst = MyMapFragment.getRestaurant(marker);
 				showDetail(Integer.toString(rst.getRst_id()));
 			}
 		});
@@ -467,7 +472,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		startActivity(intent);
 	}
 
-	public static Restaurant getRestaurant(Marker m) {
+	public Restaurant getRestaurant(Marker m) {
 		return mMarkers.get(m);
 	}
 
