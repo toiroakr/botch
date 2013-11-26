@@ -65,11 +65,11 @@ public class MainActivity extends FragmentActivity {
 		// タブの追加
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("MAP", R.drawable.map)),
+						getIndicator("マップ", R.drawable.map)),
 				MyMapFragment.class, null, true);
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("Resta", R.drawable.time)),
+						getIndicator("称号", R.drawable.award)),
 				TitleFragment.class, null);
 		// mTabsAdapter.addTab(
 		// mTabHost.newTabSpec("test").setIndicator(

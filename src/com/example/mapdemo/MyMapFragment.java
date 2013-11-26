@@ -6,10 +6,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -202,8 +205,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
 		checkUserSetting();
-		setUpMapIfNeeded();		
-		
+		setUpMapIfNeeded();
+
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
 		mapView.addView(addToggleButton(inflater, container));
@@ -276,33 +279,32 @@ public class MyMapFragment extends SupportMapFragment implements
 						public void onClick(View v) {
 							drawer.openLeftSide();
 						}
-					});	
+					});
 		}
 		return layout;
 	}
-	private void togglelonelyButton(FrameLayout mapView) {
-		final ImageView lonelyButton = (ImageView) mapView.findViewById(R.id.drawer_lonely);
-		lonelyButton.setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (lonely == "1") {
-							lonely = "0";	
-							lonelyButton
-							.setBackgroundResource(R.drawable.lonely);
-						} else {
-							lonely = "1";								
-							lonelyButton
-							.setBackgroundResource(R.drawable.lonely_tapped);
-						}
-						restaurants.clear();
-						clear();
-						renewRsts();
-						Log.v("hogeeeeeeeeelonely", lonely);
-					}
-				});	
-	}
 
+	private void togglelonelyButton(FrameLayout mapView) {
+		final ImageView lonelyButton = (ImageView) mapView
+				.findViewById(R.id.drawer_lonely);
+		lonelyButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (lonely == "1") {
+					lonely = "0";
+					lonelyButton.setBackgroundResource(R.drawable.lonely);
+				} else {
+					lonely = "1";
+					lonelyButton
+							.setBackgroundResource(R.drawable.lonely_tapped);
+				}
+				restaurants.clear();
+				clear();
+				renewRsts();
+				Log.v("hogeeeeeeeeelonely", lonely);
+			}
+		});
+	}
 
 	private void setUpMapIfNeeded() {
 		// Do a null check to confirm
@@ -398,7 +400,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
 					.next();
 			Marker r = entry.getKey();
-			if(!r.isInfoWindowShown())
+			if (!r.isInfoWindowShown())
 				r.remove();
 		}
 	}
@@ -578,7 +580,8 @@ public class MyMapFragment extends SupportMapFragment implements
 			Toast.makeText(getActivity(), "Hello, " + user_name,
 					Toast.LENGTH_SHORT).show();
 		}
-		user_id = _user_id;
+		user_id = preference.ReadKeyValue("user_id");
+;
 	}
 
 	private void sendUserName(String user_name) {
