@@ -202,7 +202,8 @@ public class MyMapFragment extends SupportMapFragment implements
 
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
-		mapView.addView(addToggleButton(inflater, container));
+		if(mapView.findViewById(R.id.drawer_btn) == null);
+			mapView.addView(addToggleButton(inflater, container));
 
 		renewRsts();
 
@@ -264,7 +265,7 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
 		View layout = getActivity().findViewById(R.id.btn_frame);
-		if ( layout == null) {
+		if (layout == null) {
 			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
 					false);
 			layout.findViewById(R.id.drawer_btn).setOnClickListener(
@@ -372,7 +373,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
 					.next();
 			Marker r = entry.getKey();
-			if(!r.isInfoWindowShown())
+			if (!r.isInfoWindowShown())
 				r.remove();
 		}
 	}
