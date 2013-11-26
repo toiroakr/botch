@@ -18,4 +18,17 @@
         tools:ignore="ContentDescription"
         android:color="#222" />
 
+    <ImageView
+        android:id="@+id/drawer_lonely"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="4dp"
+        android:alpha="1.0"
+        android:clickable="true"
+        android:gravity="center"        
+        tools:ignore="ContentDescription"
+        
+        
+        android:color="#222" />
+
 </FrameLayout>

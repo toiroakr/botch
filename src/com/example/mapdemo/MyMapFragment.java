@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -60,6 +61,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
 	String LIMIT = "15";
+	String lonely = "1"; // 1で「一人で」、それ以外で「全て」
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
 	private HashMap<String, String> params = new HashMap<String, String>();
@@ -106,18 +108,18 @@ public class MyMapFragment extends SupportMapFragment implements
 		double lat = loc.latitude;
 		double lng = loc.longitude;
 		int zoom = 1;
-		String lonly = "1"; // 1で「一人で」、それ以外で「全て」
-		this.startRequest(lat, lng, zoom, lonly);
+		this.startRequest(lat, lng, zoom);
 		return null;
 	}
 
-	private void startRequest(double lat, double lng, int zoom, String lonly) {
+	private void startRequest(double lat, double lng, int zoom) {
 		// マッピング用のRestaurantDetailを作成
 		params.put("zoom", Integer.toString(zoom));
 		params.put("lat", Double.toString(lat));
 		params.put("lng", Double.toString(lng));
 		params.put("limit", LIMIT);
-		params.put("lonly", lonly);
+		// String lonely = "1"; // 1で「一人で」、それ以外で「全て」
+		params.put("lonely", lonely);
 		url = "/near_rst";
 		method = Method.POST;
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
@@ -200,13 +202,13 @@ public class MyMapFragment extends SupportMapFragment implements
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
 		checkUserSetting();
-		setUpMapIfNeeded();
-
+		setUpMapIfNeeded();		
+		
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
-		if(mapView.findViewById(R.id.drawer_btn) == null);
-			mapView.addView(addToggleButton(inflater, container));
-
+		mapView.addView(addToggleButton(inflater, container));
+		togglelonelyButton(mapView);
+		mapView.findViewById(R.id.drawer_lonely).performClick();
 		renewRsts();
 
 		return mapView;
@@ -264,8 +266,8 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
-		View layout = getActivity().findViewById(R.id.btn_frame);
-		if (layout == null) {
+		View layout;
+		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
 			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
 					false);
 			layout.findViewById(R.id.drawer_btn).setOnClickListener(
@@ -274,10 +276,33 @@ public class MyMapFragment extends SupportMapFragment implements
 						public void onClick(View v) {
 							drawer.openLeftSide();
 						}
-					});
+					});	
 		}
 		return layout;
 	}
+	private void togglelonelyButton(FrameLayout mapView) {
+		final ImageView lonelyButton = (ImageView) mapView.findViewById(R.id.drawer_lonely);
+		lonelyButton.setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (lonely == "1") {
+							lonely = "0";	
+							lonelyButton
+							.setBackgroundResource(R.drawable.lonely);
+						} else {
+							lonely = "1";								
+							lonelyButton
+							.setBackgroundResource(R.drawable.lonely_tapped);
+						}
+						restaurants.clear();
+						clear();
+						renewRsts();
+						Log.v("hogeeeeeeeeelonely", lonely);
+					}
+				});	
+	}
+
 
 	private void setUpMapIfNeeded() {
 		// Do a null check to confirm
@@ -373,7 +398,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
 					.next();
 			Marker r = entry.getKey();
-			if (!r.isInfoWindowShown())
+			if(!r.isInfoWindowShown())
 				r.remove();
 		}
 	}
