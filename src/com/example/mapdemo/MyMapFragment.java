@@ -215,7 +215,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	private void renewRsts() {
 		fetchNearRsts();
 		// デバッグ用マーカー
-		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.763, 35);
+		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
 		restaurants.put(1, tst);
 		addMarkers(false);
 		setRestaurantList(false);
@@ -233,9 +233,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
 		if (adapter == null)
 			adapter = new RstListItemAdapter(getActivity());
-		else if (clear)
-			adapter.clear();
-		adapter.addAll(restaurants);
+		adapter.addAll(restaurants, clear);
 
 		listView.setAdapter(adapter);
 		// タップした時の動作を定義する
