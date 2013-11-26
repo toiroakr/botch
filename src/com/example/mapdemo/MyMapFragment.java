@@ -263,8 +263,8 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
-		View layout;
-		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
+		View layout = getActivity().findViewById(R.id.btn_frame);
+		if ( layout == null) {
 			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
 					false);
 			layout.findViewById(R.id.drawer_btn).setOnClickListener(
