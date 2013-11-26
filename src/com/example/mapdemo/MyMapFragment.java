@@ -6,12 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -25,8 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -204,7 +198,6 @@ public class MyMapFragment extends SupportMapFragment implements
 			Bundle savedInstanceState) {
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
-		checkUserSetting();
 		setUpMapIfNeeded();
 
 		if (drawer == null)
@@ -527,98 +520,6 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	public Restaurant getRestaurant(Marker m) {
 		return mMarkers.get(m);
-	}
-
-	// sharedPreferenceを使ってユーザー情報を管理
-	String user_id;
-
-	public void checkUserSetting() {
-		Log.v("checkUserSetting", "start");
-		// preference.WriteKeyValue("key","value");
-		final UserSettings preference = new UserSettings(this.getActivity(),
-				"botch_user_setting");
-		String _user_id = preference.ReadKeyValue("user_id");
-
-		Log.v("checkUserSetting", "user_id:" + _user_id);
-		if (_user_id == "") {
-			// テキスト入力を受け付けるビューを作成します。
-			final EditText editView = new EditText(this.getActivity());
-			new AlertDialog.Builder(this.getActivity())
-					.setIcon(android.R.drawable.ic_dialog_info)
-					.setTitle("名前を入力してください")
-					// setViewにてビューを設定します。
-					.setView(editView)
-					.setPositiveButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-									// 入力した文字をトースト出力する
-									String user_name = editView.getText()
-											.toString();
-									if (user_name.length() < 1)
-										user_name = "名無しの権兵衛";
-									sendUserName(user_name);
-									preference.WriteKeyValue("user_name",
-											user_name);
-									Toast.makeText(getActivity(),
-											"Hello, " + user_name,
-											Toast.LENGTH_LONG).show();
-								}
-							})
-					.setNegativeButton("キャンセル",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-									String user_name = "名無しの権兵衛";
-									sendUserName(user_name);
-									preference.WriteKeyValue("user_name",
-											user_name);
-								}
-							}).show();
-		} else {
-			String user_name = preference.ReadKeyValue("user_name");
-			Toast.makeText(getActivity(), "Hello, " + user_name,
-					Toast.LENGTH_SHORT).show();
-		}
-		user_id = preference.ReadKeyValue("user_id");
-;
-	}
-
-	private void sendUserName(String user_name) {
-		// checkUserSettingで呼び出す。user_nameでcreate_userしてuser_idを与える
-		String home = "";
-		params.put("name", user_name);
-		params.put("home", home);
-		url = "/create_user";
-		method = Method.POST;
-		final UserSettings preference = new UserSettings(this.getActivity(),
-				"botch_user_setting");
-		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
-				JsonObject.class, params, new Listener<JsonObject>() {
-					@Override
-					// 通信成功時のコールバック関数
-					public void onResponse(JsonObject response) {
-						// success
-						String _user_id = response.get("user_id").toString();
-						Log.v("success sendUserName:", _user_id);
-						preference.WriteKeyValue("user_id", _user_id);
-						user_id = _user_id;
-					}
-				}, new ErrorListener() {
-					@Override
-					// 通信失敗時のコールバック関数
-					public void onErrorResponse(VolleyError error) {
-						// error
-						Log.v("error:", error.toString() + "：通信に失敗しました");
-						Toast.makeText(getActivity(), "通信に失敗しました",
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
-		// Queueなので、入れた順番に通信される
-		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
-		req.setTag(TAG_REQUEST_QUEUE);
-		requestQueue.add(req);
 	}
 
 	@Override
