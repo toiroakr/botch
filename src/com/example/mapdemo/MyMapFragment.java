@@ -106,16 +106,18 @@ public class MyMapFragment extends SupportMapFragment implements
 		double lat = loc.latitude;
 		double lng = loc.longitude;
 		int zoom = 1;
-		this.startRequest(lat, lng, zoom);
+		String lonly = "1"; // 1で「一人で」、それ以外で「全て」
+		this.startRequest(lat, lng, zoom, lonly);
 		return null;
 	}
 
-	private void startRequest(double lat, double lng, int zoom) {
+	private void startRequest(double lat, double lng, int zoom, String lonly) {
 		// マッピング用のRestaurantDetailを作成
 		params.put("zoom", Integer.toString(zoom));
 		params.put("lat", Double.toString(lat));
 		params.put("lng", Double.toString(lng));
 		params.put("limit", LIMIT);
+		params.put("lonly", lonly);
 		url = "/near_rst";
 		method = Method.POST;
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
