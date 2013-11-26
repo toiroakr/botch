@@ -48,12 +48,14 @@ public class RstListItemAdapter extends ArrayAdapter<Restaurant> {
 	public void addAll(Map<Integer, Restaurant> rsts, boolean clear) {
 		for (Restaurant rst : rsts.values())
 			add(rst);
-		if(clear){
+		if (clear) {
 			ArrayList<Restaurant> removes = new ArrayList<Restaurant>();
 			for (Restaurant rst : rstList)
-				if(!rsts.containsValue(rst))
+				if (!rsts.containsValue(rst))
 					removes.add(rst);
 			rstList.removeAll(removes);
+			for (Restaurant rst : removes)
+				remove(rst);
 		}
 	}
 

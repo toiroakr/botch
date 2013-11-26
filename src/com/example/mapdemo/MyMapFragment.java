@@ -383,9 +383,8 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void addMarkers(boolean clear) {
-		if (clear) {
+		if (clear)
 			clear();
-		}
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
 		}
