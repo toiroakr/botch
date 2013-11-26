@@ -9,6 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/hello_world"
-        android:src="@drawable/ic_launcher" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash" />
 
 </FrameLayout>
