@@ -202,7 +202,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
 		checkUserSetting();
-		setUpMapIfNeeded();
+		setUpMapIfNeeded();		
 		
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
