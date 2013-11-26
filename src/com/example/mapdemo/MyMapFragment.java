@@ -474,7 +474,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (DistanceCalculator.distace(getMyLocation(), rst) < 100)
+				if (DistanceCalculator.distace(getMyLocation(), rst) <= 100)
 					((MainActivity) getActivity()).showEvalDialog(rst);
 				else
 					Toast.makeText(getActivity(), "お店から100m以内で評価してください。",
