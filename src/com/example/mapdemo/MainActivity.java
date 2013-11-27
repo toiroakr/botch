@@ -36,7 +36,6 @@ public class MainActivity extends FragmentActivity {
 	MyViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	private SimpleSideDrawer drawer;
-
 	// /////////////////
 	// /////通信用///////
 	// /////////////////
@@ -107,6 +106,7 @@ public class MainActivity extends FragmentActivity {
 	private void startRequest(int method, String url,
 			HashMap<String, String> params) {
 		// マッピング用のRestaurantDetailを作成
+		final UserSettings preference = new UserSettings(this, "botch_user_setting");
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
 				JsonObject.class, params, new Listener<JsonObject>() {
 					@Override
@@ -114,6 +114,8 @@ public class MainActivity extends FragmentActivity {
 					public void onResponse(JsonObject result) {
 						// success
 						Log.v("success:", result.toString());
+						// 取得済みの称号をsharedPreferenceに保存
+						preference.WriteKeyValue("acquired_title", result.toString());
 						Log.v("success:", "DONE!");
 						Toast.makeText(getApplicationContext(),
 								result.toString(), Toast.LENGTH_LONG).show();
