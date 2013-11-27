@@ -210,7 +210,6 @@ OnMarkerClickListener {
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
 		renewRsts();
-
 		return mapView;
 	}
 
