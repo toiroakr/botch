@@ -56,7 +56,7 @@ import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 
 public class MyMapFragment extends SupportMapFragment implements
-		OnMarkerClickListener {
+OnMarkerClickListener {
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
@@ -68,8 +68,12 @@ public class MyMapFragment extends SupportMapFragment implements
 	private int method;
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
+<<<<<<< HEAD
+	private boolean fetching = false;
+=======
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
 
+>>>>>>> dfe778165e741616dc383453131cdf06b2d7cb4b
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -207,9 +211,14 @@ public class MyMapFragment extends SupportMapFragment implements
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
 		mapView.addView(addToggleButton(inflater, container));
+<<<<<<< HEAD
+
+		//renewRsts();
+=======
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
 		renewRsts();
+>>>>>>> dfe778165e741616dc383453131cdf06b2d7cb4b
 
 		return mapView;
 	}
@@ -337,12 +346,13 @@ public class MyMapFragment extends SupportMapFragment implements
 			Location loc = getMyLocation();
 			double lat = 35.;
 			double lon = 135;
+
 			if (loc != null) {
 				lat = loc.getLatitude();
 				lon = loc.getLongitude();
 			}
 			CameraPosition.Builder builder = new CameraPosition.Builder()
-					.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
+			.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
 			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
 					.build()));
 		}

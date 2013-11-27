@@ -53,6 +53,7 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_tabs_pager);
 
+
 		// //通信用/////
 		requestQueue = Volley.newRequestQueue(this);
 		// ///////////
