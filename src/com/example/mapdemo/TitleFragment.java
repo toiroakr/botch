@@ -46,7 +46,7 @@ public class TitleFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View a = inflater.inflate(R.layout.title_view, container, false);
 		findViews(a);
-		
+
 		setAdapters();
 		Log.v("tag", "start");
 		DBHelper helper = new DBHelper(getActivity());
@@ -58,7 +58,7 @@ public class TitleFragment extends Fragment {
 	    } catch(SQLException sqle){
 	        throw sqle;
 	    }
-		final UserSettings preference = new UserSettings(getActivity(),	"botch_user_setting");
+
 	    //db = helper.getReadableDatabase();
 		//Title title = new Title(1,"ぼっち","プラチナ","ほげほげする","rank2");
 		//helper.insertTitle(db,title);
@@ -69,25 +69,9 @@ public class TitleFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Title title = adapter.getItem(position);
 				View parentView = (View)parent.getParent();
-				ImageView imgView = (ImageView)parentView.findViewById(R.id.titleImg);
-				TextView titleText = (TextView)parentView.findViewById(R.id.titleText);
-				TextView conditionText = (TextView)parentView.findViewById(R.id.conditionText);
-				TextView rankText = (TextView)parentView.findViewById(R.id.rankText);
-				imgView.setImageResource(getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName()));
-				titleText.setText(title.getTitleName());
-				conditionText.setText(title.getCondition());
-				rankText.setText(title.getRank());
-				try {
-					// sharedPreferenceから取得済みの称号を取得する
-					acquired_titles = preference.ReadKeyValue("acquired_title");
-					Log.v("取得済みの称号！", acquired_titles);
-					JSONObject o = new JSONObject(acquired_titles);
-					JSONArray r = o.getJSONArray("acquired_titles");
-					Log.v("acquired_title => ",r.get(1).toString() + Integer.toString(r.length())); 
-				} catch (Exception e) {
-					Log.v("acquired_title", e.toString());
-					acquired_titles = "";
-				}
+				setTitleDetail(title,parentView);
+				redrawGridView();
+
 			}
 
 		});
@@ -164,6 +148,36 @@ public class TitleFragment extends Fragment {
 //		getActivity().stopManagingCursor(c);
 //		dbAdapter.close();
 //		adapter.notifyDataSetChanged();
+	}
+
+	public void redrawGridView(){
+		final UserSettings preference = new UserSettings(getActivity(),	"botch_user_setting");
+		try {
+			// sharedPreferenceから取得済みの称号を取得する
+			acquired_titles = preference.ReadKeyValue("acquired_title");
+			//Log.v("取得済みの称号！", acquired_titles);
+			JSONObject o = new JSONObject(acquired_titles);
+			JSONArray r = o.getJSONArray("acquired_titles");
+			for(int i=0;i < r.length();i++){
+				Title t = adapter.getItem(r.getInt(i));
+				t.setGet(true);
+			}
+			adapter.notifyDataSetChanged();
+			//Log.v("acquired_title => ",r.get(1).toString() + Integer.toString(r.length()));
+		} catch (Exception e) {
+			Log.v("acquired_title", e.toString());
+			acquired_titles = "";
+		};
+	}
+	private void setTitleDetail(Title title, View parentView){
+		ImageView imgView = (ImageView)parentView.findViewById(R.id.titleImg);
+		TextView titleText = (TextView)parentView.findViewById(R.id.titleText);
+		TextView conditionText = (TextView)parentView.findViewById(R.id.conditionText);
+		TextView rankText = (TextView)parentView.findViewById(R.id.rankText);
+		imgView.setImageResource(getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName()));
+		titleText.setText(title.getTitleName());
+		conditionText.setText(title.getCondition());
+		rankText.setText(title.getRank());
 	}
 
 	private class TitleAdapter extends BaseAdapter {
