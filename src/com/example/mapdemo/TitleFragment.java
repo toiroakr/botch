@@ -150,6 +150,12 @@ public class TitleFragment extends Fragment {
 //		adapter.notifyDataSetChanged();
 	}
 
+	public static void redraw(){
+		adapter.notifyDataSetChanged();
+		Log.v("tag","redraw");
+	}
+
+
 	public void redrawGridView(){
 		final UserSettings preference = new UserSettings(getActivity(),	"botch_user_setting");
 		try {
@@ -168,6 +174,9 @@ public class TitleFragment extends Fragment {
 			Log.v("acquired_title", e.toString());
 			acquired_titles = "";
 		};
+		Title t = adapter.getItem(12);
+		t.setGet(true);
+		adapter.notifyDataSetChanged();
 	}
 	private void setTitleDetail(Title title, View parentView){
 		ImageView imgView = (ImageView)parentView.findViewById(R.id.titleImg);
@@ -214,16 +223,19 @@ public class TitleFragment extends Fragment {
 				v = inflater.inflate(R.layout.box, null);
 			}
 
-			Log.v("getview",Integer.toString(position));
+			//Log.v("getview",Integer.toString(position));
 			Title title = (Title) getItem(position);
 			if (title != null){
 				imgView = (ImageView) v.findViewById(R.id.img);
-				Log.v("getview",title.getImgStr());
-				int resourceId = getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName());
-				imgView.setImageResource(resourceId);
-
+				//Log.v("getview",title.getImgStr());
 				if(!title.isGet()){
-					imgView.setAlpha(127);
+					imgView.setAlpha(50);
+					imgView.setImageResource(R.drawable.hatena);
+				}else{
+					imgView.setAlpha(255);
+					int resourceId = getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName());
+					imgView.setImageResource(resourceId);
+					Log.v("getview",title.getImgStr());
 				}
 			}
 
