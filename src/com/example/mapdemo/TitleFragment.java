@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -35,7 +38,7 @@ public class TitleFragment extends Fragment {
 	public static final String COL_RANK = "rank";
 	public static final String COL_CONDITION = "condition";
 	public static final String COL_LASTUPDATE = "lastupdate";
-
+	private String acquired_titles;
 	@Override
 	public View onCreateView(
 			LayoutInflater inflater,
@@ -43,7 +46,7 @@ public class TitleFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View a = inflater.inflate(R.layout.title_view, container, false);
 		findViews(a);
-
+		
 		setAdapters();
 		Log.v("tag", "start");
 		DBHelper helper = new DBHelper(getActivity());
@@ -55,7 +58,7 @@ public class TitleFragment extends Fragment {
 	    } catch(SQLException sqle){
 	        throw sqle;
 	    }
-
+		final UserSettings preference = new UserSettings(getActivity(),	"botch_user_setting");
 	    //db = helper.getReadableDatabase();
 		//Title title = new Title(1,"ぼっち","プラチナ","ほげほげする","rank2");
 		//helper.insertTitle(db,title);
@@ -74,7 +77,17 @@ public class TitleFragment extends Fragment {
 				titleText.setText(title.getTitleName());
 				conditionText.setText(title.getCondition());
 				rankText.setText(title.getRank());
-
+				try {
+					// sharedPreferenceから取得済みの称号を取得する
+					acquired_titles = preference.ReadKeyValue("acquired_title");
+					Log.v("取得済みの称号！", acquired_titles);
+					JSONObject o = new JSONObject(acquired_titles);
+					JSONArray r = o.getJSONArray("acquired_titles");
+					Log.v("acquired_title => ",r.get(1).toString() + Integer.toString(r.length())); 
+				} catch (Exception e) {
+					Log.v("acquired_title", e.toString());
+					acquired_titles = "";
+				}
 			}
 
 		});
