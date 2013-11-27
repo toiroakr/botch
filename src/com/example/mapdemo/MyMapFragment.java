@@ -266,6 +266,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
+		// viewにリスト表示ボタンを追加する
 		View layout;
 		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
 			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
@@ -282,6 +283,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void togglelonelyButton(FrameLayout mapView) {
+		// 「一人」ボタンをviewに追加し、有効かどうかでthis.lonelyとスタイルを変える
 		final ImageView lonelyButton = (ImageView) mapView
 				.findViewById(R.id.drawer_lonely);
 		lonelyButton.setOnClickListener(new OnClickListener() {
