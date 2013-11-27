@@ -1,11 +1,13 @@
 package com.example.mapdemo;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,10 +47,18 @@ public class TitleFragment extends Fragment {
 		setAdapters();
 		Log.v("tag", "start");
 		DBHelper helper = new DBHelper(getActivity());
-		db = helper.getWritableDatabase();
-		Title title = new Title(1,"ぼっち","プラチナ","ほげほげする","rank2");
-		helper.insertTitle(db,title);
-		helper.insertTitle(db,title);helper.insertTitle(db,title);helper.insertTitle(db,title);helper.insertTitle(db,title);helper.insertTitle(db,title);helper.insertTitle(db,title);helper.insertTitle(db,title);helper.insertTitle(db,title);
+		try{
+			helper.createEmptyDataBase();
+			db = helper.openDataBase();
+		}catch (IOException ioe) {
+	        throw new Error("Unable to create database");
+	    } catch(SQLException sqle){
+	        throw sqle;
+	    }
+
+	    //db = helper.getReadableDatabase();
+		//Title title = new Title(1,"ぼっち","プラチナ","ほげほげする","rank2");
+		//helper.insertTitle(db,title);
 		//dbAdapter = new DBAdapter(getActivity());
 
 		loadTitles();
@@ -177,11 +187,14 @@ public class TitleFragment extends Fragment {
 				v = inflater.inflate(R.layout.box, null);
 			}
 
-			Log.v("getview",Integer.toString(v.getWidth()));
+			Log.v("getview",Integer.toString(position));
 			Title title = (Title) getItem(position);
 			if (title != null){
 				imgView = (ImageView) v.findViewById(R.id.img);
-				imgView.setImageResource(getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName()));
+				Log.v("getview",title.getImgStr());
+				int resourceId = getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName());
+				imgView.setImageResource(resourceId);
+
 				if(!title.isGet()){
 					imgView.setAlpha(127);
 				}
@@ -189,6 +202,8 @@ public class TitleFragment extends Fragment {
 
 			return v;
 		}
+
+
 
 
 	}

@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:numColumns="6"
-        android:padding="20dp" >
+        android:numColumns="5"
+        android:padding="8dp" >
     </GridView>
 
     <LinearLayout
