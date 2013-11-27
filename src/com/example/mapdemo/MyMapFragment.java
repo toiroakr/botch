@@ -68,12 +68,8 @@ OnMarkerClickListener {
 	private int method;
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
-<<<<<<< HEAD
-	private boolean fetching = false;
-=======
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
 
->>>>>>> dfe778165e741616dc383453131cdf06b2d7cb4b
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -211,14 +207,9 @@ OnMarkerClickListener {
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
 		mapView.addView(addToggleButton(inflater, container));
-<<<<<<< HEAD
-
-		//renewRsts();
-=======
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
 		renewRsts();
->>>>>>> dfe778165e741616dc383453131cdf06b2d7cb4b
 
 		return mapView;
 	}
