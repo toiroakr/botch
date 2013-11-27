@@ -2,11 +2,13 @@ package com.example.mapdemo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
+import java.util.Map.Entry;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
@@ -21,7 +23,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -55,14 +60,20 @@ OnMarkerClickListener {
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
-
+	String LIMIT = "15";
+	String lonely = "1"; // 1で「一人で」、それ以外で「全て」
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
 	private HashMap<String, String> params = new HashMap<String, String>();
 	private int method;
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
+<<<<<<< HEAD
 	private boolean fetching = false;
+=======
+	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
+
+>>>>>>> dfe778165e741616dc383453131cdf06b2d7cb4b
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -97,16 +108,11 @@ OnMarkerClickListener {
 	}
 
 	private Restaurant fetchNearRsts() {
-		fetching = true;
-		Location loc = this.getLocation();
-		// CameraPosition loc = this.getLocation();
-		// lat = loc.target.lat;
-		// zoom = loc.zoom;
-		double lat = loc.getLatitude();
-		double lng = loc.getLongitude();
+		LatLng loc = this.getLocation();
+		double lat = loc.latitude;
+		double lng = loc.longitude;
 		int zoom = 1;
 		this.startRequest(lat, lng, zoom);
-		fetching = false;
 		return null;
 	}
 
@@ -115,7 +121,9 @@ OnMarkerClickListener {
 		params.put("zoom", Integer.toString(zoom));
 		params.put("lat", Double.toString(lat));
 		params.put("lng", Double.toString(lng));
-		params.put("limit", "30");
+		params.put("limit", LIMIT);
+		// String lonely = "1"; // 1で「一人で」、それ以外で「全て」
+		params.put("lonely", lonely);
 		url = "/near_rst";
 		method = Method.POST;
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
@@ -134,33 +142,45 @@ OnMarkerClickListener {
 						String category;
 						JsonObject json_restaurant;
 						Restaurant restaurant;
+
+						if (puted_rstids.size() >= 150) {
+							for (int i = 0; i < Integer.parseInt(LIMIT); i++) {
+								int remove_rstid = puted_rstids.get(0);
+								restaurants.remove(remove_rstid);
+								puted_rstids.remove(0);
+							}
+							Log.v("size", Integer.toString(puted_rstids.size()));
+						}
+
+						// restaurants.clear();
+
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_restaurant = results.get(i).getAsJsonObject();
 							rst_id = Integer.parseInt(json_restaurant.get(
 									"rst_id").toString());
-							restaurantName = json_restaurant.get(
-									"RestaurantName").toString();
+							puted_rstids.add(rst_id);
+							restaurantName = json_restaurant
+									.get("RestaurantName").toString()
+									.replace("\"", "");
 							category = json_restaurant.get("Category")
 									.toString();
 							raw_difficulty = Double.parseDouble(json_restaurant
 									.get("raw_difficulty").toString());
 							difficulty = Integer.parseInt(json_restaurant.get(
 									"difficulty").toString());
-							lat = Double.parseDouble(json_restaurant
-									.get("lat").toString());
-							lng = Double.parseDouble(json_restaurant
-									.get("lng").toString());
+							lat = Double.parseDouble(json_restaurant.get("lat")
+									.toString());
+							lng = Double.parseDouble(json_restaurant.get("lng")
+									.toString());
 							restaurant = new Restaurant(rst_id, restaurantName,
-									raw_difficulty, difficulty, category, lat, lng);
+									raw_difficulty, difficulty, category, lat,
+									lng);
 							restaurants.put(rst_id, restaurant);
 						}
-						Log.v("success:", restaurants.toString());
+						// Log.v("success:", restaurants.toString());
 						Log.v("success:", "DONE!");
-						// fetching = false;
-						addMarkers();
-						setRestaurantList();
-						// Toast.makeText(getActivity(), rst.toString(),
-						// 		Toast.LENGTH_LONG).show();
+						addMarkers(true);
+						setRestaurantList(true);
 					}
 				}, new ErrorListener() {
 					@Override
@@ -168,8 +188,9 @@ OnMarkerClickListener {
 					public void onErrorResponse(VolleyError error) {
 						// error
 						Log.v("error:", error.toString() + "：再読み込みしてください");
-						Toast.makeText(getActivity(), "onErrorResponse",
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), "Error: この辺りにお店がありません",
+								Toast.LENGTH_SHORT).show();
+						requestQueue.cancelAll(TAG_REQUEST_QUEUE);
 					}
 				});
 		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
@@ -185,31 +206,33 @@ OnMarkerClickListener {
 		FrameLayout mapView = (FrameLayout) super.onCreateView(inflater,
 				container, savedInstanceState);
 		setUpMapIfNeeded();
+		checkUserSetting();
 
 		if (drawer == null)
 			drawer = ((MainActivity) getActivity()).getDrawer();
 		mapView.addView(addToggleButton(inflater, container));
+<<<<<<< HEAD
 
 		//renewRsts();
+=======
+		togglelonelyButton(mapView);
+		mapView.findViewById(R.id.drawer_lonely).performClick();
+		renewRsts();
+>>>>>>> dfe778165e741616dc383453131cdf06b2d7cb4b
 
 		return mapView;
 	}
 
 	private void renewRsts() {
 		fetchNearRsts();
-//		while (fetching) {
-//			addMarkers();
-//			setRestaurantList();
-//			try {
-//				Log.e("sleep", "sleep:" + restaurants.size() + "=>" + fetching);
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		// デバッグ用マーカー
+		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
+		restaurants.put(1, tst);
+		addMarkers(false);
+		setRestaurantList(false);
 	}
 
-	private void setRestaurantList() {
+	private void setRestaurantList(boolean clear) {
 		// ListViewに表示するデータを作成する
 		ArrayList<String> list = new ArrayList<String>();
 		for (int i = 0; i < 20; i++) {
@@ -219,12 +242,9 @@ OnMarkerClickListener {
 		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
 		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
-		if (adapter == null) {
-			Toast.makeText(getActivity(), "adapter = null", Toast.LENGTH_LONG)
-					.show();
+		if (adapter == null)
 			adapter = new RstListItemAdapter(getActivity());
-		}
-		adapter.addAll(restaurants);
+		adapter.addAll(restaurants, clear);
 
 		listView.setAdapter(adapter);
 		// タップした時の動作を定義する
@@ -255,6 +275,7 @@ OnMarkerClickListener {
 	}
 
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
+		// viewにリスト表示ボタンを追加する
 		View layout;
 		if ((layout = getActivity().findViewById(R.id.btn_frame)) == null) {
 			layout = inflater.inflate(R.layout.drawer_toggle_btn, container,
@@ -263,11 +284,34 @@ OnMarkerClickListener {
 					new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							drawer.toggleLeftDrawer();
+							drawer.openLeftSide();
 						}
 					});
 		}
 		return layout;
+	}
+
+	private void togglelonelyButton(FrameLayout mapView) {
+		// 「一人」ボタンをviewに追加し、有効かどうかでthis.lonelyとスタイルを変える
+		final ImageView lonelyButton = (ImageView) mapView
+				.findViewById(R.id.drawer_lonely);
+		lonelyButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (lonely == "1") {
+					lonely = "0";
+					lonelyButton.setBackgroundResource(R.drawable.lonely);
+				} else {
+					lonely = "1";
+					lonelyButton
+							.setBackgroundResource(R.drawable.lonely_tapped);
+				}
+				restaurants.clear();
+				clear();
+				renewRsts();
+				Log.v("hogeeeeeeeeelonely", lonely);
+			}
+		});
 	}
 
 	private void setUpMapIfNeeded() {
@@ -316,9 +360,6 @@ OnMarkerClickListener {
 		// Hide the zoom controls as the button panel will cover it.
 		mMap.getUiSettings().setZoomControlsEnabled(false);
 
-		// Add lots of markers to the map.
-		addMarkers();
-
 		// Setting an info window adapter allows us to change the both the
 		// contents and look of the
 		// info window.
@@ -330,17 +371,14 @@ OnMarkerClickListener {
 		mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			@Override
 			public void onInfoWindowClick(Marker arg0) {
-				showDetail();
+				Restaurant rst = getRestaurant(arg0);
+				showDetail(Integer.toString(rst.getRst_id()));
 			}
 		});
 
 		mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				// LatLng point = position.target;
-				// String text = "latitude=" + point.latitude + ", longitude="
-				// + point.longitude;
-				// CameraPosition camPos = mMap.getCameraPosition();
 				renewRsts();
 			}
 		});
@@ -356,9 +394,22 @@ OnMarkerClickListener {
 		return loc;
 	}
 
-	private void addMarkers() {
+	private void addMarkers(boolean clear) {
+		if (clear)
+			clear();
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
+		}
+	}
+
+	private void clear() {
+		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
+				.iterator(); it.hasNext();) {
+			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
+					.next();
+			Marker r = entry.getKey();
+			if (!r.isInfoWindowShown())
+				r.remove();
 		}
 	}
 
@@ -368,28 +419,18 @@ OnMarkerClickListener {
 				.title(rst.getRestaurantName())
 				.icon(BitmapDescriptorFactory.defaultMarker()));
 		mMarkers.put(m, rst);
-		Log.v("latlng", rst.getLat() + ", " + rst.getLon());
 		return m;
 	}
 
-	private Location getLocation() {
-		LocationManager mgr = (LocationManager) getActivity().getSystemService(
-				Context.LOCATION_SERVICE); // 位置マネージャ取得
-		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (loc == null)
-			loc = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-		return loc;
+	private LatLng getLocation() {
+		CameraPosition camPos = mMap.getCameraPosition();
+		return camPos.target;
 	}
 
 	public static MyMapFragment newInstance() {
 		MyMapFragment fragment = new MyMapFragment();
 		fragment.setRetainInstance(true);
 		return fragment;
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
 	}
 
 	@Override
@@ -443,10 +484,11 @@ OnMarkerClickListener {
 		}
 
 		private void render(Marker marker, View view) {
-			TextView titleUi = ((TextView) view.findViewById(R.id.url));
-			titleUi.setText("" + marker.getPosition().longitude);
+			Restaurant rst = getRestaurant(marker);
+			TextView title = ((TextView) view.findViewById(R.id.title));
+			title.setText(rst.getRestaurantName());
 			RatingBar rate = ((RatingBar) view.findViewById(R.id.rate));
-			rate.setRating(new Random().nextInt(5) + 1);
+			rate.setRating((float) rst.getDifficulty());
 		}
 	}
 
@@ -460,29 +502,137 @@ OnMarkerClickListener {
 	}
 
 	private void setBtns(final Marker marker) {
-		TextView eBtn = (TextView) getActivity().findViewById(R.id.eat_btn);
+		LinearLayout eBtn = (LinearLayout) getActivity().findViewById(
+				R.id.eat_btn);
+		final Restaurant rst = getRestaurant(marker);
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showEvalDialog(marker);
+				if (DistanceCalculator.distace(getMyLocation(), rst) <= 100)
+					((MainActivity) getActivity()).showEvalDialog(rst);
+				else
+					Toast.makeText(getActivity(), "お店から100m以内で評価してください。",
+							Toast.LENGTH_LONG).show();
+
 			}
 		});
-		TextView dBtn = (TextView) getActivity().findViewById(R.id.detail_btn);
+		LinearLayout dBtn = (LinearLayout) getActivity().findViewById(
+				R.id.detail_btn);
 		dBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDetail();
+				showDetail(Integer.toString(rst.getRst_id()));
 			}
 		});
 	}
 
-	private void showDetail() {
+	private void showDetail(String rst_id) {
 		// 詳細ページへ
 		Intent intent = new Intent(getActivity(), RstDetail.class);
+		intent.putExtra("rst_id", rst_id);
 		startActivity(intent);
 	}
 
-	public static Restaurant getRestaurant(Marker m) {
+	public Restaurant getRestaurant(Marker m) {
 		return mMarkers.get(m);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mMap.clear();
+		mMarkers.clear();
+		restaurants.clear();
+	}
+
+	// sharedPreferenceを使ってユーザー情報を管理
+	String user_id;
+
+	public void checkUserSetting() {
+		Log.v("checkUserSetting", "start");
+		// preference.WriteKeyValue("key","value");
+		final UserSettings preference = new UserSettings(getActivity(),
+				"botch_user_setting");
+		String _user_id = preference.ReadKeyValue("user_id");
+
+		Log.v("checkUserSetting", "user_id:" + _user_id);
+		if (_user_id.equals("")) {
+			// テキスト入力を受け付けるビューを作成します。
+			final EditText editView = new EditText(getActivity());
+			new AlertDialog.Builder(getActivity())
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setTitle("名前を入力してください")
+					// setViewにてビューを設定します。
+					.setView(editView)
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									// 入力した文字をトースト出力する
+									String user_name = editView.getText()
+											.toString();
+									if (user_name.length() < 1)
+										user_name = "名無しの権兵衛";
+									sendUserName(user_name);
+									preference.WriteKeyValue("user_name",
+											user_name);
+									Toast.makeText(getActivity(),
+											"Hello, " + user_name,
+											Toast.LENGTH_LONG).show();
+								}
+							})
+					.setNegativeButton("キャンセル",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									String user_name = "名無しの権兵衛";
+									sendUserName(user_name);
+									preference.WriteKeyValue("user_name",
+											user_name);
+								}
+							}).show();
+		} else {
+			String user_name = preference.ReadKeyValue("user_name");
+			Toast.makeText(getActivity(), "Hello, " + user_name,
+					Toast.LENGTH_SHORT).show();
+		}
+		user_id = preference.ReadKeyValue("user_id");
+	}
+
+	private void sendUserName(String user_name) {
+		// checkUserSettingで呼び出す。user_nameでcreate_userしてuser_idを与える
+		String home = "";
+		params.put("name", user_name);
+		params.put("home", home);
+		url = "/create_user";
+		method = Method.POST;
+		final UserSettings preference = new UserSettings(getActivity(),
+				"botch_user_setting");
+		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
+				JsonObject.class, params, new Listener<JsonObject>() {
+					@Override
+					// 通信成功時のコールバック関数
+					public void onResponse(JsonObject response) {
+						// success
+						String _user_id = response.get("user_id").toString();
+						Log.v("success sendUserName:", _user_id);
+						preference.WriteKeyValue("user_id", _user_id);
+						user_id = _user_id;
+					}
+				}, new ErrorListener() {
+					@Override
+					// 通信失敗時のコールバック関数
+					public void onErrorResponse(VolleyError error) {
+						// error
+						Log.v("error:", error.toString() + "：通信に失敗しました");
+						Toast.makeText(getActivity(), "通信に失敗しました",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
+		// Queueなので、入れた順番に通信される
+		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
+		req.setTag(TAG_REQUEST_QUEUE);
+		requestQueue.add(req);
 	}
 }

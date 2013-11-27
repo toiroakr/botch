@@ -41,34 +41,59 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="#888"
+            android:baselineAligned="false"
             android:orientation="horizontal"
             android:visibility="invisible" >
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/eat_btn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="0.5dp"
                 android:layout_weight="1"
                 android:background="#ddd"
                 android:clickable="true"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="@string/ate"
-                android:layout_marginRight="0.5dp"
-                android:color="#222" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
 
-            <TextView
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/hello_world"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/good" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ate"
+                    android:textColor="#111" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/detail_btn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="0.5dp"
                 android:layout_weight="1"
                 android:background="#ddd"
-                android:layout_marginLeft="0.5dp"
                 android:clickable="true"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="@string/detail"
-                android:color="#222" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="@string/hello_world"
+                    android:src="@drawable/detail" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail"
+                    android:textColor="#111" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 

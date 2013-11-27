@@ -1,7 +1,6 @@
 package com.example.mapdemo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,12 +22,12 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +45,11 @@ public class RstDetail extends Activity {
         setContentView(R.layout.rst_detail);
         
         // Intentでrst_idを受け取る        
+        this.rst_id = getIntent().getExtras().getString("rst_id");
 		requestQueue = Volley.newRequestQueue(this);
 		// methodとurlとparamsを設定する		
 		// this.params.put("rst_id", this.getRst_id());  // sample用
-		this.setRst_id("26001581");
+		this.setRst_id(rst_id);
 		this.setUrl("/read_rst");
 		this.setMethod(Method.POST);
 		this.setParams();
@@ -70,7 +70,7 @@ public class RstDetail extends Activity {
 						// TextViewへの埋め込みはこの関数で行う
 						setRestaurantDetailToTextView(rst);
 						Log.v("success:", "DONE!");
-					    Toast.makeText(getApplicationContext(), rst.toString(), Toast.LENGTH_LONG).show();						
+					    // Toast.makeText(getApplicationContext(), rst.toString(), Toast.LENGTH_LONG).show();						
 					}
 				}, new ErrorListener() {
 					@Override
@@ -103,7 +103,7 @@ public class RstDetail extends Activity {
 						List<String> names = new ArrayList<String>();
 						// ScrollView comments = (ScrollView) findViewById(id.comments);  
 						
-						LinearLayout each_comment = (LinearLayout) findViewById(id.comment_component);
+						LinearLayout comment_component = (LinearLayout) findViewById(id.comment_component);
 
 						for (int i = 0, length = results.size(); i < length; i++) {
 							json_comments = results.get(i).getAsJsonObject();							
@@ -116,7 +116,7 @@ public class RstDetail extends Activity {
 							Log.v("success !!!:", json_comments.toString());														
 							// names.add(user_name);			            
 							View view = getLayoutInflater().inflate(R.layout.user_comment, null);		
-							each_comment.addView(view);	
+							comment_component.addView(view);	
 							
 							TextView name = (TextView) view.findViewById(R.id.user_name);
 							RatingBar dif = (RatingBar) view.findViewById(R.id.user_difficulty);
@@ -214,12 +214,16 @@ public class RstDetail extends Activity {
 		
 		TextView tel = (TextView) findViewById(id.rst_detail_data_tel);
 		tel.setText(rst.getTel());
+		Linkify.addLinks(tel, Linkify.PHONE_NUMBERS);
 		
 		TextView bh = (TextView) findViewById(id.rst_detail_data_businesshour);
 		bh.setText(rst.getBusinesshours());
 		
 		TextView holiday = (TextView) findViewById(id.rst_detail_data_holiday);
 		holiday.setText(rst.getHoliday());		
+		
+		RatingBar difficulty = (RatingBar) findViewById(id.detail_difficulty);
+		difficulty.setRating((float) rst.getDifficulty());
 	}
 	// setParamsに注意
 	public String getRst_id() {

@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -26,7 +28,6 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.model.Marker;
 import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 
@@ -64,26 +65,27 @@ public class MainActivity extends FragmentActivity {
 
 		// タブの追加
 		mTabsAdapter.addTab(
-				mTabHost.newTabSpec("test").setIndicator(getIndicator("MAP")),
+				mTabHost.newTabSpec("test").setIndicator(
+						getIndicator("マップ", R.drawable.map)),
 				MyMapFragment.class, null, true);
-		mTabsAdapter
-				.addTab(mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("Resta")), TitleFragment.class, null);
-		mTabsAdapter
-				.addTab(mTabHost.newTabSpec("test").setIndicator(
-						getIndicator("RandP")), RequestAndParser.class, null);
+		mTabsAdapter.addTab(
+				mTabHost.newTabSpec("test").setIndicator(
+						getIndicator("称号", R.drawable.award)),
+				TitleFragment.class, null);
 
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
 	}
 
-	public View getIndicator(String str) {
-		View view1 = View.inflate(getApplicationContext(), R.layout.tabview,
-				null);
-		TextView text = (TextView) view1.findViewById(R.id.tab_text);
+	public View getIndicator(String str, int image_id) {
+		LinearLayout tabView = (LinearLayout) View.inflate(
+				getApplicationContext(), R.layout.tabview, null);
+		TextView text = (TextView) tabView.findViewById(R.id.tab_text);
 		text.setText(str);
-		return view1;
+		ImageView icon = (ImageView) tabView.findViewById(R.id.tab_icon);
+		icon.setImageResource(image_id);
+		return tabView;
 	}
 
 	public void hideButtons() {
@@ -133,11 +135,7 @@ public class MainActivity extends FragmentActivity {
 		requestQueue.add(req);
 	}
 
-	public void showEvalDialog(Marker marker) {
-		// ここに店の情報が入ってるはず
-		// 情報が足りないならRestaurantクラスを拡張する必要あり（rst_idとか）
-		Restaurant rst = MyMapFragment.getRestaurant(marker);
-
+	public void showEvalDialog(final Restaurant rst) {
 		// カスタムビューを設定
 		LayoutInflater inflater = (LayoutInflater) this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -145,8 +143,6 @@ public class MainActivity extends FragmentActivity {
 				(ViewGroup) findViewById(R.id.layout_root));
 
 		final Context context = this;
-		Toast.makeText(context, marker.getId() + " : " + marker.getTitle(),
-				Toast.LENGTH_SHORT).show();
 		// アラートダイアログを生成
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(rst.getRestaurantName() + "の評価");
@@ -163,6 +159,8 @@ public class MainActivity extends FragmentActivity {
 		// 表示
 		final AlertDialog diaLog = builder.show();
 		Button buttonOK = diaLog.getButton(DialogInterface.BUTTON_POSITIVE);
+		final UserSettings preference = new UserSettings(this, "botch_user_setting");
+		final String user_id = preference.ReadKeyValue("user_id");
 		buttonOK.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -183,11 +181,12 @@ public class MainActivity extends FragmentActivity {
 
 				// ////////////////////
 				// /////通信用//////////
+
 				method = Method.POST;
 				url = "/post";
 				params.clear();
-				params.put("rst_id", "26001581");
-				params.put("user_id", "19");
+				params.put("rst_id", String.valueOf(rst.getRst_id()));
+				params.put("user_id", user_id);
 				params.put("difficulty", Integer.toString(intRate));
 				params.put("comment", strComment);
 				startRequest(method, url, params);

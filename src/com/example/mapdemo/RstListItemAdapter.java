@@ -40,14 +40,23 @@ public class RstListItemAdapter extends ArrayAdapter<Restaurant> {
 
 		// 各Viewに表示する情報を設定
 		holder.title.setText(item.getRestaurantName());
-		holder.budget.setText("予算：" + item.getDifficulty());
-		holder.rate.setRating(position / 6);
+		// holder.budget.setText("予算：" + item.getDifficulty());
+		holder.rate.setRating((float) item.getDifficulty());
 		return view;
 	}
 
-	public void addAll(Map<Integer, Restaurant> rsts) {
+	public void addAll(Map<Integer, Restaurant> rsts, boolean clear) {
 		for (Restaurant rst : rsts.values())
 			add(rst);
+		if (clear) {
+			ArrayList<Restaurant> removes = new ArrayList<Restaurant>();
+			for (Restaurant rst : rstList)
+				if (!rsts.containsValue(rst))
+					removes.add(rst);
+			rstList.removeAll(removes);
+			for (Restaurant rst : removes)
+				remove(rst);
+		}
 	}
 
 	public void add(Restaurant rst) {
