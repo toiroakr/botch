@@ -7,6 +7,7 @@
     <string name="eat_log">食べログ</string>
     <string name="eval_comment">コメント</string>
     <string name="ate">食べた！</string>
+    <string name="budget">予算</string>
     <string name="detail">詳細</string>
     <string name="list_btn">List</string>
     <string name="rst_detail_top">の詳細</string>
@@ -15,7 +16,7 @@
     <string name="rst_detail_category">カテゴリ</string>
     <string name="rst_detail_dinner">晩の予算</string>
     <string name="rst_detail_lunch">昼の予算</string>
-    <string name="rst_detail_situation">シチュエーション</string>
+    <string name="rst_detail_situation">利用場面</string>
     <string name="rst_detail_address">住所</string>
     <string name="rst_detail_station">最寄り駅</string>
     <string name="rst_detail_tel">電話番号</string>

@@ -1,11 +1,12 @@
 package com.example.mapdemo;
 
+
 public class Title{
 	int id;
 	String titleName;
 	String condition;
 	String rank;
-	int imgId;
+	String imgStr;
 	boolean isGet;
 
 
@@ -14,7 +15,17 @@ public class Title{
 		this.titleName = titleName;
 		this.rank = rank;
 		this.condition = condition;
-		this.imgId =  R.drawable.ic_launcher;
+		this.imgStr = "hatena";
+		this.isGet = false;
+
+	}
+
+	public Title(int id,String titleName, String rank,String condition,String ImgStr){
+		this.id = id;
+		this.titleName = titleName;
+		this.rank = rank;
+		this.condition = condition;
+		this.imgStr = ImgStr;
 		this.isGet = false;
 
 	}
@@ -27,12 +38,12 @@ public class Title{
 		this.condition = condition;
 	}
 
-	public int getImgId() {
-		return imgId;
+	public String getImgStr() {
+		return imgStr;
 	}
 
-	public void setImgId(int imgId) {
-		this.imgId = imgId;
+	public void setImgId(String imgStr) {
+		this.imgStr = imgStr;
 	}
 
 	public boolean isGet() {

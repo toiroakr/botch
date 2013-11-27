@@ -114,8 +114,6 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 			mContext.hideButtons();
 		} else if (position == 0 && is_btn_view == true)
 			mContext.viewButtons();
-		else
-			is_btn_view = false;
 
 		TabWidget widget = mTabHost.getTabWidget();
 		int oldFocusability = widget.getDescendantFocusability();
