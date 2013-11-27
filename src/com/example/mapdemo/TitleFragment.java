@@ -65,6 +65,8 @@ public class TitleFragment extends Fragment {
 		//dbAdapter = new DBAdapter(getActivity());
 
 		loadTitles();
+		redrawGridView();
+
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Title title = adapter.getItem(position);
@@ -174,8 +176,6 @@ public class TitleFragment extends Fragment {
 			Log.v("acquired_title", e.toString());
 			acquired_titles = "";
 		};
-		Title t = adapter.getItem(12);
-		t.setGet(true);
 		adapter.notifyDataSetChanged();
 	}
 	private void setTitleDetail(Title title, View parentView){
