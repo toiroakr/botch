@@ -70,6 +70,9 @@ OnMarkerClickListener {
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
 
+	//エミュレータ対策用
+	private static final LatLng START_POS = new LatLng(35.645185, 139.408532);
+
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
 		return requestQueue;
@@ -404,16 +407,24 @@ OnMarkerClickListener {
 	}
 
 	private Marker addMarker(Restaurant rst) {
-		Marker m = mMap.addMarker(new MarkerOptions()
+		Marker m = null;
+		if (mMap != null){
+			m = mMap.addMarker(new MarkerOptions()
 				.position(new LatLng(rst.getLat(), rst.getLon()))
 				.title(rst.getRestaurantName())
 				.icon(BitmapDescriptorFactory.defaultMarker()));
-		mMarkers.put(m, rst);
+			mMarkers.put(m, rst);
+		}
 		return m;
 	}
 
 	private LatLng getLocation() {
-		CameraPosition camPos = mMap.getCameraPosition();
+		CameraPosition camPos;
+		if (mMap != null){
+			camPos = mMap.getCameraPosition();
+		}else{
+			camPos = new CameraPosition(START_POS,16, 0, 0);
+		}
 		return camPos.target;
 	}
 

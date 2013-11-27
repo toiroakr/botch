@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="0dp"
+<com.example.mapdemo.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/img"
     android:alpha="255"
-    android:background="@layout/border">
-</ImageView>
+    android:background="@layout/border"
+    android:padding="8dp">
+</com.example.mapdemo.SquareImageView>
