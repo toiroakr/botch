@@ -77,6 +77,7 @@ public class TitleFragment extends Fragment {
 			}
 
 		});
+		gridView.performClick();
 		return a;
 	}
 

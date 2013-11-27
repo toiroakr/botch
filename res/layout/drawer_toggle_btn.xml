@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/drawer_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="bottom|left"
         android:layout_margin="4dp"
         android:alpha="1.0"
@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/drawer_lonely"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_margin="6dp"
         android:alpha="1.0"
         android:clickable="true"
