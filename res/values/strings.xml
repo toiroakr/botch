@@ -22,5 +22,7 @@
     <string name="rst_detail_tel">電話番号</string>
     <string name="rst_detail_businesshour">営業時間</string>
     <string name="rst_detail_holiday">休日</string>
+    <string name="setting_title">設定</string>
+    <string name="setting_change">名前を変更します</string>
 
 </resources>

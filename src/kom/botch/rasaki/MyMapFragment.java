@@ -212,6 +212,8 @@ OnMarkerClickListener {
 		mapView.addView(addToggleButton(inflater, container));
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
+		addSettingButton(mapView);
+		mapView.findViewById(R.id.drawer_setting).performClick();
 		renewRsts();
 		return mapView;
 	}
@@ -303,6 +305,19 @@ OnMarkerClickListener {
 				clear();
 				renewRsts();
 				Log.v("hogeeeeeeeeelonely", lonely);
+			}
+		});
+	}
+	
+	private void addSettingButton(FrameLayout mapView) {
+		final ImageView settingButton = (ImageView) mapView.findViewById(R.id.drawer_setting);
+		settingButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), Setting.class);
+				// intent.putExtra("rst_id", rst_id);
+				startActivity(intent);
+				Log.v("settingButton", "settingbutton");
 			}
 		});
 	}
