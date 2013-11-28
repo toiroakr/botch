@@ -44,5 +44,6 @@ android:versionName="2.2.1">
 		<activity android:name=".MainActivity" ></activity>
 		<activity android:name=".RstDetail" ></activity>
 		<activity android:name=".WebViewFromTextView"></activity>
+		<activity android:name=".Setting"></activity>
 	</application>
 </manifest>

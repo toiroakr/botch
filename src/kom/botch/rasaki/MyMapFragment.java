@@ -213,7 +213,6 @@ OnMarkerClickListener {
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
 		addSettingButton(mapView);
-		mapView.findViewById(R.id.drawer_setting).performClick();
 		renewRsts();
 		return mapView;
 	}
@@ -593,7 +592,7 @@ OnMarkerClickListener {
 									preference.WriteKeyValue("user_name",
 											user_name);
 									Toast.makeText(getActivity(),
-											"Hello, " + user_name,
+											"お一人様でお待ちの " + user_name + "様〜",
 											Toast.LENGTH_LONG).show();
 								}
 							})
@@ -609,8 +608,8 @@ OnMarkerClickListener {
 							}).show();
 		} else {
 			String user_name = preference.ReadKeyValue("user_name");
-			Toast.makeText(getActivity(), "Hello, " + user_name,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "お一人様でお待ちの " + user_name + "様〜",
+					Toast.LENGTH_LONG).show();
 		}
 		user_id = preference.ReadKeyValue("user_id");
 	}

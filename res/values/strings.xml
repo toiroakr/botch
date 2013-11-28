@@ -24,5 +24,8 @@
     <string name="rst_detail_holiday">休日</string>
     <string name="setting_title">設定</string>
     <string name="setting_change">名前を変更します</string>
+    <string name="default_username">名無しの権兵衛</string>
+    <string name="lisence">免責事項</string>
+    <string name="setting_username_title">ユーザーネーム</string>
 
 </resources>
