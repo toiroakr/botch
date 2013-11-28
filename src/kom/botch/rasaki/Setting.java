@@ -14,7 +14,6 @@ import com.google.gson.JsonObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +34,7 @@ public class Setting extends Activity {
 		setContentView(R.layout.setting);
 		requestQueue = Volley.newRequestQueue(this);
 		UserSettings preference = new UserSettings(this, "botch_user_setting");
-		String loaded_user_name = preference.ReadKeyValue("user_name");
+		final String loaded_user_name = preference.ReadKeyValue("user_name");
 		TextView userNameTV = (TextView) findViewById(R.id.setting_username);
 		userNameTV.setText(loaded_user_name);
 		TextView mapLisence = (TextView) findViewById(R.id.setting_lisence);
@@ -45,14 +44,15 @@ public class Setting extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						changeUserName();
+						changeUserName(loaded_user_name);
 					}
 				});
 	}
 	
-	private void changeUserName() {
+	private void changeUserName(String original_user_name) {
         final UserSettings preference = new UserSettings(this, "botch_user_setting");
         final EditText editView = new EditText(this);
+        editView.setText(original_user_name);
         final String user_id = preference.ReadKeyValue("user_id");
 		new AlertDialog.Builder(this)
 				.setIcon(android.R.drawable.ic_dialog_info)
