@@ -33,3 +33,7 @@ proguard/
 build.gradle
 src/config.properties
 project.properties
+.AndroidManifest.xml.BASE.10824.xml.swp
+.AndroidManifest.xml.LOCAL.10824.xml.swp
+.AndroidManifest.xml.REMOTE.10824.xml.swp
+.AndroidManifest.xml.swp
