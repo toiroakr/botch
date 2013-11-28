@@ -23,9 +23,9 @@ public class SplashActivity extends Activity {
 			Intent i = new Intent(SplashActivity.this.getApplication(),
 					MainActivity.class);
 			SplashActivity.this.startActivity(i);
-			SplashActivity.this
-					.overridePendingTransition(R.drawable.splashing_fade_in,
-							R.drawable.splashing_fade_out);
+			// SplashActivity.this
+			// .overridePendingTransition(R.drawable.splashing_fade_in,
+			// R.drawable.splashing_fade_out);
 			SplashActivity.this.finish();
 		}
 	}
