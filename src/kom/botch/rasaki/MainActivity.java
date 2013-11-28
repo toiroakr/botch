@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -76,16 +75,6 @@ public class MainActivity extends FragmentActivity {
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
-
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				if(position == 1){
-					TitleFragment.redraw();
-				}
-				//Log.v("vv",Integer.toString(position));
-			}
-		});
 	}
 //
 //	@Override

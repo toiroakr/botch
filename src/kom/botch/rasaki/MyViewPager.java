@@ -79,7 +79,7 @@ public class MyViewPager extends android.support.v4.view.ViewPager {
 			break;
 		case MotionEvent.ACTION_UP:
 			onHoldingSwipe = false;
-			return false;
+			break;
 		case MotionEvent.ACTION_MOVE:
 			Log.d("TouchEvent", "getAction()" + "MOVE | " + onHoldingSwipe);
 			return onHoldingSwipe;
