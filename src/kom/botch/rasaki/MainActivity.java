@@ -29,7 +29,6 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.mapdemo.R;
 import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 

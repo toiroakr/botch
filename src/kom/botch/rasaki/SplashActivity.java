@@ -1,6 +1,5 @@
 package kom.botch.rasaki;
 
-import com.example.mapdemo.R;
 
 import android.app.Activity;
 import android.content.Intent;

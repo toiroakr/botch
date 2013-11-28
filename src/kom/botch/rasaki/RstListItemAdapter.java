@@ -3,8 +3,6 @@ package kom.botch.rasaki;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.example.mapdemo.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

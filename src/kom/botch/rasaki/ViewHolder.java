@@ -1,7 +1,5 @@
 package kom.botch.rasaki;
 
-import com.example.mapdemo.R;
-
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
