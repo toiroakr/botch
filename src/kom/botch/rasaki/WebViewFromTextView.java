@@ -1,4 +1,6 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
+
+import com.example.mapdemo.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

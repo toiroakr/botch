@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import android.content.Context;
 import android.util.AttributeSet;

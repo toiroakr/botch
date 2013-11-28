@@ -1,6 +1,8 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import java.util.ArrayList;
+
+import com.example.mapdemo.R;
 
 import android.content.Context;
 import android.os.Bundle;

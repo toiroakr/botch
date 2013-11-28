@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.example.mapdemo.R;
 
 import android.content.Context;
 import android.database.Cursor;

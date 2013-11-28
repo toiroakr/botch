@@ -1,4 +1,4 @@
-﻿package com.example.mapdemo;
+﻿package kom.botch.rasaki;
 
 import android.location.Location;
 
