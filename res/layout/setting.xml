@@ -51,7 +51,6 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="@string/lisence"
-        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/settingChange"
         android:layout_marginTop="30dp"
@@ -70,7 +69,6 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="@string/lisence"
-            android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="12sp" />
     </ScrollView>
