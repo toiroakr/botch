@@ -305,7 +305,7 @@ public class MyMapFragment extends SupportMapFragment implements
 							.setBackgroundResource(R.drawable.lonely_tapped);
 				}
 				restaurants.clear();
-				clear();
+				clear(true);
 				renewRsts();
 				// Log.v("hogeeeeeeeeelonely", lonely);
 			}
@@ -408,22 +408,25 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void addMarkers(boolean clear) {
 		if (clear)
-			clear();
+			clear(false);
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
 		}
 	}
 
-	private void clear() {
-		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
-				.iterator(); it.hasNext();) {
-			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
-					.next();
-			Marker r = entry.getKey();
-			if (!r.isInfoWindowShown())
-				r.remove();
-		}
-	}
+	private void clear(boolean all) {
+ 		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
+ 				.iterator(); it.hasNext();) {
+ 			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
+ 					.next();
+ 			Marker r = entry.getKey();
+			if ((all || !restaurants.containsValue(mMarkers.get(r)))) {
+				if(all)
+					r.hideInfoWindow();
+ 				r.remove();
+			}
+ 		}
+ 	}
 
 	private Marker addMarker(Restaurant rst) {
 		Marker m = null;
