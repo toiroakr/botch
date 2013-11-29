@@ -19,6 +19,15 @@ public class Title{
 		this.isGet = false;
 
 	}
+	public Title(){
+		this.id = -1;
+		this.titleName = null;
+		this.rank = null;
+		this.condition = null;
+		this.imgStr = null;
+		this.isGet = false;
+
+	}
 
 	public Title(int id,String titleName, String rank,String condition,String ImgStr){
 		this.id = id;
