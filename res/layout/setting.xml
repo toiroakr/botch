@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/pastelpink"
+    android:background="@color/smokered"
     android:orientation="vertical" >
 
-    <TextView
+    <!-- TextView
         android:id="@+id/settingTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,15 +12,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/setting_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge" / -->
 
     <TextView
         android:id="@+id/setting_username_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/settingTitle"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:text="@string/setting_username_title"
         android:textAppearance="?android:attr/textAppearanceMedium" />    
 
@@ -29,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/setting_username_title"
+        android:textColor="@color/darkred"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
@@ -42,6 +43,7 @@
         android:layout_below="@+id/setting_username"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
+        android:alpha="1.0"
         android:text="@string/setting_change" />
 
     <TextView
@@ -53,16 +55,20 @@
         android:text="@string/lisence"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/settingChange"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:textSize="18sp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/setting_lisence_title"
-        android:layout_marginTop="32dp" >
+        android:padding="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/gray" >
 
         <TextView
+            android:layout_margin="1dp"
+            android:background="@color/white"
             android:id="@+id/setting_lisence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
