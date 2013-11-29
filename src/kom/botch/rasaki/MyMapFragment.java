@@ -63,7 +63,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
-	String LIMIT = "100";
+	String LIMIT = "30";
 	String lonely = "1"; // 1で「一人で」、それ以外で「全て」
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
@@ -239,46 +239,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		setRestaurantList(false);
 	}
 
-	private void setRestaurantList(boolean clear) {
-		// ListViewに表示するデータを作成する
-		ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < 20; i++) {
-			list.add("hoge" + i);
-		}
-
-		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
-		listView.setBackgroundColor(getResources().getColor(R.color.darkgray));
-		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
-		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
-		if (adapter == null)
-			adapter = new RstListItemAdapter(getActivity());
-		adapter.addAll(restaurants, clear);
-
-		listView.setAdapter(adapter);
-		// タップした時の動作を定義する
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Restaurant tarR = (Restaurant) parent
-						.getItemAtPosition(position);
-				Marker tarM = null;
-				for (Marker m : mMarkers.keySet())
-					if (tarR.equals(mMarkers.get(m))) {
-						tarM = m;
-						break;
-					}
-				// onMarkerClickがtrueだと
-				// Map画面じゃない
-				if (onMarkerClick(tarM))
-					return;
-				tarM.showInfoWindow();
-				drawer.toggleLeftDrawer();
-				setCenterLocation(tarM.getPosition(), true);
-			}
-		});
-	}
-
 	private View addToggleButton(LayoutInflater inflater, ViewGroup container) {
 		// viewにリスト表示ボタンを追加する
 		View layout;
@@ -360,7 +320,8 @@ public class MyMapFragment extends SupportMapFragment implements
 			// LocationMangerに最終位置を問い合わせて初期位置を確定する
 
 			// 各種コントロール、リスナー等をセット
-			mMap.getUiSettings().setCompassEnabled(false);
+			mMap.getUiSettings().setRotateGesturesEnabled(false);
+			// mMap.getUiSettings().setCompassEnabled(false);
 			mMap.getUiSettings().setZoomControlsEnabled(true);
 			// mMap.getUiSettings().setMyLocationButtonEnabled(true);
 			// mMap.setMyLocationEnabled(true);
@@ -423,14 +384,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		return loc;
 	}
 
-	private void addMarkers(boolean clear) {
-		if (clear)
-			clear(false);
-		for (Restaurant rst : restaurants.values()) {
-			addMarker(rst);
-		}
-	}
-
 	private void clear(boolean all) {
 		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
 				.iterator(); it.hasNext();) {
@@ -438,23 +391,10 @@ public class MyMapFragment extends SupportMapFragment implements
 					.next();
 			Marker r = entry.getKey();
 			// r.isInfoWindowShown()
-			if (all || !restaurants.containsValue(r)) {
-				r.hideInfoWindow();
+			if ((all || !restaurants.containsValue(r)) && !r.isInfoWindowShown()) {
 				r.remove();
 			}
 		}
-	}
-
-	private Marker addMarker(Restaurant rst) {
-		Marker m = null;
-		if (mMap != null) {
-			m = mMap.addMarker(new MarkerOptions()
-					.position(new LatLng(rst.getLat(), rst.getLon()))
-					.title(rst.getRestaurantName())
-					.icon(BitmapDescriptorFactory.defaultMarker()));
-			mMarkers.put(m, rst);
-		}
-		return m;
 	}
 
 	private LatLng getLocation() {
@@ -759,5 +699,65 @@ public class MyMapFragment extends SupportMapFragment implements
 				.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		LOCATION_ENABLE = gpsFlg | networkFlg;
 		return gpsFlg;
+	}
+
+	private void addMarkers(boolean clear) {
+		if (clear)
+			clear(false);
+		for (Restaurant rst : restaurants.values()) {
+			addMarker(rst);
+		}
+	}
+
+	private Marker addMarker(Restaurant rst) {
+		Marker m = null;
+		if (mMap != null) {
+			m = mMap.addMarker(new MarkerOptions()
+					.position(new LatLng(rst.getLat(), rst.getLon()))
+					.title(rst.getRestaurantName())
+					.icon(BitmapDescriptorFactory.defaultMarker()));
+			mMarkers.put(m, rst);
+		}
+		return m;
+	}
+
+	private void setRestaurantList(boolean clear) {
+		// ListViewに表示するデータを作成する
+		ArrayList<String> list = new ArrayList<String>();
+		for (int i = 0; i < 20; i++) {
+			list.add("hoge" + i);
+		}
+
+		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
+		listView.setBackgroundColor(getResources().getColor(R.color.darkgray));
+		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
+		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
+		if (adapter == null)
+			adapter = new RstListItemAdapter(getActivity());
+		adapter.addAll(restaurants, clear);
+
+		listView.setAdapter(adapter);
+		// タップした時の動作を定義する
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Restaurant tarR = (Restaurant) parent
+						.getItemAtPosition(position);
+				Marker tarM = null;
+				for (Marker m : mMarkers.keySet())
+					if (tarR.equals(mMarkers.get(m))) {
+						tarM = m;
+						break;
+					}
+				// onMarkerClickがtrueだと
+				// Map画面じゃない
+				if (onMarkerClick(tarM))
+					return;
+				tarM.showInfoWindow();
+				drawer.toggleLeftDrawer();
+				setCenterLocation(tarM.getPosition(), true);
+			}
+		});
 	}
 }
