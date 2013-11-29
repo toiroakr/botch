@@ -38,6 +38,7 @@ public class TitleFragment extends Fragment {
 	public static final String COL_RANK = "rank";
 	public static final String COL_CONDITION = "condition";
 	public static final String COL_LASTUPDATE = "lastupdate";
+	public static final int MAX_TITLE = 74;
 	private String acquired_titles;
 	@Override
 	public View onCreateView(
@@ -65,6 +66,7 @@ public class TitleFragment extends Fragment {
 		//dbAdapter = new DBAdapter(getActivity());
 
 		loadTitles();
+		adapter.getItem(5).setGet(true);
 		redrawGridView();
 
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -183,10 +185,56 @@ public class TitleFragment extends Fragment {
 		TextView titleText = (TextView)parentView.findViewById(R.id.titleText);
 		TextView conditionText = (TextView)parentView.findViewById(R.id.conditionText);
 		TextView rankText = (TextView)parentView.findViewById(R.id.rankText);
-		imgView.setImageResource(getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName()));
-		titleText.setText(title.getTitleName());
-		conditionText.setText(title.getCondition());
-		rankText.setText(title.getRank());
+
+		if(title.isGet()){
+			imgView.setImageResource(getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName()));
+			titleText.setText(title.getTitleName());
+			conditionText.setText(title.getCondition());
+			rankText.setText(title.getRank());
+		}else{
+			imgView.setImageResource(R.drawable.hatena);
+			titleText.setText("??????");
+			int id = title.id;
+			int idb,idf,idu,idd;
+			if (id%5 != 1){
+				idb = id-1;
+			}else{
+				idb = id;
+			}
+			if ((id != MAX_TITLE) && (id%5 != 0)){
+				idf = id + 1;
+			}else{
+				idf = id;
+			}
+
+			if (id < MAX_TITLE - 5){
+				idu = id + 5;
+			}else{
+				idu = id;
+			}
+
+			if (id > 5){
+				idd = id-5;
+			}else{
+				idd = id;
+			}
+
+			String cond = "???????";
+			if (adapter.getItem(idb).isGet()){
+				cond = title.getCondition();
+			}
+			if (adapter.getItem(idf).isGet()){
+				cond = title.getCondition();
+			}
+			if (adapter.getItem(idu).isGet()){
+				cond = title.getCondition();
+			}
+			if (adapter.getItem(idd).isGet()){
+				cond = title.getCondition();
+			}
+			conditionText.setText(cond);
+			rankText.setText(title.getRank());
+		}
 	}
 
 	private class TitleAdapter extends BaseAdapter {
