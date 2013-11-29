@@ -3,6 +3,7 @@
     android:id="@+id/side_relative"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
     android:background="#eee" >
 
     <RatingBar

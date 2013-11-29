@@ -56,7 +56,7 @@ import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 
 public class MyMapFragment extends SupportMapFragment implements
-OnMarkerClickListener {
+		OnMarkerClickListener {
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
@@ -69,9 +69,11 @@ OnMarkerClickListener {
 	private String url;
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
+	private static final double LON_DEFAULT = 135.783694;
+	private static final double LAT_DEFAULT = 35.027587;
 
-	//エミュレータ対策用
-	private static final LatLng START_POS = new LatLng(35.645185, 139.408532);
+	// エミュレータ対策用
+	private static final LatLng START_POS = new LatLng(LAT_DEFAULT, LON_DEFAULT);
 
 	// setParamsに注意
 	public RequestQueue getRequestQueue() {
@@ -218,10 +220,11 @@ OnMarkerClickListener {
 	}
 
 	private void renewRsts() {
+//		// デバッグ用マーカー
+//		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
+//		restaurants.put(1, tst);
+
 		fetchNearRsts();
-		// デバッグ用マーカー
-		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
-		restaurants.put(1, tst);
 		addMarkers(false);
 		setRestaurantList(false);
 	}
@@ -234,6 +237,7 @@ OnMarkerClickListener {
 		}
 
 		ListView listView = (ListView) drawer.findViewById(R.id.rst_list);
+		listView.setBackgroundColor(getResources().getColor(R.color.darkgray));
 		// android.R.layout.simple_list_item_1はAndroidで既に定義されているリストアイテムのレイアウトです
 		RstListItemAdapter adapter = (RstListItemAdapter) listView.getAdapter();
 		if (adapter == null)
@@ -307,9 +311,10 @@ OnMarkerClickListener {
 			}
 		});
 	}
-	
+
 	private void addSettingButton(FrameLayout mapView) {
-		final ImageView settingButton = (ImageView) mapView.findViewById(R.id.drawer_setting);
+		final ImageView settingButton = (ImageView) mapView
+				.findViewById(R.id.drawer_setting);
 		settingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -351,15 +356,15 @@ OnMarkerClickListener {
 
 			// カメラの初期位置をセット
 			Location loc = getMyLocation();
-			double lat = 35.;
-			double lon = 135;
+			double lat = LAT_DEFAULT;
+			double lon = LON_DEFAULT;
 
 			if (loc != null) {
 				lat = loc.getLatitude();
 				lon = loc.getLongitude();
 			}
 			CameraPosition.Builder builder = new CameraPosition.Builder()
-			.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
+					.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
 			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
 					.build()));
 		}
@@ -422,11 +427,11 @@ OnMarkerClickListener {
 
 	private Marker addMarker(Restaurant rst) {
 		Marker m = null;
-		if (mMap != null){
+		if (mMap != null) {
 			m = mMap.addMarker(new MarkerOptions()
-				.position(new LatLng(rst.getLat(), rst.getLon()))
-				.title(rst.getRestaurantName())
-				.icon(BitmapDescriptorFactory.defaultMarker()));
+					.position(new LatLng(rst.getLat(), rst.getLon()))
+					.title(rst.getRestaurantName())
+					.icon(BitmapDescriptorFactory.defaultMarker()));
 			mMarkers.put(m, rst);
 		}
 		return m;
@@ -434,10 +439,10 @@ OnMarkerClickListener {
 
 	private LatLng getLocation() {
 		CameraPosition camPos;
-		if (mMap != null){
+		if (mMap != null) {
 			camPos = mMap.getCameraPosition();
-		}else{
-			camPos = new CameraPosition(START_POS,16, 0, 0);
+		} else {
+			camPos = new CameraPosition(START_POS, 16, 0, 0);
 		}
 		return camPos.target;
 	}
