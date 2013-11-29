@@ -53,7 +53,7 @@ public class TitleFragment extends Fragment {
                 initTextColor();
 
                 setAdapters();
-                Log.v("tag", "start");
+                // Log.v("tag", "start");
                 DBHelper helper = new DBHelper(getActivity());
                 try{
                         helper.createEmptyDataBase();
@@ -97,7 +97,7 @@ public class TitleFragment extends Fragment {
 
         protected void findViews(View a) {
                 gridView = (GridView) a.findViewById(R.id.titleGrid);
-                //Log.v("asa",Integer.toString(gridView.getColumnWidth()));;
+                //// Log.v("asa",Integer.toString(gridView.getColumnWidth()));;
                 //gridView.setColumnWidth(columnWidth);
                 //gridView.getColumnWidth();
         }
@@ -169,7 +169,7 @@ public class TitleFragment extends Fragment {
 
         public static void redraw(){
                 adapter.notifyDataSetChanged();
-                Log.v("tag","redraw");
+                // Log.v("tag","redraw");
         }
 
 
@@ -178,7 +178,7 @@ public class TitleFragment extends Fragment {
                 try {
                         // sharedPreferenceから取得済みの称号を取得する
                         acquired_titles = preference.ReadKeyValue("acquired_title");
-                        //Log.v("取得済みの称号！", acquired_titles);
+                        //// Log.v("取得済みの称号！", acquired_titles);
                         JSONObject o = new JSONObject(acquired_titles);
                         JSONArray r = o.getJSONArray("acquired_titles");
                         for(int i=0;i < r.length();i++){
@@ -186,9 +186,9 @@ public class TitleFragment extends Fragment {
                                 t.setGet(true);
                         }
                         adapter.notifyDataSetChanged();
-                        //Log.v("acquired_title => ",r.get(1).toString() + Integer.toString(r.length()));
+                        //// Log.v("acquired_title => ",r.get(1).toString() + Integer.toString(r.length()));
                 } catch (Exception e) {
-                        Log.v("acquired_title", e.toString());
+                        // Log.v("acquired_title", e.toString());
                         acquired_titles = "";
                 };
                 adapter.notifyDataSetChanged();
@@ -285,11 +285,11 @@ public class TitleFragment extends Fragment {
                                 v = inflater.inflate(R.layout.box, null);
                         }
 
-                        //Log.v("getview",Integer.toString(position));
+                        //// Log.v("getview",Integer.toString(position));
                         Title title = (Title) getItem(position);
                         if (title != null){
                                 imgView = (ImageView) v.findViewById(R.id.img);
-                                //Log.v("getview",title.getImgStr());
+                                //// Log.v("getview",title.getImgStr());
                                 if(!title.isGet()){
                                         if (isNearTitle(title.id)){
                                                 imgView.setAlpha(155);
@@ -301,7 +301,7 @@ public class TitleFragment extends Fragment {
                                         imgView.setAlpha(255);
                                         int resourceId = getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName());
                                         imgView.setImageResource(resourceId);
-                                        Log.v("getview",title.getImgStr());
+                                        // Log.v("getview",title.getImgStr());
                                 }
                         }
 

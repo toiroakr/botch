@@ -92,7 +92,7 @@ public class Setting extends Activity {
 		params.put("new_name", user_name);
 		params.put("new_home", "");
 		params.put("user_id", user_id);
-		Log.v("user_id", user_id);
+		// Log.v("user_id", user_id);
 		String url = "/update_user";
 		int method = Method.PUT;
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
@@ -101,8 +101,8 @@ public class Setting extends Activity {
 					// 通信成功時のコールバック関数
 					public void onResponse(JsonObject response) {
 						// success
-						String _user_id = response.get("update").toString();
-						Log.v("success sendUserName:", _user_id);
+						// String _user_id = response.get("update").toString();
+						// Log.v("success sendUserName:", _user_id);
 						// preference.WriteKeyValue("user_id", _user_id);
 						// user_id = _user_id;
 					}
@@ -111,7 +111,7 @@ public class Setting extends Activity {
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.v("error:", error.toString() + "：通信に失敗しました");
+						// Log.v("error:", error.toString() + "：通信に失敗しました");
 						Toast.makeText(getApplicationContext(), "通信に失敗しました",
 								Toast.LENGTH_SHORT).show();
 					}

@@ -2,7 +2,7 @@ package kom.botch.rasaki;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
+// import android.util.Log;
 import android.view.MotionEvent;
 
 /*
@@ -60,7 +60,7 @@ public class MyViewPager extends android.support.v4.view.ViewPager {
 	private boolean isSwipeHold(MotionEvent event) {
 		boolean _isSwipeHold;
 		double swipeArea = getWidth() * 0.25;
-		Log.d("TouchEvent", "" + swipeArea);
+		// Log.d("TouchEvent", "" + swipeArea);
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			if (event.getX() > this.getWidth() - swipeArea
@@ -74,19 +74,19 @@ public class MyViewPager extends android.support.v4.view.ViewPager {
 				_isSwipeHold = true;
 			}
 			onHoldingSwipe = _isSwipeHold;
-			Log.d("TouchEvent", "getAction()" + "ACTION_DOWN | "
-					+ onHoldingSwipe);
+			// Log.d("TouchEvent", "getAction()" + "ACTION_DOWN | "
+			// 		+ onHoldingSwipe);
 			break;
 		case MotionEvent.ACTION_UP:
 			onHoldingSwipe = false;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			Log.d("TouchEvent", "getAction()" + "MOVE | " + onHoldingSwipe);
+			// Log.d("TouchEvent", "getAction()" + "MOVE | " + onHoldingSwipe);
 			return onHoldingSwipe;
 		case MotionEvent.ACTION_CANCEL:
 			onHoldingSwipe = false;
-			Log.d("TouchEvent", "getAction()" + "ACTION_CANCEL | "
-					+ onHoldingSwipe);
+			// Log.d("TouchEvent", "getAction()" + "ACTION_CANCEL | "
+			//		+ onHoldingSwipe);
 			break;
 		}
 		return onHoldingSwipe;

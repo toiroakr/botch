@@ -155,7 +155,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 //	@Override
 //	public void onCreate(SQLiteDatabase db) {
-//		Log.v("a", "create!!!");
+//		// Log.v("a", "create!!!");
 //		db.execSQL(
 //				"CREATE TABLE " + TABLE_NAME + " ("
 //						+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -187,7 +187,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		values.put(COL_LASTUPDATE, dateNow.toString());
 
 		long rowId = db.insert(TABLE_NAME, null, values);
-		Log.v("insert", Long.toString(rowId));
+		// Log.v("insert", Long.toString(rowId));
 		return rowId;
 	}
 }

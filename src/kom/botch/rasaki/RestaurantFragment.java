@@ -43,7 +43,7 @@ public class RestaurantFragment extends Fragment {
 		requestQueue = Volley.newRequestQueue(getActivity()
 				.getApplicationContext());
 		setAdapters();
-		Log.v("create:", "create");
+		// Log.v("create:", "create");
 		return a;
 	}
 
@@ -69,7 +69,7 @@ public class RestaurantFragment extends Fragment {
 		String url = "/read_rst";
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("rst_id", Integer.toString(ran));
-		Log.v("success:", Integer.toString(ran));
+		// Log.v("success:", Integer.toString(ran));
 		/*
 		 * public GsonRequest(int method, String url, Class<T> clazz,
 		 * Map<String, String> params, Listener<T> listener, ErrorListener
@@ -82,7 +82,7 @@ public class RestaurantFragment extends Fragment {
 				// success
 				String result = rst.toString(); // user.get("result").toString();
 
-				Log.v("success:", result);
+				// Log.v("success:", result);
 				dataList.add(
 						new Restaurant(1,"天下一品ラーメン", 4.5, 5, "ラーメン"));
 				adapter.notifyDataSetChanged();
@@ -92,10 +92,10 @@ public class RestaurantFragment extends Fragment {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				// error
-				Log.v("error:", error.toString());
+				// Log.v("error:", error.toString());
 			}
 		});
-		Log.v("check:", "check");
+		// Log.v("check:", "check");
 		requestQueue.add(req);
 	}
 
