@@ -92,7 +92,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 
 	@Override
 	public void onTabChanged(String tabId) {
-		Log.d("onTabChanged", "" + tabId);
+		// Log.d("onTabChanged", "" + tabId);
 		int position = mTabHost.getCurrentTab();
 		mViewPager.setCurrentItem(position, false);
 	}
@@ -100,12 +100,12 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	@Override
 	public void onPageScrolled(int position, float positionOffset,
 			int positionOffsetPixels) {
-		Log.d("onPageScrolled", "" + position);
+		// Log.d("onPageScrolled", "" + position);
 	}
 
 	@Override
 	public void onPageSelected(int position) {
-		Log.d("onPageSelected", "" + position);
+		// Log.d("onPageSelected", "" + position);
 		int preTab = mTabHost.getCurrentTab();
 		int visible = mContext.findViewById(R.id.marker_btns).getVisibility();
 		if (preTab == 0 && visible == View.VISIBLE) {

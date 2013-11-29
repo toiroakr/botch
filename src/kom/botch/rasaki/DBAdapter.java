@@ -27,11 +27,11 @@ public class DBAdapter {
 
 	public DBAdapter(Context context){
 		this.context = context;
-		Log.v("tag", "context");
+		// Log.v("tag", "context");
 		dbHelper = new DatabaseHelper(this.context);
-		Log.v("tag", "dbhelper");
+		// Log.v("tag", "dbhelper");
 		saveTitle("a", "b", "c");
-		Log.v("tag", "savetitle");
+		// Log.v("tag", "savetitle");
 	}
 
 	//
@@ -46,7 +46,7 @@ public class DBAdapter {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.v("a", "create!!!");
+			// Log.v("a", "create!!!");
 			db.execSQL(
 					"CREATE TABLE " + TABLE_NAME + " ("
 							+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -106,10 +106,10 @@ public class DBAdapter {
 		values.put(COL_RANK, rank);
 		values.put(COL_CONDITION, condition);
 		values.put(COL_LASTUPDATE, dateNow.toString());
-		Log.v("tag", "tostringisok");
+		// Log.v("tag", "tostringisok");
 		db.insert(TABLE_NAME, null, values);
 
-		Log.v("tag", "in");
+		// Log.v("tag", "in");
 	}
 	public void saveTitle(Title title){
 		Date dateNow = new Date ();

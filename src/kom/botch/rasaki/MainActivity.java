@@ -116,21 +116,21 @@ public class MainActivity extends FragmentActivity {
 					// 通信成功時のコールバック関数
 					public void onResponse(JsonObject result) {
 						// success
-						Log.v("success:", result.toString());
+						// Log.v("success:", result.toString());
 						// 取得済みの称号をsharedPreferenceに保存
 						preference.WriteKeyValue("acquired_title", result.toString());
-						Log.v("success:", "DONE!");
-						Toast.makeText(getApplicationContext(),
-								result.toString(), Toast.LENGTH_LONG).show();
+						// Log.v("success:", "DONE!");
+						// Toast.makeText(getApplicationContext(),
+						// 		result.toString(), Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.e("error:", error.toString() + "：再読み込みしてください");
+						// Log.e("error:", error.toString() + "：再読み込みしてください");
 						Toast.makeText(getApplicationContext(),
-								"onErrorResponse", Toast.LENGTH_LONG).show();
+								"通信が出来ていません...", Toast.LENGTH_SHORT).show();
 					}
 				});
 		// requestQueueに上で定義したreqをaddすることで、非同期通信が行われる
@@ -216,7 +216,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public int getCurrentTab() {
-		Log.d("Marker", "current : " + mTabHost.getCurrentTab());
+		// Log.d("Marker", "current : " + mTabHost.getCurrentTab());
 		return mTabHost.getCurrentTab();
 	}
 }

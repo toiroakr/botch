@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
+// import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -148,7 +148,7 @@ OnMarkerClickListener {
 								restaurants.remove(remove_rstid);
 								puted_rstids.remove(0);
 							}
-							Log.v("size", Integer.toString(puted_rstids.size()));
+							// Log.v("size", Integer.toString(puted_rstids.size()));
 						}
 
 						// restaurants.clear();
@@ -176,8 +176,8 @@ OnMarkerClickListener {
 									lng);
 							restaurants.put(rst_id, restaurant);
 						}
-						// Log.v("success:", restaurants.toString());
-						Log.v("success:", "DONE!");
+						// // Log.v("success:", restaurants.toString());
+						// Log.v("success:", "DONE!");
 						addMarkers(true);
 						setRestaurantList(true);
 					}
@@ -186,7 +186,7 @@ OnMarkerClickListener {
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.v("error:", error.toString() + "：再読み込みしてください");
+						// Log.v("error:", error.toString() + "：再読み込みしてください");
 						Toast.makeText(getActivity(), "Error: この辺りにお店がありません",
 								Toast.LENGTH_SHORT).show();
 						requestQueue.cancelAll(TAG_REQUEST_QUEUE);
@@ -220,8 +220,8 @@ OnMarkerClickListener {
 	private void renewRsts() {
 		fetchNearRsts();
 		// デバッグ用マーカー
-		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
-		restaurants.put(1, tst);
+		// Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
+		// restaurants.put(1, tst);
 		addMarkers(false);
 		setRestaurantList(false);
 	}
@@ -303,7 +303,7 @@ OnMarkerClickListener {
 				restaurants.clear();
 				clear();
 				renewRsts();
-				Log.v("hogeeeeeeeeelonely", lonely);
+				// Log.v("hogeeeeeeeeelonely", lonely);
 			}
 		});
 	}
@@ -316,7 +316,7 @@ OnMarkerClickListener {
 				Intent intent = new Intent(getActivity(), Setting.class);
 				// intent.putExtra("rst_id", rst_id);
 				startActivity(intent);
-				Log.v("settingButton", "settingbutton");
+				// Log.v("settingButton", "settingbutton");
 			}
 		});
 	}
@@ -564,13 +564,13 @@ OnMarkerClickListener {
 	String user_id;
 
 	public void checkUserSetting() {
-		Log.v("checkUserSetting", "start");
+		// Log.v("checkUserSetting", "start");
 		// preference.WriteKeyValue("key","value");
 		final UserSettings preference = new UserSettings(getActivity(),
 				"botch_user_setting");
 		String _user_id = preference.ReadKeyValue("user_id");
 
-		Log.v("checkUserSetting", "user_id:" + _user_id);
+		// Log.v("checkUserSetting", "user_id:" + _user_id);
 		if (_user_id.equals("")) {
 			// テキスト入力を受け付けるビューを作成します。
 			final EditText editView = new EditText(getActivity());
@@ -592,7 +592,7 @@ OnMarkerClickListener {
 									preference.WriteKeyValue("user_name",
 											user_name);
 									Toast.makeText(getActivity(),
-											"お一人様でお待ちの " + user_name + "様〜",
+											"おひとりでお待ちの " + user_name + "様〜",
 											Toast.LENGTH_LONG).show();
 								}
 							})
@@ -608,7 +608,7 @@ OnMarkerClickListener {
 							}).show();
 		} else {
 			String user_name = preference.ReadKeyValue("user_name");
-			Toast.makeText(getActivity(), "お一人様でお待ちの " + user_name + "様〜",
+			Toast.makeText(getActivity(), "おひとりでお待ちの " + user_name + "様〜",
 					Toast.LENGTH_LONG).show();
 		}
 		user_id = preference.ReadKeyValue("user_id");
@@ -630,7 +630,7 @@ OnMarkerClickListener {
 					public void onResponse(JsonObject response) {
 						// success
 						String _user_id = response.get("user_id").toString();
-						Log.v("success sendUserName:", _user_id);
+						// Log.v("success sendUserName:", _user_id);
 						preference.WriteKeyValue("user_id", _user_id);
 						user_id = _user_id;
 					}
@@ -639,7 +639,7 @@ OnMarkerClickListener {
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.v("error:", error.toString() + "：通信に失敗しました");
+						// Log.v("error:", error.toString() + "：通信に失敗しました");
 						Toast.makeText(getActivity(), "通信に失敗しました",
 								Toast.LENGTH_SHORT).show();
 					}

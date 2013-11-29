@@ -19,7 +19,7 @@ public class WebViewFromTextView extends Activity {
         	// RstDetail.javaからurlを受け取っている
             String url =
                 getIntent().getDataString().replace("myscheme://", "http://");
-            Log.e("WebViewFromTextView:", url);
+            // Log.e("WebViewFromTextView:", url);
 
             // WebViewの設定
         	WebView webView = (WebView)findViewById(R.id.webView);

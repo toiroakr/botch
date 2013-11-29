@@ -65,10 +65,10 @@ public class RstDetail extends Activity {
 					// 通信成功時のコールバック関数
 					public void onResponse(RestaurantDetail rst) {
 						// success
-						Log.v("success:", rst.toString());
+						// Log.v("success:", rst.toString());
 						// TextViewへの埋め込みはこの関数で行う
 						setRestaurantDetailToTextView(rst);
-						Log.v("success:", "DONE!");
+						// Log.v("success:", "DONE!");
 					    // Toast.makeText(getApplicationContext(), rst.toString(), Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
@@ -76,7 +76,7 @@ public class RstDetail extends Activity {
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.v("error:", error.toString() + "：再読み込みしてください");
+						// Log.v("error:", error.toString() + "：再読み込みしてください");
 					    Toast.makeText(getApplicationContext(), "onErrorResponse", Toast.LENGTH_LONG).show();
 					}
 				});
@@ -112,7 +112,7 @@ public class RstDetail extends Activity {
 							if (names.indexOf(user_name) >= 0) {
 								continue;
 							}
-							Log.v("success !!!:", json_comments.toString());
+							// Log.v("success !!!:", json_comments.toString());
 							// names.add(user_name);
 							View view = getLayoutInflater().inflate(R.layout.user_comment, null);
 							comment_component.addView(view);
@@ -127,8 +127,8 @@ public class RstDetail extends Activity {
 
 							// restaurants.put(rst_id, restaurant);
 						}
-						// Log.v("success:", comments.toString());
-						Log.v("success:", "DONE!");
+						// // Log.v("success:", comments.toString());
+						// Log.v("success:", "DONE!");
 					    // Toast.makeText(getApplicationContext(), comments.toString(), Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
@@ -136,7 +136,7 @@ public class RstDetail extends Activity {
 					// 通信失敗時のコールバック関数
 					public void onErrorResponse(VolleyError error) {
 						// error
-						Log.v("error:", error.toString() + "：再読み込みしてください");
+						// Log.v("error:", error.toString() + "：再読み込みしてください");
 					    Toast.makeText(getApplicationContext(), "onErrorResponse", Toast.LENGTH_LONG).show();
 					}
 				});
@@ -149,7 +149,7 @@ public class RstDetail extends Activity {
     @Override
     public void onStart(){
      super.onStart();
-     // Log.v("length:", requestQueue.toString());
+     // // Log.v("length:", requestQueue.toString());
      //HTTPリクエストを行う
      // 2回通信されてしまう
      // this.startRequest();
