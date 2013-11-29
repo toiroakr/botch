@@ -3,6 +3,7 @@ package com.example.mapdemo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -39,7 +40,10 @@ public class TitleFragment extends Fragment {
 	public static final String COL_CONDITION = "condition";
 	public static final String COL_LASTUPDATE = "lastupdate";
 	public static final int MAX_TITLE = 74;
+	public static final int GRID_COL_NUM = 5;
 	private String acquired_titles;
+	private HashMap<String,Integer> textColor;
+
 	@Override
 	public View onCreateView(
 			LayoutInflater inflater,
@@ -47,6 +51,7 @@ public class TitleFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View a = inflater.inflate(R.layout.title_view, container, false);
 		findViews(a);
+		initTextColor();
 
 		setAdapters();
 		Log.v("tag", "start");
@@ -66,7 +71,13 @@ public class TitleFragment extends Fragment {
 		//dbAdapter = new DBAdapter(getActivity());
 
 		loadTitles();
-		adapter.getItem(5).setGet(true);
+		adapter.getItem(0).setGet(true);
+		adapter.getItem(4).setGet(true);
+		adapter.getItem(12).setGet(true);
+		adapter.getItem(25).setGet(true);
+		adapter.getItem(73).setGet(true);
+		adapter.getItem(70).setGet(true);
+
 		redrawGridView();
 
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,6 +91,15 @@ public class TitleFragment extends Fragment {
 
 		});
 		return a;
+	}
+
+	protected void initTextColor(){
+		textColor = new HashMap<String,Integer>();
+		textColor.put("ゴールド", 0xFFbe9917);
+		textColor.put("シルバー", 0xFF9C9C9C);
+		textColor.put("ブロンズ", 0xFFAA7A40);
+		textColor.put("プラチナ", 0xFFbe9917);
+		textColor.put("ノーマル", 0xFF000000);
 	}
 
 	protected void findViews(View a) {
@@ -190,51 +210,49 @@ public class TitleFragment extends Fragment {
 			imgView.setImageResource(getResources().getIdentifier(title.getImgStr(), "drawable", getActivity().getPackageName()));
 			titleText.setText(title.getTitleName());
 			conditionText.setText(title.getCondition());
-			rankText.setText(title.getRank());
+
 		}else{
 			imgView.setImageResource(R.drawable.hatena);
 			titleText.setText("??????");
-			int id = title.id;
-			int idb,idf,idu,idd;
-			if (id%5 != 1){
-				idb = id-1;
-			}else{
-				idb = id;
-			}
-			if ((id != MAX_TITLE) && (id%5 != 0)){
-				idf = id + 1;
-			}else{
-				idf = id;
-			}
-
-			if (id < MAX_TITLE - 5){
-				idu = id + 5;
-			}else{
-				idu = id;
-			}
-
-			if (id > 5){
-				idd = id-5;
-			}else{
-				idd = id;
-			}
 
 			String cond = "???????";
-			if (adapter.getItem(idb).isGet()){
-				cond = title.getCondition();
-			}
-			if (adapter.getItem(idf).isGet()){
-				cond = title.getCondition();
-			}
-			if (adapter.getItem(idu).isGet()){
-				cond = title.getCondition();
-			}
-			if (adapter.getItem(idd).isGet()){
+			if (isNearTitle(title.id)){
 				cond = title.getCondition();
 			}
 			conditionText.setText(cond);
-			rankText.setText(title.getRank());
 		}
+		rankText.setText(title.getRank());
+		rankText.setTextColor(textColor.get(title.getRank()));
+
+	}
+
+
+	private boolean isNearTitle(int titleid){
+		int id = titleid - 1;
+		int idb,idf,idu,idd;
+		if (id%GRID_COL_NUM != 0){
+			idb = id-1;
+		}else{
+			idb = id;
+		}
+		if (id%GRID_COL_NUM != GRID_COL_NUM - 1){
+			idf = id + 1;
+		}else{
+			idf = id;
+		}
+
+		idu = id + GRID_COL_NUM;
+		idd = id-GRID_COL_NUM;
+
+		Title temptb = adapter.getItem(idb);
+		Title temptf = adapter.getItem(idf);
+		Title temptu = adapter.getItem(idu);
+		Title temptd = adapter.getItem(idd);
+
+		if (temptb.isGet() || temptf.isGet() || temptu.isGet() || temptd.isGet()){
+			return true;
+		}
+		return false;
 	}
 
 	private class TitleAdapter extends BaseAdapter {
@@ -246,6 +264,9 @@ public class TitleFragment extends Fragment {
 
 		@Override
 		public Title getItem(int position) {
+			if ((position > 73) || (position < 0)){
+				return new Title();
+			}
 			return dataList.get(position);
 		}
 
@@ -277,7 +298,11 @@ public class TitleFragment extends Fragment {
 				imgView = (ImageView) v.findViewById(R.id.img);
 				//Log.v("getview",title.getImgStr());
 				if(!title.isGet()){
-					imgView.setAlpha(50);
+					if (isNearTitle(title.id)){
+						imgView.setAlpha(155);
+					}else{
+						imgView.setAlpha(50);
+					}
 					imgView.setImageResource(R.drawable.hatena);
 				}else{
 					imgView.setAlpha(255);
