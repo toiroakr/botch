@@ -71,12 +71,6 @@ public class TitleFragment extends Fragment {
 		//dbAdapter = new DBAdapter(getActivity());
 
 		loadTitles();
-		adapter.getItem(0).setGet(true);
-		adapter.getItem(4).setGet(true);
-		adapter.getItem(12).setGet(true);
-		adapter.getItem(25).setGet(true);
-		adapter.getItem(73).setGet(true);
-		adapter.getItem(70).setGet(true);
 
 		redrawGridView();
 
