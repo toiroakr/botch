@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 
 import java.io.IOException;
@@ -79,6 +79,7 @@ public class TitleFragment extends Fragment {
 			}
 
 		});
+		gridView.performClick();
 		return a;
 	}
 

@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
@@ -91,6 +92,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 
 	@Override
 	public void onTabChanged(String tabId) {
+		Log.d("onTabChanged", "" + tabId);
 		int position = mTabHost.getCurrentTab();
 		mViewPager.setCurrentItem(position, false);
 	}
@@ -98,15 +100,12 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	@Override
 	public void onPageScrolled(int position, float positionOffset,
 			int positionOffsetPixels) {
+		Log.d("onPageScrolled", "" + position);
 	}
 
 	@Override
 	public void onPageSelected(int position) {
-		// Unfortunately when TabHost changes the current tab, it kindly
-		// also takes care of putting focus on it when not in touch mode.
-		// The jerk.
-		// This hack tries to prevent this from pulling focus out of our
-		// ViewPager.
+		Log.d("onPageSelected", "" + position);
 		int preTab = mTabHost.getCurrentTab();
 		int visible = mContext.findViewById(R.id.marker_btns).getVisibility();
 		if (preTab == 0 && visible == View.VISIBLE) {
@@ -118,8 +117,8 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		TabWidget widget = mTabHost.getTabWidget();
 		int oldFocusability = widget.getDescendantFocusability();
 		widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-		mTabHost.setCurrentTab(position);
 		widget.setDescendantFocusability(oldFocusability);
+		mTabHost.setCurrentTab(position);
 
 		if (position == 0) {
 			mViewPager.setRSwipeHold(false);
@@ -131,7 +130,8 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 			mViewPager.setRSwipeHold(false);
 			mViewPager.setLSwipeHold(false);
 		}
-
+		if(position == 1)
+			TitleFragment.redraw();
 	}
 
 	@Override

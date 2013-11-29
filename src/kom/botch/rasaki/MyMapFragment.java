@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -212,6 +212,7 @@ OnMarkerClickListener {
 		mapView.addView(addToggleButton(inflater, container));
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
+		addSettingButton(mapView);
 		renewRsts();
 		return mapView;
 	}
@@ -303,6 +304,19 @@ OnMarkerClickListener {
 				clear();
 				renewRsts();
 				Log.v("hogeeeeeeeeelonely", lonely);
+			}
+		});
+	}
+	
+	private void addSettingButton(FrameLayout mapView) {
+		final ImageView settingButton = (ImageView) mapView.findViewById(R.id.drawer_setting);
+		settingButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), Setting.class);
+				// intent.putExtra("rst_id", rst_id);
+				startActivity(intent);
+				Log.v("settingButton", "settingbutton");
 			}
 		});
 	}
@@ -578,7 +592,7 @@ OnMarkerClickListener {
 									preference.WriteKeyValue("user_name",
 											user_name);
 									Toast.makeText(getActivity(),
-											"Hello, " + user_name,
+											"お一人様でお待ちの " + user_name + "様〜",
 											Toast.LENGTH_LONG).show();
 								}
 							})
@@ -594,8 +608,8 @@ OnMarkerClickListener {
 							}).show();
 		} else {
 			String user_name = preference.ReadKeyValue("user_name");
-			Toast.makeText(getActivity(), "Hello, " + user_name,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "お一人様でお待ちの " + user_name + "様〜",
+					Toast.LENGTH_LONG).show();
 		}
 		user_id = preference.ReadKeyValue("user_id");
 	}

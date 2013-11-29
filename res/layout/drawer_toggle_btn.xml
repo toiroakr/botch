@@ -7,29 +7,40 @@
 
     <ImageView
         android:id="@+id/drawer_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="bottom|left"
         android:layout_margin="4dp"
         android:alpha="1.0"
-        android:gravity="center"
         android:clickable="true"
+        android:gravity="center"
         android:src="@drawable/list"
         tools:ignore="ContentDescription"
         android:color="#222" />
 
     <ImageView
         android:id="@+id/drawer_lonely"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|right"
         android:layout_margin="6dp"
         android:alpha="1.0"
         android:clickable="true"
         android:gravity="center"
-        android:layout_gravity="bottom|right"
         tools:ignore="ContentDescription"
+        android:color="#222" />
 
-
+    <ImageView
+        android:id="@+id/drawer_setting"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|left"
+        android:layout_margin="5dp"
+        android:alpha="0.5"
+        android:clickable="true"
+        android:gravity="center"
+        android:src="@drawable/setting"
+        tools:ignore="ContentDescription"
         android:color="#222" />
 
 </FrameLayout>

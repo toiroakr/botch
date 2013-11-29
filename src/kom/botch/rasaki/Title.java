@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 
 public class Title{

@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -20,9 +20,9 @@ public class WebViewFromTextView extends Activity {
             String url =
                 getIntent().getDataString().replace("myscheme://", "http://");
             Log.e("WebViewFromTextView:", url);
-            
+
             // WebViewの設定
-        	WebView webView = (WebView)findViewById(R.id.webView);        	
+        	WebView webView = (WebView)findViewById(R.id.webView);
         	webView.requestFocus();
         	webView.getSettings().setJavaScriptEnabled(true);
         	webView.getSettings().setBuiltInZoomControls(true);

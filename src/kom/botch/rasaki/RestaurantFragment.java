@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import java.util.ArrayList;
 import java.util.HashMap;

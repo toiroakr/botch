@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package kom.botch.rasaki;
 
 import java.io.File;
 import java.io.FileOutputStream;
