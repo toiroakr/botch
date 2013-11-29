@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -120,6 +121,8 @@ public class MyMapFragment extends SupportMapFragment implements
 		return null;
 	}
 
+	private static final int MAX_RESTAURANS_HOLD = 250;
+
 	private void startRequest(double lat, double lng, int zoom) {
 		// マッピング用のRestaurantDetailを作成
 		params.put("zoom", Integer.toString(zoom));
@@ -147,7 +150,7 @@ public class MyMapFragment extends SupportMapFragment implements
 						JsonObject json_restaurant;
 						Restaurant restaurant;
 
-						if (puted_rstids.size() >= 150) {
+						if (puted_rstids.size() >= MAX_RESTAURANS_HOLD) {
 							for (int i = 0; i < Integer.parseInt(LIMIT); i++) {
 								int remove_rstid = puted_rstids.get(0);
 								restaurants.remove(remove_rstid);
@@ -184,8 +187,11 @@ public class MyMapFragment extends SupportMapFragment implements
 						}
 						// // Log.v("success:", restaurants.toString());
 						// Log.v("success:", "DONE!");
+						Log.d("marker:", "start!");
 						addMarkers(true);
+						Log.d("marker:", "Done!");
 						setRestaurantList(true);
+						Log.d("List:", "Done!");
 					}
 				}, new ErrorListener() {
 					@Override
@@ -214,7 +220,7 @@ public class MyMapFragment extends SupportMapFragment implements
 		checkUserSetting();
 
 		if (drawer == null)
-			drawer = ((MainActivity) getActivity()).getDrawer();
+			drawer = getMainActivity().getDrawer();
 		mapView.addView(addToggleButton(inflater, container));
 		togglelonelyButton(mapView);
 		mapView.findViewById(R.id.drawer_lonely).performClick();
@@ -361,7 +367,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			mMap.setOnMapClickListener(new OnMapClickListener() {
 				@Override
 				public void onMapClick(LatLng arg0) {
-					((MainActivity) getActivity()).hideButtons();
+					getMainActivity().hideButtons();
 				}
 			});
 
@@ -394,8 +400,18 @@ public class MyMapFragment extends SupportMapFragment implements
 				renewRsts();
 			}
 		});
-
 	}
+
+	private MainActivity getMainActivity() {
+		return (MainActivity) getActivity();
+	}
+
+	// private void hideWindow() {
+	// for (Marker m : mMarkers.keySet()) {
+	// if (m.isInfoWindowShown())
+	// m.hideInfoWindow();
+	// }
+	// }
 
 	private Location getMyLocation() {
 		chkGpsService();
@@ -518,12 +534,14 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	@Override
 	public boolean onMarkerClick(final Marker marker) {
-		if (((MainActivity) getActivity()).getCurrentTab() != 0)
+		if (getMainActivity().getCurrentTab() != 0)
 			return true;
-		((MainActivity) getActivity()).viewButtons();
+		getMainActivity().viewButtons();
 		setBtns(marker);
 		return false;
 	}
+
+	private static final int MIN_CLOTH = 100;
 
 	private void setBtns(final Marker marker) {
 		LinearLayout eBtn = (LinearLayout) getActivity().findViewById(
@@ -532,10 +550,11 @@ public class MyMapFragment extends SupportMapFragment implements
 		eBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (DistanceCalculator.distace(getMyLocation(), rst) <= 100)
-					((MainActivity) getActivity()).showEvalDialog(rst);
+				if (DistanceCalculator.distace(getMyLocation(), rst) <= MIN_CLOTH)
+					(getMainActivity()).showEvalDialog(rst);
 				else
-					Toast.makeText(getActivity(), "お店から100m以内で評価してください。",
+					Toast.makeText(getActivity(),
+							"お店から" + MIN_CLOTH + "m以内で評価してください。",
 							Toast.LENGTH_LONG).show();
 
 			}
