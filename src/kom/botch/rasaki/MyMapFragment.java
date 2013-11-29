@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +14,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-// import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,18 +55,21 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 
+// import android.util.Log;
+
 public class MyMapFragment extends SupportMapFragment implements
 		OnMarkerClickListener {
 	private GoogleMap mMap;
 	private static final Map<Marker, Restaurant> mMarkers = new HashMap<Marker, Restaurant>();
 	private SimpleSideDrawer drawer;
-	String LIMIT = "15";
+	String LIMIT = "100";
 	String lonely = "1"; // 1で「一人で」、それ以外で「全て」
 	private static final Object TAG_REQUEST_QUEUE = new Object();
 	private RequestQueue requestQueue;
 	private HashMap<String, String> params = new HashMap<String, String>();
 	private int method;
 	private String url;
+	@SuppressLint("UseSparseArrays")
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
 	private static final double LON_DEFAULT = 135.783694;
@@ -150,7 +153,8 @@ public class MyMapFragment extends SupportMapFragment implements
 								restaurants.remove(remove_rstid);
 								puted_rstids.remove(0);
 							}
-							// Log.v("size", Integer.toString(puted_rstids.size()));
+							// Log.v("size",
+							// Integer.toString(puted_rstids.size()));
 						}
 
 						// restaurants.clear();
@@ -220,9 +224,9 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void renewRsts() {
-//		// デバッグ用マーカー
-//		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
-//		restaurants.put(1, tst);
+		// // デバッグ用マーカー
+		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
+		restaurants.put(1, tst);
 
 		fetchNearRsts();
 		addMarkers(false);
@@ -264,10 +268,7 @@ public class MyMapFragment extends SupportMapFragment implements
 					return;
 				tarM.showInfoWindow();
 				drawer.toggleLeftDrawer();
-				CameraPosition.Builder builder = new CameraPosition.Builder()
-						.bearing(0).tilt(0).zoom(16).target(tarM.getPosition());
-				mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
-						.build()));
+				setCenterLocation(tarM.getPosition(), true);
 			}
 		});
 	}
@@ -283,6 +284,16 @@ public class MyMapFragment extends SupportMapFragment implements
 						@Override
 						public void onClick(View v) {
 							drawer.openLeftSide();
+						}
+					});
+			layout.findViewById(R.id.drawer_location).setOnClickListener(
+					new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if (!isGPSEnable())
+								chkGpsService();
+							if (LOCATION_ENABLE)
+								setCenterLocation(true);
 						}
 					});
 		}
@@ -305,7 +316,7 @@ public class MyMapFragment extends SupportMapFragment implements
 							.setBackgroundResource(R.drawable.lonely_tapped);
 				}
 				restaurants.clear();
-				clear();
+				clear(true);
 				renewRsts();
 				// Log.v("hogeeeeeeeeelonely", lonely);
 			}
@@ -343,10 +354,10 @@ public class MyMapFragment extends SupportMapFragment implements
 			// LocationMangerに最終位置を問い合わせて初期位置を確定する
 
 			// 各種コントロール、リスナー等をセット
-			mMap.getUiSettings().setCompassEnabled(true);
+			mMap.getUiSettings().setCompassEnabled(false);
 			mMap.getUiSettings().setZoomControlsEnabled(true);
-			mMap.getUiSettings().setMyLocationButtonEnabled(true);
-			mMap.setMyLocationEnabled(true);
+			// mMap.getUiSettings().setMyLocationButtonEnabled(true);
+			// mMap.setMyLocationEnabled(true);
 			mMap.setOnMapClickListener(new OnMapClickListener() {
 				@Override
 				public void onMapClick(LatLng arg0) {
@@ -355,18 +366,7 @@ public class MyMapFragment extends SupportMapFragment implements
 			});
 
 			// カメラの初期位置をセット
-			Location loc = getMyLocation();
-			double lat = LAT_DEFAULT;
-			double lon = LON_DEFAULT;
-
-			if (loc != null) {
-				lat = loc.getLatitude();
-				lon = loc.getLongitude();
-			}
-			CameraPosition.Builder builder = new CameraPosition.Builder()
-					.bearing(0).tilt(0).zoom(16).target(new LatLng(lat, lon));
-			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
-					.build()));
+			setCenterLocation();
 		}
 
 		// Hide the zoom controls as the button panel will cover it.
@@ -398,6 +398,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private Location getMyLocation() {
+		chkGpsService();
 		LocationManager mgr = (LocationManager) getActivity().getSystemService(
 				Context.LOCATION_SERVICE); // 位置マネージャ取得
 		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -408,20 +409,23 @@ public class MyMapFragment extends SupportMapFragment implements
 
 	private void addMarkers(boolean clear) {
 		if (clear)
-			clear();
+			clear(false);
 		for (Restaurant rst : restaurants.values()) {
 			addMarker(rst);
 		}
 	}
 
-	private void clear() {
+	private void clear(boolean all) {
 		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
 				.iterator(); it.hasNext();) {
 			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
 					.next();
 			Marker r = entry.getKey();
-			if (!r.isInfoWindowShown())
+			// r.isInfoWindowShown()
+			if (all || !restaurants.containsValue(r)) {
+				r.hideInfoWindow();
 				r.remove();
+			}
 		}
 	}
 
@@ -654,5 +658,87 @@ public class MyMapFragment extends SupportMapFragment implements
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
 		req.setTag(TAG_REQUEST_QUEUE);
 		requestQueue.add(req);
+	}
+
+	private void setCenterLocation(LatLng position, boolean animate) {
+		CameraPosition.Builder builder = new CameraPosition.Builder()
+				.bearing(0).tilt(0).zoom(16).target(position);
+		if (animate)
+			mMap.animateCamera(
+					CameraUpdateFactory.newCameraPosition(builder.build()),
+					500, null);
+		else
+			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(builder
+					.build()));
+	}
+
+	public void setCenterLocation(boolean animate) {
+		double lat = LAT_DEFAULT;
+		double lon = LON_DEFAULT;
+		setCenterLocation(new LatLng(lat, lon), animate);
+	}
+
+	public void setCenterLocation(LatLng position) {
+		setCenterLocation(position, false);
+	}
+
+	public void setCenterLocation() {
+		double lat = LAT_DEFAULT;
+		double lon = LON_DEFAULT;
+		Location loc = getMyLocation();
+		if (loc != null) {
+			lat = loc.getLatitude();
+			lon = loc.getLongitude();
+		}
+		setCenterLocation(new LatLng(lat, lon));
+	}
+
+	private static boolean LOCATION_ENABLE = false;
+
+	// GPSが有効かCheck
+	// 有効になっていなければ、設定画面の表示確認ダイアログ
+	private void chkGpsService() {
+		boolean gpsFlg = isGPSEnable();
+		if (!gpsFlg) {
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+					getActivity());
+			alertDialogBuilder
+					.setMessage("GPSが有効になっていません。\n有効化しますか？")
+					.setCancelable(false)
+
+					// GPS設定画面起動用ボタンとイベントの定義
+					.setPositiveButton("GPS設定起動",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									Intent callGPSSettingIntent = new Intent(
+											android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+									startActivity(callGPSSettingIntent);
+								}
+							});
+			// キャンセルボタン処理
+			alertDialogBuilder.setNegativeButton("キャンセル",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+			AlertDialog alert = alertDialogBuilder.create();
+			// 設定画面へ移動するかの問い合わせダイアログを表示
+			alert.show();
+		}
+	}
+
+	private boolean isGPSEnable() {
+		LocationManager mLocationManager = (LocationManager) getActivity()
+				.getSystemService(Context.LOCATION_SERVICE);
+		// 3Gまたはwifiから位置情報を取得する設定
+		boolean networkFlg = mLocationManager
+				.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		// GPSから位置情報を取得する設定
+		boolean gpsFlg = mLocationManager
+				.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		LOCATION_ENABLE = gpsFlg | networkFlg;
+		return gpsFlg;
 	}
 }

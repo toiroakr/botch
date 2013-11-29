@@ -43,4 +43,17 @@
         tools:ignore="ContentDescription"
         android:color="#222" />
 
+    <ImageView
+        android:id="@+id/drawer_location"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|right"
+        android:layout_margin="6dp"
+        android:alpha="1.0"
+        android:clickable="true"
+        android:gravity="center"
+        android:src="@drawable/location"
+        tools:ignore="ContentDescription"
+        android:color="#222" />
+
 </FrameLayout>
