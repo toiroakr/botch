@@ -398,6 +398,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private Location getMyLocation() {
+		chkGpsService();
 		LocationManager mgr = (LocationManager) getActivity().getSystemService(
 				Context.LOCATION_SERVICE); // 位置マネージャ取得
 		Location loc = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -657,5 +658,51 @@ public class MyMapFragment extends SupportMapFragment implements
 		// 通信が終われば、それぞれのreqで定義したコールバック関数が呼ばれる
 		req.setTag(TAG_REQUEST_QUEUE);
 		requestQueue.add(req);
+	}
+
+	// GPSが有効かCheck
+	// 有効になっていなければ、設定画面の表示確認ダイアログ
+	private void chkGpsService() {
+		boolean gpsFlg = isGPSEnable();
+		if (!gpsFlg) {
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+					getActivity());
+			alertDialogBuilder
+					.setMessage("GPSが有効になっていません。\n有効化しますか？")
+					.setCancelable(false)
+
+					// GPS設定画面起動用ボタンとイベントの定義
+					.setPositiveButton("GPS設定起動",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									Intent callGPSSettingIntent = new Intent(
+											android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+									startActivity(callGPSSettingIntent);
+								}
+							});
+			// キャンセルボタン処理
+			alertDialogBuilder.setNegativeButton("キャンセル",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+			AlertDialog alert = alertDialogBuilder.create();
+			// 設定画面へ移動するかの問い合わせダイアログを表示
+			alert.show();
+		}
+	}
+
+	private boolean isGPSEnable() {
+		LocationManager mLocationManager = (LocationManager) getActivity()
+				.getSystemService(Context.LOCATION_SERVICE);
+		// 3Gまたはwifiから位置情報を取得する設定
+		// boolean networkFlg = mLocationManager
+		// .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		// GPSから位置情報を取得する設定
+		boolean gpsFlg = mLocationManager
+				.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		return gpsFlg;
 	}
 }
