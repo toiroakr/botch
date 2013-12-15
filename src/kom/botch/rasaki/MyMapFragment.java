@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +14,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-// import android.util.Log;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,6 +56,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.navdrawer.SimpleSideDrawer;
 
+// import android.util.Log;
+
 public class MyMapFragment extends SupportMapFragment implements
 		OnMarkerClickListener {
 	private GoogleMap mMap;
@@ -67,6 +70,7 @@ public class MyMapFragment extends SupportMapFragment implements
 	private HashMap<String, String> params = new HashMap<String, String>();
 	private int method;
 	private String url;
+	@SuppressLint("UseSparseArrays")
 	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private ArrayList<Integer> puted_rstids = new ArrayList<Integer>();
 	private static final double LON_DEFAULT = 135.783694;
@@ -150,7 +154,8 @@ public class MyMapFragment extends SupportMapFragment implements
 								restaurants.remove(remove_rstid);
 								puted_rstids.remove(0);
 							}
-							// Log.v("size", Integer.toString(puted_rstids.size()));
+							// Log.v("size",
+							// Integer.toString(puted_rstids.size()));
 						}
 
 						// restaurants.clear();
@@ -220,9 +225,9 @@ public class MyMapFragment extends SupportMapFragment implements
 	}
 
 	private void renewRsts() {
-//		// デバッグ用マーカー
-//		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
-//		restaurants.put(1, tst);
+		// // デバッグ用マーカー
+		Restaurant tst = new Restaurant(1, "testRst", 3, 3, "aaa", 135.764, 35);
+		restaurants.put(1, tst);
 
 		fetchNearRsts();
 		addMarkers(false);
@@ -405,40 +410,6 @@ public class MyMapFragment extends SupportMapFragment implements
 		if (loc == null)
 			loc = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 		return loc;
-	}
-
-	private void addMarkers(boolean clear) {
-		if (clear)
-			clear(false);
-		for (Restaurant rst : restaurants.values()) {
-			addMarker(rst);
-		}
-	}
-
-	private void clear(boolean all) {
- 		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
- 				.iterator(); it.hasNext();) {
- 			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
- 					.next();
- 			Marker r = entry.getKey();
-			if ((all || !restaurants.containsValue(mMarkers.get(r)))) {
-				if(all)
-					r.hideInfoWindow();
- 				r.remove();
-			}
- 		}
- 	}
-
-	private Marker addMarker(Restaurant rst) {
-		Marker m = null;
-		if (mMap != null) {
-			m = mMap.addMarker(new MarkerOptions()
-					.position(new LatLng(rst.getLat(), rst.getLon()))
-					.title(rst.getRestaurantName())
-					.icon(BitmapDescriptorFactory.defaultMarker()));
-			mMarkers.put(m, rst);
-		}
-		return m;
 	}
 
 	private LatLng getLocation() {
@@ -705,4 +676,51 @@ public class MyMapFragment extends SupportMapFragment implements
 				.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		return gpsFlg;
 	}
+
+	private Handler handler = new Handler();
+
+	private void addMarkers(final boolean clear) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						if (clear)
+							clear(false);
+						for (Restaurant rst : restaurants.values()) {
+							addMarker(rst);
+						}
+					}
+				});
+			}
+		}).start();
+	}
+
+	private void clear(boolean all) {
+		for (Iterator<Entry<Marker, Restaurant>> it = mMarkers.entrySet()
+				.iterator(); it.hasNext();) {
+			Map.Entry<Marker, Restaurant> entry = (Map.Entry<Marker, Restaurant>) it
+					.next();
+			Marker r = entry.getKey();
+			if ((all || !restaurants.containsValue(mMarkers.get(r)))) {
+				if (all)
+					r.hideInfoWindow();
+				r.remove();
+			}
+		}
+	}
+
+	private Marker addMarker(Restaurant rst) {
+		Marker m = null;
+		if (mMap != null) {
+			m = mMap.addMarker(new MarkerOptions()
+					.position(new LatLng(rst.getLat(), rst.getLon()))
+					.title(rst.getRestaurantName())
+					.icon(BitmapDescriptorFactory.defaultMarker()));
+			mMarkers.put(m, rst);
+		}
+		return m;
+	}
+
 }

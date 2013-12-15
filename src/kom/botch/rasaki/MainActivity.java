@@ -8,11 +8,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,9 +49,9 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_tabs_pager);
-
 
 		// //通信用/////
 		requestQueue = Volley.newRequestQueue(this);
@@ -76,9 +76,10 @@ public class MainActivity extends FragmentActivity {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
 	}
-//
-//	@Override
-//	public void onPageSelected
+
+	//
+	// @Override
+	// public void onPageSelected
 
 	public View getIndicator(String str, int image_id) {
 		LinearLayout tabView = (LinearLayout) View.inflate(
@@ -109,7 +110,8 @@ public class MainActivity extends FragmentActivity {
 	private void startRequest(int method, String url,
 			HashMap<String, String> params) {
 		// マッピング用のRestaurantDetailを作成
-		final UserSettings preference = new UserSettings(this, "botch_user_setting");
+		final UserSettings preference = new UserSettings(this,
+				"botch_user_setting");
 		GsonRequest<JsonObject> req = new GsonRequest<JsonObject>(method, url,
 				JsonObject.class, params, new Listener<JsonObject>() {
 					@Override
@@ -118,10 +120,11 @@ public class MainActivity extends FragmentActivity {
 						// success
 						// Log.v("success:", result.toString());
 						// 取得済みの称号をsharedPreferenceに保存
-						preference.WriteKeyValue("acquired_title", result.toString());
+						preference.WriteKeyValue("acquired_title",
+								result.toString());
 						// Log.v("success:", "DONE!");
 						// Toast.makeText(getApplicationContext(),
-						// 		result.toString(), Toast.LENGTH_LONG).show();
+						// result.toString(), Toast.LENGTH_LONG).show();
 					}
 				}, new ErrorListener() {
 					@Override
@@ -164,7 +167,8 @@ public class MainActivity extends FragmentActivity {
 		// 表示
 		final AlertDialog diaLog = builder.show();
 		Button buttonOK = diaLog.getButton(DialogInterface.BUTTON_POSITIVE);
-		final UserSettings preference = new UserSettings(this, "botch_user_setting");
+		final UserSettings preference = new UserSettings(this,
+				"botch_user_setting");
 		final String user_id = preference.ReadKeyValue("user_id");
 		buttonOK.setOnClickListener(new View.OnClickListener() {
 			@Override
