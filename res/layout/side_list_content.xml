@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/side_relative"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:background="#eee" >
+
+    <RatingBar
+        android:id="@+id/side_rate"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/side_title"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:rating="2" />
+
+    <TextView
+        android:id="@id/side_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/hello_world"
+        android:textColor="#111"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

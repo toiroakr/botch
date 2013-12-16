@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <kom.botch.rasaki.MyViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="#ffc"
+                android:orientation="horizontal" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/marker_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#888"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:visibility="invisible" >
+
+            <LinearLayout
+                android:id="@+id/eat_btn"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="0.5dp"
+                android:layout_weight="1"
+                android:background="#ddd"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/hello_world"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/good" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ate"
+                    android:textColor="#111" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_btn"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="0.5dp"
+                android:layout_weight="1"
+                android:background="#ddd"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="@string/hello_world"
+                    android:src="@drawable/detail" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail"
+                    android:textColor="#111" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</TabHost>

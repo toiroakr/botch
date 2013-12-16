@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="wrap_content"
-  android:layout_height="match_parent"
->
-
-<TextView
-  android:textSize="14sp"
-  android:id="@+id/textView1"
-  android:layout_height="wrap_content"
-  android:layout_width="wrap_content"/>
-
-<TextView
-  android:textSize="12sp"
-  android:id="@+id/textView2"
-  android:layout_height="wrap_content"
-  android:layout_width="wrap_content"/>
-
-</LinearLayout>
+<kom.botch.rasaki.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/img"
+    android:alpha="255"
+    android:background="@layout/border"
+    android:padding="8dp">
+</kom.botch.rasaki.SquareImageView>

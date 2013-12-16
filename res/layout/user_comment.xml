@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:background="@color/pastelpink"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/user_comment"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/user_difficulty"
+        android:background="@color/white"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingLeft="3dp"
+        android:textSize="15sp" />
+
+    <RatingBar
+        android:id="@+id/user_difficulty"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/user_name"
+        android:layout_alignRight="@+id/user_comment"
+        android:layout_alignTop="@+id/user_name"
+        android:background="@color/white"
+        android:numStars="5"
+        android:stepSize="1" />
+
+    <TextView
+        android:id="@+id/user_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/user_difficulty"
+        android:paddingTop="5dp"
+        
+        android:background="@color/white" />
+
+</RelativeLayout>
