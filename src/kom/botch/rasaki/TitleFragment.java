@@ -257,7 +257,7 @@ public class TitleFragment extends Fragment {
 
                 @Override
                 public Title getItem(int position) {
-                        if ((position > 73) || (position < 0)){
+                        if ((position >= dataList.size()) || (position < 0)){
                                 return new Title();
                         }
                         return dataList.get(position);
