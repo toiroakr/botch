@@ -1,12 +1,5 @@
 # 変更日時
-2013年11月13日 22時24分
+2013年12月16日 22時24分
 
 # TODO
-* ユーザー情報の保持
-* 設定画面(username、twitter?)
-* zoomレベルに応じた店の情報取得
-* マーカーに情報を載せる(rst\_id)
-* 称号の取得判定
-* 図鑑ページに画像を載せる
-* SQLiteで履歴を保存する
-* デザイン！！！
+* [issueページ](https://github.com/a-s--k-h/botch/issues?state=open)で管理します
